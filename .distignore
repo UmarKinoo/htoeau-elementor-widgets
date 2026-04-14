@@ -1,0 +1,16 @@
+# Used by wp dist-archive and similar zip tools — exclude from distribution zip.
+.git
+.github
+.gitignore
+.distignore
+.DS_Store
+Thumbs.db
+*.log
+node_modules
+vendor
+.idea
+.vscode
+*.map
+phpcs.xml
+phpcs.xml.dist
+composer.lock

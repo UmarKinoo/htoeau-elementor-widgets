@@ -1,0 +1,44 @@
+HtoEAU Elementor Widgets — distribution notes
+=============================================
+
+ZIP CONTENTS
+------------
+Zip the folder "htoeau-elementor-widgets" (this plugin root), excluding paths
+listed in .distignore. Example with WP-CLI from wp-content/plugins:
+
+  wp dist-archive htoeau-elementor-widgets
+
+Or manually: compress the folder without .git or editor junk.
+
+SECURITY AUDIT (summary)
+------------------------
+- No REST/AJAX handlers, SQL, or file writes in this plugin.
+- Front-end output uses esc_html, esc_attr, esc_url, wp_kses_post (FAQ answers).
+- Trusted SVG/HTML from helpers (check icons, stars, CTA) is intentional static markup.
+- Header search overlay form action comes from wp_localize_script (home URL), not user HTML.
+- Newsletter form is display-only (button type="button"); wire to your ESP separately.
+- admin_init transient normalization runs only in admin, not during AJAX.
+
+DEFAULT TEXT & IMAGES
+---------------------
+- All widgets already define Elementor control "default" strings and repeater rows
+  (headings, FAQ, nav labels, etc.). New widgets in the editor show those defaults.
+
+- Images: Elementor attachment IDs do NOT travel in a plugin zip. Options:
+  (1) Put files in assets/images/ and use default_bundle_image_url() in widget defaults
+      (Hero already checks for hero-default.png).
+  (2) Export an Elementor Template Kit / full site export from the site where the
+      page is built (includes media URLs or attachments).
+  (3) Leave Elementor's placeholder for MEDIA controls until editors pick media.
+
+REQUIREMENTS
+------------
+- WordPress with Elementor active (free). WooCommerce optional (header cart/account).
+
+FULL PAGE + GLOBAL HEADER/FOOTER
+--------------------------------
+See templates/IMPORT-HOWTO.txt (export/import + Elementor Pro Theme Builder).
+
+VERSION
+--------
+See htoeau-elementor-widgets.php header and HTOEAU_WIDGETS_VERSION constant.

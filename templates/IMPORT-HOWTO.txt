@@ -1,0 +1,73 @@
+================================================================================
+HtoEAU — Full page template + header/footer (simple guide)
+================================================================================
+
+PART 1 — TEXT VS IMAGES (after you install the plugin)
+--------------------------------------------------------------------------------
+
+TEXT
+  • Each widget already has default copy in the plugin (headings, FAQ, nav
+    labels, etc.). When you drag a widget onto a page, that text appears
+    immediately — you do NOT have to re-type it unless you want changes.
+
+IMAGES
+  • Many image fields start empty or use Elementor’s gray placeholder until
+    you pick a file from the Media Library.
+  • Optional: add files under wp-content/plugins/htoeau-elementor-widgets/
+    assets/images/ (e.g. hero-default.png) — the Hero widget uses that
+    automatically when the file exists.
+  • So: you can build a page with defaults quickly; for a finished look you
+    usually still add your real photos (or bundle them in assets/images).
+
+
+PART 2 — ONE PAGE LIKE YOUR /test/ (template export / import)
+--------------------------------------------------------------------------------
+
+Elementor does not auto-create that page when the plugin installs. You copy it
+from a site where it already exists:
+
+ON THE SITE THAT HAS THE FINISHED PAGE (e.g. your Local “test” page)
+
+  1. Edit the page in Elementor.
+  2. Click the arrow next to Update / Publish → Save as Template.
+     Name it e.g. “HtoEAU Home Full”.
+  3. WordPress admin → Templates → Saved Templates.
+  4. Find that template → Export Template → you get a .json file.
+
+ON A NEW SITE (plugin already installed)
+
+  1. Templates → Saved Templates → Import Templates → upload the .json.
+  2. Pages → Add New → Edit with Elementor.
+  3. Folder icon (Add template) → My Templates → insert “HtoEAU Home Full”.
+
+Tip: Put the exported .json in this plugin folder as e.g.
+  templates/htoeau-home-starter.json
+and keep a copy in git — then you always have the kit to import on new installs.
+
+
+PART 3 — HEADER & FOOTER AS “GLOBAL” (same on every page)
+--------------------------------------------------------------------------------
+
+OPTION A — Elementor Pro (Theme Builder) — recommended for real globals
+
+  1. Build the header in Elementor (Site Header widget) on any page, or in
+     Theme Builder → Header.
+  2. Templates → Theme Builder → Header → Add new (or edit).
+  3. Publish and set Display Conditions: Entire Site (or as you need).
+  4. Repeat for Footer (Newsletter Footer widget) as a Footer template.
+
+OPTION B — Elementor Pro “Global Widget”
+
+  1. Right-click the header section (or the header widget) → Save as Global.
+  2. On other pages: insert from Global widgets. Changes sync everywhere.
+
+OPTION C — Elementor Free only
+
+  • No Theme Builder: you copy/paste the header/footer sections, or use a
+    saved page template and duplicate the page — not synced automatically.
+
+================================================================================
+Summary: Plugin = widgets + default text. Full layout = import a template you
+exported once. True site-wide header/footer = Elementor Pro Theme Builder (or
+Global Widgets).
+================================================================================

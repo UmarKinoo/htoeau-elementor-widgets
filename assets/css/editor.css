@@ -1,0 +1,119 @@
+/* ==========================================================================
+   HtoEAU Widgets — Elementor Editor Styles
+   ========================================================================== */
+
+/* Match frontend: no default widget gap so stacked sections preview flush */
+.elementor-widget[class*="elementor-widget-htoeau_"] {
+	margin-block-end: 0 !important;
+	margin-bottom: 0 !important;
+	--kit-widget-spacing: 0px;
+}
+
+.elementor-widget[class*="elementor-widget-htoeau_"] .elementor-widget-container {
+	margin-block-end: 0 !important;
+	margin-bottom: 0 !important;
+}
+
+body.elementor-page .elementor .e-con:has(.elementor-widget[class*="elementor-widget-htoeau_"]):not(
+	:has(.elementor-widget:not([class*="elementor-widget-htoeau_"]))
+),
+body.elementor-editor-active .elementor .e-con:has(.elementor-widget[class*="elementor-widget-htoeau_"]):not(
+	:has(.elementor-widget:not([class*="elementor-widget-htoeau_"]))
+) {
+	--margin-top: 0px !important;
+	--margin-bottom: 0px !important;
+	--margin-left: 0px !important;
+	--margin-right: 0px !important;
+	--margin-block-start: 0px !important;
+	--margin-block-end: 0px !important;
+	--gap: 0px !important;
+	--row-gap: 0px !important;
+	--widgets-spacing: 0px !important;
+	--widgets-spacing-row: 0px !important;
+	--padding-top: 0px !important;
+	--padding-bottom: 0px !important;
+	--padding-block-start: 0px !important;
+	--padding-block-end: 0px !important;
+	margin-block-start: 0 !important;
+	margin-block-end: 0 !important;
+	margin-inline-start: 0 !important;
+	margin-inline-end: 0 !important;
+	padding-block-start: 0 !important;
+	padding-block-end: 0 !important;
+}
+
+body.elementor-page .elementor .e-con:has(.elementor-widget[class*="elementor-widget-htoeau_"]):not(
+	:has(.elementor-widget:not([class*="elementor-widget-htoeau_"]))
+) > .e-con-inner,
+body.elementor-editor-active .elementor .e-con:has(.elementor-widget[class*="elementor-widget-htoeau_"]):not(
+	:has(.elementor-widget:not([class*="elementor-widget-htoeau_"]))
+) > .e-con-inner {
+	row-gap: 0 !important;
+	--row-gap: 0px !important;
+	--widgets-spacing: 0px !important;
+	--widgets-spacing-row: 0px !important;
+	--padding-top: 0px !important;
+	--padding-bottom: 0px !important;
+	--padding-block-start: 0px !important;
+	--padding-block-end: 0px !important;
+	gap: 0 var(--column-gap) !important;
+	padding-block-start: 0 !important;
+	padding-block-end: 0 !important;
+}
+
+body.elementor-page .elementor .e-con-inner:has(> .elementor-element.e-con):not(
+	:has(> .elementor-element.e-con .elementor-widget:not([class*="elementor-widget-htoeau_"]))
+),
+body.elementor-editor-active .elementor .e-con-inner:has(> .elementor-element.e-con):not(
+	:has(> .elementor-element.e-con .elementor-widget:not([class*="elementor-widget-htoeau_"]))
+) {
+	row-gap: 0 !important;
+	--row-gap: 0px !important;
+	--widgets-spacing-row: 0px !important;
+	gap: 0 var(--column-gap) !important;
+}
+
+.elementor-widget-htoeau_hero .elementor-widget-container,
+.elementor-widget-htoeau_hero .elementor-widget-wrap,
+.elementor-widget-htoeau_product_showcase .elementor-widget-container,
+.elementor-widget-htoeau_product_showcase .elementor-widget-wrap,
+.elementor-widget-htoeau_transformation_steps .elementor-widget-container,
+.elementor-widget-htoeau_science_features .elementor-widget-container,
+.elementor-widget-htoeau_site_header .elementor-widget-container,
+.elementor-widget-htoeau_research_showcase .elementor-widget-container,
+.elementor-widget-htoeau_about_physics .elementor-widget-container,
+.elementor-widget-htoeau_professor_study .elementor-widget-container,
+.elementor-widget-htoeau_trust_strip .elementor-widget-container,
+.elementor-widget-htoeau_trust_strip .elementor-widget-wrap,
+.elementor-widget-htoeau_community_testimonials .elementor-widget-container,
+.elementor-widget-htoeau_community_testimonials .elementor-widget-wrap,
+.elementor-widget-htoeau_spotlight_testimonial .elementor-widget-container,
+.elementor-widget-htoeau_sample_kit_cta .elementor-widget-container,
+.elementor-widget-htoeau_hydrogen_apart .elementor-widget-container,
+.elementor-widget-htoeau_engineered_perform .elementor-widget-container,
+.elementor-widget-htoeau_hydration_systems .elementor-widget-container,
+.elementor-widget-htoeau_hydrogenate_hero .elementor-widget-container,
+.elementor-widget-htoeau_newsletter_footer .elementor-widget-container {
+	overflow: visible;
+}
+
+/* Ensure images render in the editor preview */
+.elementor-editor-active .htoeau-hero__media .htoeau-hero__image,
+.elementor-editor-active .htoeau-transformation__panel-img,
+.elementor-editor-active .htoeau-research__visual-img,
+.elementor-editor-active .htoeau-about-physics__bg,
+.elementor-editor-active .htoeau-professor-study__img,
+.elementor-editor-active .htoeau-sample-kit__frame,
+.elementor-editor-active .htoeau-sample-kit__product,
+.elementor-editor-active .htoeau-hydrogenate__img,
+.elementor-editor-active .htoeau-hydrogen-apart__scene,
+.elementor-editor-active .htoeau-engineered__photo,
+.elementor-editor-active .htoeau-engineered__icon img,
+.elementor-editor-active .htoeau-hydration-systems__img {
+	max-width: none;
+}
+
+/* Category icon styling */
+.elementor-panel .elementor-element .icon .eicon-water-drop {
+	color: #008fa3;
+}

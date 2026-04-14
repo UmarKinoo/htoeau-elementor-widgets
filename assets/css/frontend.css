@@ -1,0 +1,5841 @@
+/* ==========================================================================
+   HtoEAU Elementor Widgets — Design Tokens & Global Styles
+   ========================================================================== */
+
+:root {
+	/* Colors */
+	--htoeau-navy:        #002c41;
+	--htoeau-navy-deep:   #012435;
+	--htoeau-teal:        #008fa3;
+	--htoeau-blue:        #016b9f;
+	--htoeau-cyan:        #7cc9d3;
+	--htoeau-dark-teal:   #055b65;
+	--htoeau-off-white:   #f8f8f8;
+	--htoeau-light-gray:  #f5f5f5;
+	--htoeau-white:       #ffffff;
+	--htoeau-black:       #1d1d1d;
+	--htoeau-star:        #ffbf5b;
+	--htoeau-accent-h2:   #70edff;
+	--htoeau-accent-ddw:  #ffedb1;
+	--htoeau-accent-comb: #70f2c2;
+
+	/* Gradient */
+	--htoeau-gradient:    linear-gradient(90deg, var(--htoeau-teal) 0%, var(--htoeau-blue) 100%);
+
+	/* Typography */
+	--htoeau-font:        'Figtree', sans-serif;
+
+	/* Radius */
+	--htoeau-radius-btn:  1000px;
+	--htoeau-radius-card: 10px;
+	--htoeau-radius-img:  16px;
+	--htoeau-radius-faq:  8px;
+
+	/* Container */
+	--htoeau-container:   1320px;
+
+	/* Hero (Figma node 86:40 — Home hero)
+	 * Frame: 1440×685. Row: px 60, gap 45, copy 543px.
+	 * Image group 86:74 bounding box: ~818×635 (export one PNG at this size @1×, or 1636×1270 @2×).
+	 * In a 1320px row: 543 + 45 + media = 1320 → media column max 732px (image scales to fit). */
+	--htoeau-hero-image-figma-w: 818px;
+	--htoeau-hero-image-figma-h: 635px;
+	--htoeau-hero-media-max:     732px;
+}
+
+
+/* ==========================================================================
+   HtoEAU — flush stacking (no white gap between adjacent widgets)
+   Sources of gap:
+   - .elementor-widget:not(:last-child) { margin-block-end: var(--kit-widget-spacing) }
+   - .e-con { --gap / --row-gap / --widgets-spacing* } + margin from --margin-*
+   - .e-con > .e-con-inner { gap: var(--row-gap) var(--column-gap) }
+   Stylesheet loads after elementor-frontend (see class-plugin.php).
+   ========================================================================== */
+
+.elementor-widget[class*="elementor-widget-htoeau_"] {
+	margin-block-end: 0 !important;
+	margin-bottom: 0 !important;
+	--kit-widget-spacing: 0px;
+}
+
+.elementor-widget[class*="elementor-widget-htoeau_"] .elementor-widget-container {
+	margin-block-end: 0 !important;
+	margin-bottom: 0 !important;
+}
+
+/*
+ * Container (.e-con) that only contains HtoEAU widgets (any depth): kill Elementor
+ * “widgets spacing” and outer margins (kit / post-*.css often set vars with high specificity).
+ */
+body.elementor-page .elementor .e-con:has(.elementor-widget[class*="elementor-widget-htoeau_"]):not(
+	:has(.elementor-widget:not([class*="elementor-widget-htoeau_"]))
+) {
+	--margin-top: 0px !important;
+	--margin-bottom: 0px !important;
+	--margin-left: 0px !important;
+	--margin-right: 0px !important;
+	--margin-block-start: 0px !important;
+	--margin-block-end: 0px !important;
+	--gap: 0px !important;
+	--row-gap: 0px !important;
+	--widgets-spacing: 0px !important;
+	--widgets-spacing-row: 0px !important;
+	--padding-top: 0px !important;
+	--padding-bottom: 0px !important;
+	--padding-block-start: 0px !important;
+	--padding-block-end: 0px !important;
+	--padding-inline-start: 0px !important;
+	--padding-inline-end: 0px !important;
+	margin-block-start: 0 !important;
+	margin-block-end: 0 !important;
+	margin-inline-start: 0 !important;
+	margin-inline-end: 0 !important;
+	padding-block-start: 0 !important;
+	padding-block-end: 0 !important;
+	padding-inline-start: 0 !important;
+	padding-inline-end: 0 !important;
+}
+
+body.elementor-page .elementor .e-con:has(.elementor-widget[class*="elementor-widget-htoeau_"]):not(
+	:has(.elementor-widget:not([class*="elementor-widget-htoeau_"]))
+) > .e-con-inner {
+	row-gap: 0 !important;
+	--row-gap: 0px !important;
+	--widgets-spacing: 0px !important;
+	--widgets-spacing-row: 0px !important;
+	--padding-top: 0px !important;
+	--padding-bottom: 0px !important;
+	--padding-block-start: 0px !important;
+	--padding-block-end: 0px !important;
+	--padding-inline-start: 0px !important;
+	--padding-inline-end: 0px !important;
+	gap: 0 var(--column-gap) !important;
+	padding-block-start: 0 !important;
+	padding-block-end: 0 !important;
+	padding-inline-start: 0 !important;
+	padding-inline-end: 0 !important;
+}
+
+/* Nested-only path (parent inner stacks child .e-con sections) */
+body.elementor-page .elementor .e-con-inner:has(> .elementor-element.e-con):not(
+	:has(> .elementor-element.e-con .elementor-widget:not([class*="elementor-widget-htoeau_"]))
+) {
+	row-gap: 0 !important;
+	--row-gap: 0px !important;
+	--widgets-spacing-row: 0px !important;
+	gap: 0 var(--column-gap) !important;
+}
+
+/*
+ * Storefront: #masthead. Hello Elementor: #site-header.dynamic-header.
+ * Default theme header (site title) sits above our header widget.
+ */
+body:has(.htoeau-header) #masthead.site-header,
+body:has(.htoeau-header) #site-header.site-header,
+body:has(.htoeau-header) .header-widget-region {
+	display: none !important;
+}
+
+body:has(.htoeau-header) .storefront-breadcrumb {
+	display: none !important;
+}
+
+/* Keep header above hero / first section when stacks overlap (tablet). */
+.htoeau-header {
+	position: relative;
+	z-index: 20;
+}
+
+.htoeau-header,
+.htoeau-hero,
+.htoeau-product-showcase,
+.htoeau-transformation,
+.htoeau-science,
+.htoeau-research,
+.htoeau-about-physics,
+.htoeau-professor-study,
+.htoeau-trust-strip,
+.htoeau-community,
+.htoeau-spotlight,
+.htoeau-sample-kit,
+.htoeau-faq,
+.htoeau-engineered,
+.htoeau-hydration-systems,
+.htoeau-hydrogen-apart,
+.htoeau-hydrogenate,
+.htoeau-news-footer {
+	margin: 0;
+}
+
+
+/* ==========================================================================
+   Shared Components
+   ========================================================================== */
+
+/* --- Stars --- */
+.htoeau-stars {
+	display: inline-flex;
+	gap: 2px;
+	align-items: center;
+	flex-shrink: 0;
+}
+
+.htoeau-stars svg {
+	display: block;
+	width: 14px;
+	height: 13px;
+}
+
+/* --- Check Icon --- */
+.htoeau-check-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	line-height: 0;
+}
+
+.htoeau-check-icon svg {
+	display: block;
+}
+
+/* --- CTA Button --- */
+.htoeau-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	text-decoration: none;
+	cursor: pointer;
+	transition: opacity 0.2s ease, transform 0.2s ease;
+	box-sizing: border-box;
+}
+
+.htoeau-btn:visited {
+	color: inherit;
+}
+
+.htoeau-btn:hover {
+	opacity: 0.9;
+	transform: translateY(-1px);
+}
+
+.htoeau-btn:active {
+	transform: translateY(0);
+}
+
+.htoeau-btn--primary {
+	background: var(--htoeau-gradient);
+	color: var(--htoeau-white);
+	border: none;
+	border-radius: var(--htoeau-radius-btn);
+	font-family: var(--htoeau-font);
+	font-weight: 700;
+	font-size: 16px;
+	line-height: 1.4;
+	letter-spacing: -0.32px;
+	padding: 13px 48px;
+	min-height: 47px;
+	height: auto;
+}
+
+.htoeau-btn--primary:visited,
+.htoeau-btn--primary:hover,
+.htoeau-btn--primary:active,
+.htoeau-btn--primary:focus {
+	color: var(--htoeau-white);
+	background: var(--htoeau-gradient);
+}
+
+.htoeau-btn--secondary {
+	background: var(--htoeau-off-white);
+	color: var(--htoeau-black);
+	border: none;
+	border-radius: var(--htoeau-radius-btn);
+	font-family: var(--htoeau-font);
+	font-weight: 700;
+	font-size: 16px;
+	line-height: 1.4;
+	letter-spacing: -0.32px;
+	padding: 13px 48px;
+	min-height: 47px;
+	height: auto;
+}
+
+.htoeau-btn--outline {
+	background: transparent;
+	color: var(--htoeau-white);
+	border: 1px solid var(--htoeau-white);
+	border-radius: var(--htoeau-radius-btn);
+	font-family: var(--htoeau-font);
+	font-weight: 700;
+	font-size: 16px;
+	line-height: 1.4;
+	letter-spacing: -0.32px;
+	padding: 13px 48px;
+	min-height: 47px;
+	height: auto;
+}
+
+
+/* ==========================================================================
+   Site Header — Figma 238:15
+   Row 1: Announcement bar (#002c41, py 12)
+   Row 2: Main nav (white, h 104, px 60, logo | 6 links 60px gap | icons)
+   Row 3: Trust strip (#f8f8f8, py 20, dot-separated)
+   ========================================================================== */
+
+/* --- Announcement Bar (desktop 86:7; mobile py 11 — Figma 86:623) --- */
+.htoeau-header__announce {
+	background: var(--htoeau-navy);
+	padding: 12px 60px;
+	text-align: center;
+}
+
+.htoeau-header__announce-text {
+	font-family: var(--htoeau-font);
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 1.2;
+	letter-spacing: -0.28px;
+	color: var(--htoeau-white);
+	margin: 0;
+}
+
+.htoeau-header__announce-text a {
+	color: var(--htoeau-white);
+	text-decoration: underline;
+	margin-left: 0.3em;
+}
+
+.htoeau-header__announce-text a:hover {
+	opacity: 0.8;
+}
+
+/* --- Main Nav (86:9) --- */
+.htoeau-header__main {
+	background: var(--htoeau-white);
+	height: 104px;
+	display: flex;
+	align-items: center;
+}
+
+.htoeau-header__inner {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	max-width: 1440px;
+	margin-inline: auto;
+	padding: 0 60px;
+	box-sizing: border-box;
+	height: 100%;
+}
+
+.htoeau-header__logo {
+	flex-shrink: 0;
+	display: inline-flex;
+	align-items: center;
+	text-decoration: none;
+	line-height: 0;
+}
+
+.htoeau-header__logo img {
+	height: 32px;
+	width: auto;
+	display: block;
+}
+
+.htoeau-header__logo-text {
+	font-family: var(--htoeau-font);
+	font-weight: 700;
+	font-size: 22px;
+	color: var(--htoeau-navy);
+	letter-spacing: -0.44px;
+}
+
+/* Hamburger — hidden on desktop */
+.htoeau-header__burger {
+	display: none;
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 8px;
+	flex-direction: column;
+	gap: 5px;
+	-webkit-tap-highlight-color: transparent;
+}
+
+.htoeau-header__burger span {
+	display: block;
+	width: 22px;
+	height: 2px;
+	background: var(--htoeau-navy);
+	border-radius: 1px;
+	transition: transform 0.25s ease, opacity 0.2s ease;
+}
+
+.htoeau-header__burger[aria-expanded="true"] span:nth-child(1) {
+	transform: translateY(7px) rotate(45deg);
+}
+.htoeau-header__burger[aria-expanded="true"] span:nth-child(2) {
+	opacity: 0;
+}
+.htoeau-header__burger[aria-expanded="true"] span:nth-child(3) {
+	transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Nav — Figma 1:21: menu centered in the row between logo and icon group (gap 60px between links) */
+.htoeau-header__nav {
+	flex: 1;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-width: 0;
+	padding-inline: 8px;
+}
+
+.htoeau-header__links {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+	gap: 60px;
+	row-gap: 12px;
+}
+
+.htoeau-header__links li {
+	margin: 0;
+}
+
+.htoeau-header__links li a {
+	position: relative;
+	font-family: var(--htoeau-font);
+	font-weight: 600;
+	font-size: 16px;
+	line-height: 1.2;
+	letter-spacing: -0.32px;
+	color: var(--htoeau-navy);
+	text-decoration: none;
+	white-space: nowrap;
+	transition: color 0.2s ease;
+}
+
+/* Underline pointer — fade in (no submenu chevrons; flat repeater menu) */
+.htoeau-header__links li a::after {
+	content: '';
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: -4px;
+	height: 1px;
+	background: currentColor;
+	opacity: 0;
+	transition: opacity 0.25s ease;
+}
+
+.htoeau-header__links li a:hover::after,
+.htoeau-header__links li a:focus-visible::after {
+	opacity: 1;
+}
+
+/* WordPress menu (wp_nav_menu): nested items — no submenu chevrons */
+.htoeau-header__links .sub-menu {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+@media (min-width: 1025px) {
+	.htoeau-header__links > .menu-item.menu-item-has-children {
+		position: relative;
+	}
+
+	.htoeau-header__links .sub-menu {
+		position: absolute;
+		top: calc(100% + 8px);
+		left: 0;
+		min-width: 220px;
+		background: var(--htoeau-white);
+		box-shadow: 0 8px 24px rgba(0, 44, 65, 0.12);
+		border-radius: 8px;
+		flex-direction: column;
+		gap: 0;
+		display: none;
+		z-index: 10001;
+		padding: 8px 0;
+	}
+
+	.htoeau-header__links .menu-item-has-children:hover > .sub-menu,
+	.htoeau-header__links .menu-item-has-children:focus-within > .sub-menu {
+		display: flex;
+	}
+
+	.htoeau-header__links .sub-menu .menu-item {
+		width: 100%;
+		text-align: left;
+	}
+
+	.htoeau-header__links .sub-menu a {
+		padding: 10px 18px;
+		display: block;
+		white-space: nowrap;
+	}
+
+	.htoeau-header__links .sub-menu a::after {
+		display: none;
+	}
+
+	.htoeau-header__links .sub-menu .sub-menu {
+		top: 0;
+		left: 100%;
+		margin-left: 4px;
+	}
+}
+
+/* Icons */
+.htoeau-header__icons {
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	gap: 20px;
+}
+
+.htoeau-header__icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--htoeau-navy);
+	text-decoration: none;
+	background: none;
+	border: none;
+	padding: 0;
+	cursor: pointer;
+	transition: opacity 0.2s ease;
+	-webkit-tap-highlight-color: transparent;
+	line-height: 0;
+}
+
+.htoeau-header__icon:hover {
+	opacity: 0.55;
+}
+
+/* Figma 1:21 — search is outline icon only; Elementor/theme often add filled circular button styles */
+.htoeau-header .htoeau-header__search-btn.htoeau-header__icon,
+.htoeau-header button.htoeau-header__icon.htoeau-header__search-btn {
+	background: transparent !important;
+	background-color: transparent !important;
+	border: none !important;
+	border-radius: 0 !important;
+	box-shadow: none !important;
+	min-width: 0 !important;
+	min-height: 0 !important;
+	width: auto !important;
+	height: auto !important;
+	padding: 0 !important;
+	line-height: 0;
+}
+
+/*
+ * Elementor Site Settings → Buttons: kit CSS uses e.g. `.elementor-kit-6 button { color: #FFFFFF }`.
+ * That beats `.htoeau-header__icon { color: navy }` (higher specificity), so SVG icons (currentColor) go invisible on white header.
+ */
+body[class*="elementor-kit-"] .htoeau-header .htoeau-header__icons .htoeau-header__icon,
+body[class*="elementor-kit-"] .htoeau-header .htoeau-header__icons button.htoeau-header__icon {
+	color: var(--htoeau-navy) !important;
+}
+
+body[class*="elementor-kit-"] .htoeau-header .htoeau-header__burger {
+	color: var(--htoeau-navy) !important;
+}
+
+.htoeau-header__icon svg {
+	width: 16px;
+	height: auto;
+}
+
+.htoeau-header__cart {
+	position: relative;
+}
+
+.htoeau-header__cart-badge {
+	position: absolute;
+	top: -6px;
+	right: -8px;
+	background: var(--htoeau-teal);
+	color: var(--htoeau-white);
+	font-family: var(--htoeau-font);
+	font-weight: 700;
+	font-size: 10px;
+	line-height: 1;
+	min-width: 16px;
+	height: 16px;
+	border-radius: 999px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0 4px;
+	box-sizing: border-box;
+}
+
+/* --- Trust Strip (86:26) — one flex row, gap 32px everywhere; ≤1024: horizontal touch scroll, no Swiper --- */
+.htoeau-header__trust {
+	background: var(--htoeau-off-white);
+	padding: 20px 60px;
+	box-sizing: border-box;
+}
+
+.htoeau-header__trust-scroll {
+	width: 100%;
+	overflow-x: hidden;
+	overflow-y: hidden;
+	-webkit-overflow-scrolling: touch;
+}
+
+.htoeau-header__trust-marquee {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: center;
+	gap: 32px;
+	width: max-content;
+	max-width: 100%;
+	margin-inline: auto;
+	box-sizing: border-box;
+}
+
+.htoeau-header__trust-track {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: center;
+	justify-content: center;
+	gap: 32px;
+	width: max-content;
+	max-width: none;
+	margin-inline: 0;
+	box-sizing: border-box;
+	flex-shrink: 0;
+}
+
+.htoeau-header__trust-item {
+	font-family: var(--htoeau-font);
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 1.2;
+	letter-spacing: -0.28px;
+	color: var(--htoeau-navy);
+	white-space: nowrap;
+	flex-shrink: 0;
+}
+
+.htoeau-header__trust-dot {
+	display: block;
+	width: 5px;
+	height: 5px;
+	border-radius: 50%;
+	background: var(--htoeau-navy);
+	flex-shrink: 0;
+}
+
+/* --- Search overlay --- */
+.htoeau-header__search-overlay {
+	display: none;
+	position: absolute;
+	top: 100%;
+	left: 0;
+	right: 0;
+	background: var(--htoeau-white);
+	box-shadow: 0 4px 24px rgba(0, 44, 65, 0.1);
+	padding: 20px 60px;
+	z-index: 100;
+}
+
+.htoeau-header__search-overlay.is-open {
+	display: block;
+}
+
+.htoeau-header__search-field {
+	width: 100%;
+	max-width: 600px;
+	margin: 0 auto;
+	display: block;
+	font-family: var(--htoeau-font);
+	font-size: 16px;
+	padding: 12px 20px;
+	border: 1px solid #e0e0e0;
+	border-radius: 999px;
+	outline: none;
+	box-sizing: border-box;
+}
+
+.htoeau-header__search-field:focus {
+	border-color: var(--htoeau-teal);
+}
+
+/* --- Responsive ≤1024px --- */
+@media (max-width: 1024px) {
+	/* Figma Home Page Mobile 86:622 — https://www.figma.com/design/FcOeKFswrs0fJXLmrEvev6/Untitled?node-id=86-622 */
+	.htoeau-header__announce {
+		padding: 11px max(20px, env(safe-area-inset-right, 0px)) 11px max(20px, env(safe-area-inset-left, 0px));
+	}
+
+	/* Figma 86:625: bar h 56, px 20 py 16; logo centred between burger & icons */
+	.htoeau-header__inner {
+		padding: 16px max(20px, env(safe-area-inset-right, 0px)) 16px max(20px, env(safe-area-inset-left, 0px));
+		justify-content: space-between;
+		min-height: 56px;
+		box-sizing: border-box;
+	}
+
+	.htoeau-header__main {
+		height: auto;
+		min-height: 56px;
+		position: relative;
+	}
+
+	.htoeau-header__logo {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		z-index: 1;
+		pointer-events: auto;
+	}
+
+	.htoeau-header__burger {
+		display: flex;
+		order: -1;
+		margin-right: 0;
+		position: relative;
+		z-index: 2;
+		flex-shrink: 0;
+	}
+
+	.htoeau-header__icons {
+		position: relative;
+		z-index: 2;
+		flex-shrink: 0;
+	}
+
+	.htoeau-header__nav {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		width: 100%;
+		max-width: none;
+		background: var(--htoeau-white);
+		z-index: 10000;
+		flex-direction: column;
+		justify-content: flex-start;
+		align-items: stretch;
+		padding: 100px max(24px, env(safe-area-inset-right, 0px)) 40px max(24px, env(safe-area-inset-left, 0px));
+		transform: translateX(-100%);
+		transition: transform 0.3s ease;
+		overflow-y: auto;
+		box-sizing: border-box;
+	}
+
+	.htoeau-header__nav.is-open {
+		transform: translateX(0);
+	}
+
+	.htoeau-header__links {
+		flex-direction: column;
+		gap: 32px;
+		align-items: center;
+		justify-content: flex-start;
+		width: 100%;
+		text-align: center;
+	}
+
+	.htoeau-header__links li {
+		width: 100%;
+		text-align: center;
+	}
+
+	.htoeau-header__links li a {
+		font-size: 24px;
+		display: inline-block;
+		white-space: normal;
+	}
+
+	/* Mobile drawer: no underline bar (stacked, center-aligned like Elementor full-width dropdown) */
+	.htoeau-header__links li a::after {
+		display: none;
+	}
+
+	.htoeau-header__links .sub-menu {
+		position: static;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		width: 100%;
+		gap: 20px;
+		padding: 16px 0 0;
+		box-shadow: none;
+		background: transparent;
+	}
+
+	.htoeau-header__links .sub-menu .menu-item {
+		width: 100%;
+		text-align: center;
+	}
+
+	.htoeau-header__links .sub-menu a {
+		font-size: 18px;
+		padding: 0;
+		display: inline-block;
+	}
+
+	.htoeau-header__trust {
+		padding: 16px max(20px, env(safe-area-inset-right, 0px)) 16px max(20px, env(safe-area-inset-left, 0px));
+	}
+
+	.htoeau-header__trust-scroll {
+		overflow-x: auto;
+		overflow-y: hidden;
+		overscroll-behavior-x: contain;
+		scrollbar-width: none;
+		-ms-overflow-style: none;
+	}
+
+	.htoeau-header__trust-scroll::-webkit-scrollbar {
+		display: none;
+		width: 0;
+		height: 0;
+	}
+
+	/* Auto-scroll uses scrollLeft in JS; keep overflow auto so users can still swipe */
+	.htoeau-header__trust-marquee {
+		margin-inline: 0;
+		max-width: none;
+	}
+
+	.htoeau-header__trust-track {
+		justify-content: flex-start;
+	}
+
+	.htoeau-header__trust-item {
+		font-size: 14px;
+	}
+
+	.htoeau-header__search-overlay {
+		padding: 16px 24px;
+	}
+}
+
+
+/* ==========================================================================
+   Hero Widget
+   ========================================================================== */
+
+.htoeau-hero {
+	position: relative;
+	overflow-x: visible;
+	overflow-y: visible;
+	width: 100%;
+	box-sizing: border-box;
+	max-height: 685px;
+	display: flex;
+	align-items: center;
+}
+
+.htoeau-hero__container {
+	display: flex;
+	align-items: center;
+	gap: 45px;
+	width: 100%;
+	max-width: var(--htoeau-container);
+	margin: 0 auto;
+	padding: 0 clamp(24px, 4vw, 60px);
+	position: relative;
+	box-sizing: border-box;
+}
+
+/* --- Content Column --- */
+
+.htoeau-hero__content {
+	display: flex;
+	flex-direction: column;
+	gap: 29px;
+	align-items: flex-start;
+	flex: 0 1 543px;
+	min-width: 0;
+	position: relative;
+	z-index: 2;
+}
+
+/* Rating */
+
+.htoeau-hero__rating {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.htoeau-hero__rating-text {
+	font-family: var(--htoeau-font);
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 1.2;
+	letter-spacing: -0.28px;
+	color: var(--htoeau-navy);
+	white-space: nowrap;
+}
+
+.htoeau-hero__rating-text strong {
+	font-weight: 700;
+}
+
+/* Heading */
+
+.htoeau-hero__heading {
+	font-family: var(--htoeau-font);
+	font-weight: 300;
+	font-size: 64px;
+	line-height: 1;
+	letter-spacing: -1.28px;
+	color: var(--htoeau-navy);
+	margin: 0;
+	padding: 0;
+	max-width: 100%;
+	white-space: pre-line;
+}
+
+/* Description */
+
+.htoeau-hero__desc {
+	font-family: var(--htoeau-font);
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 1.4;
+	letter-spacing: -0.16px;
+	color: var(--htoeau-navy);
+	margin: 0;
+	padding: 0;
+	max-width: 100%;
+}
+
+/* CTA (positioned in flow) */
+
+.htoeau-hero__content > .htoeau-btn {
+	flex-shrink: 0;
+}
+
+/* Feature Bullets */
+
+.htoeau-hero__features {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 36px;
+	align-items: flex-start;
+}
+
+.htoeau-hero__feature {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+	align-items: flex-start;
+	width: 136px;
+	flex-shrink: 1;
+	min-width: 100px;
+}
+
+.htoeau-hero__feature-text {
+	font-family: var(--htoeau-font);
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 1.4;
+	color: var(--htoeau-navy);
+}
+
+/* --- Media Column (Figma: group 86:74) --- */
+
+.htoeau-hero__media {
+	flex: 1 1 0;
+	position: relative;
+	z-index: 1;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	min-width: 0;
+	/* 1320 − 543 − 45 = 732 — matches Figma row inside 1440 / 60px gutters */
+	max-width: var(--htoeau-hero-media-max);
+}
+
+.htoeau-hero__image {
+	display: block;
+	width: 100%;
+	max-width: var(--htoeau-hero-image-figma-w);
+	height: auto;
+	object-fit: contain;
+	object-position: right center;
+}
+
+/* Elementor wrappers must not clip full-bleed image (section/column can still clip — set overflow visible there if needed) */
+.elementor-widget-htoeau_hero,
+.elementor-widget-htoeau_hero .elementor-widget-container,
+.elementor-widget-htoeau_hero .elementor-widget-wrap {
+	overflow: visible;
+}
+
+
+/* ==========================================================================
+   Hero — Responsive
+   ========================================================================== */
+
+@media (max-width: 1200px) {
+	.htoeau-hero__content {
+		flex: 0 1 460px;
+	}
+
+	.htoeau-hero__heading {
+		font-size: 52px;
+		letter-spacing: -1.04px;
+	}
+
+	.htoeau-hero__features {
+		gap: 24px;
+	}
+
+	.htoeau-hero__feature {
+		width: 120px;
+	}
+
+	.htoeau-hero__media {
+		max-width: min(var(--htoeau-hero-media-max), 100%);
+	}
+
+	.htoeau-hero__image {
+		max-width: min(var(--htoeau-hero-image-figma-w), 100%);
+		max-height: 520px;
+	}
+}
+
+@media (max-width: 991px) {
+	.htoeau-hero {
+		max-height: none;
+	}
+
+	.htoeau-hero__container {
+		flex-direction: column;
+		gap: 48px;
+		align-items: center;
+		text-align: center;
+		padding: 0 clamp(20px, 5vw, 48px);
+	}
+
+	.htoeau-hero__content {
+		flex: none;
+		width: 100%;
+		max-width: 600px;
+		align-items: center;
+	}
+
+	.htoeau-hero__heading {
+		font-size: 44px;
+		letter-spacing: -0.88px;
+	}
+
+	.htoeau-hero__features {
+		flex-direction: column;
+		gap: 12px;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.htoeau-hero__feature {
+		flex-direction: row;
+		width: auto;
+		max-width: min(320px, 100%);
+		gap: 12px;
+		align-items: center;
+		text-align: left;
+	}
+
+	.htoeau-hero__media {
+		width: 100%;
+		max-width: 100%;
+		justify-content: center;
+	}
+
+	.htoeau-hero__image {
+		width: 100%;
+		max-width: 100%;
+		max-height: none;
+		margin-left: 0;
+		object-position: center;
+	}
+}
+
+@media (max-width: 575px) {
+	/* Elementor post-*.css — beat with section-scoped selector */
+	body.elementor-page .elementor-element.elementor-widget-htoeau_hero .htoeau-hero {
+		padding: 30px max(20px, env(safe-area-inset-right, 0px)) 40px max(20px, env(safe-area-inset-left, 0px)) !important;
+	}
+
+	.htoeau-hero {
+		max-height: none;
+		padding: 30px max(20px, env(safe-area-inset-right, 0px)) 40px max(20px, env(safe-area-inset-left, 0px));
+	}
+
+	.htoeau-hero__container {
+		text-align: left;
+		align-items: flex-start;
+		gap: 24px;
+		padding: 0;
+	}
+
+	.htoeau-hero__content {
+		align-items: flex-start;
+		gap: 20px;
+	}
+
+	.htoeau-hero__heading {
+		font-size: 36px;
+		letter-spacing: -0.72px;
+		line-height: 1;
+	}
+
+	.htoeau-hero__desc {
+		font-size: 14px;
+		line-height: 1.4;
+		letter-spacing: 0;
+	}
+
+	.htoeau-hero__content > .htoeau-btn {
+		width: 100%;
+	}
+
+	.htoeau-hero__features {
+		flex-direction: column;
+		gap: 12px;
+		align-items: flex-start;
+	}
+
+	.htoeau-hero__feature {
+		flex-direction: row;
+		width: auto;
+		gap: 12px;
+		align-items: center;
+		text-align: left;
+	}
+
+	.htoeau-hero__feature .htoeau-check-icon svg {
+		width: 24px;
+		height: 24px;
+	}
+
+	.htoeau-hero__media {
+		max-width: 100%;
+	}
+}
+
+/* ==========================================================================
+   Hero — Desktop: image bleeds to viewport right edge (Figma 86:74)
+   ========================================================================== */
+
+@media (min-width: 992px) {
+	/* Full-width section: image aligns to viewport right. In a narrow column, use a full-width section. */
+	.htoeau-hero--bleed-image-right .htoeau-hero__media {
+		margin-right: calc(50% - 50vw);
+		max-width: none;
+		margin-top: 57px;
+		overflow: hidden;
+	}
+
+	.htoeau-hero--bleed-image-right .htoeau-hero__image {
+		width: 100%;
+		max-width: var(--htoeau-hero-image-figma-w);
+		margin-left: auto;
+		display: block;
+	}
+}
+
+
+/* ==========================================================================
+   Product Showcase — Figma node 86:106
+   ========================================================================== */
+
+.htoeau-product-showcase {
+	background: linear-gradient(247.14deg, var(--htoeau-teal) 15.13%, var(--htoeau-blue) 82.86%);
+	box-sizing: border-box;
+	width: 100%;
+	overflow-x: visible;
+	overflow-y: visible;
+}
+
+.htoeau-product-showcase__inner {
+	max-width: var(--htoeau-container);
+	margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 81px;
+	overflow-x: visible;
+	overflow-y: visible;
+}
+
+.htoeau-product-showcase__heading {
+	font-family: var(--htoeau-font);
+	font-weight: 300;
+	font-size: 46px;
+	line-height: 1;
+	letter-spacing: -0.92px;
+	color: var(--htoeau-white);
+	text-align: center;
+	margin: 0;
+	max-width: 100%;
+}
+
+.htoeau-product-showcase__grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 20px;
+	width: 100%;
+	align-items: stretch;
+}
+
+.htoeau-product-showcase__card {
+	background: var(--htoeau-white);
+	border-radius: var(--htoeau-radius-card);
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 20px 10px 40px;
+	min-height: 0;
+}
+
+.htoeau-product-showcase__card-image {
+	width: 100%;
+	max-width: 391px;
+	aspect-ratio: 1 / 1;
+	border-radius: var(--htoeau-radius-img);
+	overflow: hidden;
+	flex-shrink: 0;
+}
+
+.htoeau-product-showcase__card-image img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}
+
+.htoeau-product-showcase__card-body {
+	display: flex;
+	flex-direction: column;
+	gap: 23px;
+	width: 100%;
+	max-width: 346px;
+	margin-top: 45px;
+	flex: 1 1 auto;
+}
+
+.htoeau-product-showcase__card-rating {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.htoeau-product-showcase__card-rating-text {
+	font-family: var(--htoeau-font);
+	font-size: 14px;
+	line-height: 1.2;
+	letter-spacing: -0.28px;
+	color: var(--htoeau-navy);
+}
+
+.htoeau-product-showcase__card-rating-text strong {
+	font-weight: 700;
+}
+
+.htoeau-product-showcase__card-title {
+	font-family: var(--htoeau-font);
+	font-weight: 400;
+	font-size: 24px;
+	line-height: 1.3;
+	letter-spacing: -0.48px;
+	color: var(--htoeau-navy);
+	margin: 0;
+}
+
+.htoeau-product-showcase__card-desc {
+	font-family: var(--htoeau-font);
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 1.3;
+	letter-spacing: -0.14px;
+	color: var(--htoeau-navy);
+	margin: 0;
+}
+
+.htoeau-product-showcase__card-price {
+	font-family: var(--htoeau-font);
+	font-size: 16px;
+	line-height: 1.3;
+	letter-spacing: -0.16px;
+	color: var(--htoeau-navy);
+	margin: 0;
+}
+
+.htoeau-product-showcase__card-price strong {
+	font-weight: 700;
+}
+
+.htoeau-product-showcase .htoeau-btn.htoeau-product-showcase__card-btn {
+	width: 100%;
+	max-width: 345px;
+	margin-top: 45px;
+	align-self: center;
+}
+
+/* Elementor: allow trust strip to bleed edge-to-edge (column/section may still clip — use full-width section if needed) */
+.elementor-widget-htoeau_product_showcase,
+.elementor-widget-htoeau_product_showcase .elementor-widget-container,
+.elementor-widget-htoeau_product_showcase .elementor-widget-wrap,
+.elementor-widget-htoeau_community_testimonials,
+.elementor-widget-htoeau_community_testimonials .elementor-widget-container,
+.elementor-widget-htoeau_community_testimonials .elementor-widget-wrap,
+.elementor-widget-htoeau_trust_strip,
+.elementor-widget-htoeau_trust_strip .elementor-widget-container,
+.elementor-widget-htoeau_trust_strip .elementor-widget-wrap {
+	overflow-x: visible;
+	overflow-y: visible;
+}
+
+/* Trust strip — infinite marquee, full viewport width (edge-to-edge) */
+.htoeau-product-showcase__trust--marquee {
+	width: 100vw;
+	max-width: none;
+	min-width: 0;
+	margin-left: calc(50% - 50vw);
+	margin-right: calc(50% - 50vw);
+	align-self: stretch;
+	position: relative;
+	box-sizing: border-box;
+}
+
+.htoeau-product-showcase__trust-viewport {
+	overflow: hidden;
+	width: 100%;
+	mask-image: linear-gradient(
+		to right,
+		transparent,
+		#000 24px,
+		#000 calc(100% - 24px),
+		transparent
+	);
+	-webkit-mask-image: linear-gradient(
+		to right,
+		transparent,
+		#000 24px,
+		#000 calc(100% - 24px),
+		transparent
+	);
+}
+
+.htoeau-product-showcase__trust-track {
+	display: flex;
+	width: max-content;
+	will-change: transform;
+	animation: htoeau-product-showcase-marquee 50s linear infinite;
+}
+
+.htoeau-product-showcase__trust-group {
+	display: flex;
+	flex-wrap: nowrap;
+	align-items: center;
+	gap: 74px;
+	padding-right: 74px;
+	box-sizing: border-box;
+}
+
+.htoeau-product-showcase__trust-item {
+	display: flex;
+	align-items: center;
+	gap: 15px;
+	flex-shrink: 0;
+}
+
+.htoeau-product-showcase__trust-text {
+	font-family: var(--htoeau-font);
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 1.4;
+	color: var(--htoeau-white);
+	white-space: nowrap;
+}
+
+@keyframes htoeau-product-showcase-marquee {
+	from {
+		transform: translateX(0);
+	}
+
+	to {
+		transform: translateX(-50%);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.htoeau-product-showcase__trust-track {
+		animation: none;
+		justify-content: center;
+		flex-wrap: wrap;
+		width: 100%;
+		max-width: 100%;
+	}
+
+	.htoeau-product-showcase__trust-viewport {
+		mask-image: none;
+		-webkit-mask-image: none;
+	}
+
+	.htoeau-product-showcase__trust-group[aria-hidden="true"] {
+		display: none;
+	}
+
+	.htoeau-product-showcase__trust-group {
+		flex-wrap: wrap;
+		justify-content: center;
+		padding-right: 0;
+		gap: 24px 48px;
+	}
+
+	.htoeau-product-showcase__trust-text {
+		white-space: normal;
+		text-align: center;
+	}
+}
+
+@media (max-width: 1200px) {
+	.htoeau-product-showcase__grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.htoeau-product-showcase__heading {
+		font-size: 40px;
+		letter-spacing: -0.8px;
+	}
+}
+
+@media (max-width: 767px) {
+	.htoeau-product-showcase__inner {
+		gap: 48px;
+	}
+
+	.htoeau-product-showcase__heading {
+		font-size: 32px;
+		letter-spacing: -0.64px;
+	}
+
+	.htoeau-product-showcase__grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+
+/* ==========================================================================
+   Transformation Steps — Figma node 86:184
+   ========================================================================== */
+
+.htoeau-transformation {
+	background: var(--htoeau-white);
+	box-sizing: border-box;
+	width: 100%;
+}
+
+.htoeau-transformation__header {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 34px;
+	margin-bottom: 56px;
+	text-align: center;
+	max-width: var(--htoeau-container);
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.htoeau-transformation__title {
+	font-family: var(--htoeau-font);
+	font-weight: 300;
+	font-size: 46px;
+	line-height: 1;
+	letter-spacing: -0.92px;
+	color: var(--htoeau-navy);
+	margin: 0;
+	max-width: 989px;
+}
+
+.htoeau-transformation__subtitle {
+	font-family: var(--htoeau-font);
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 1.3;
+	letter-spacing: -0.16px;
+	color: var(--htoeau-navy);
+	margin: 0;
+	max-width: 521px;
+}
+
+.htoeau-transformation__steps {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) 88px 88px;
+	gap: 16px;
+	width: 100%;
+	max-width: 1232px;
+	margin: 0 auto;
+	min-height: 560px;
+	box-sizing: border-box;
+}
+
+.htoeau-transformation__panel {
+	position: relative;
+	border-radius: var(--htoeau-radius-img);
+	overflow: hidden;
+}
+
+.htoeau-transformation__panel-bg {
+	position: absolute;
+	inset: 0;
+}
+
+.htoeau-transformation__panel-img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+	transition: transform 0.4s ease;
+}
+
+.htoeau-transformation__panel-overlay {
+	position: absolute;
+	inset: 0;
+	border-radius: var(--htoeau-radius-img);
+}
+
+.htoeau-transformation__panel-overlay--strong {
+	/* Active (wide) panel: show pure photography, no blue tint. */
+	background: transparent;
+}
+
+.htoeau-transformation__panel-overlay--soft {
+	background: rgba(1, 114, 160, 0.5);
+}
+
+/* Wide panel (step 1) */
+.htoeau-transformation__panel--wide {
+	min-height: 560px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	padding: 40px 24px;
+	box-sizing: border-box;
+}
+
+.htoeau-transformation__panel-wide-inner {
+	position: relative;
+	z-index: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	max-width: 580px;
+	margin: 0 auto;
+	gap: 0;
+}
+
+.htoeau-transformation__badge {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.15);
+	border: 1px solid rgba(248, 248, 248, 0.8);
+	flex-shrink: 0;
+}
+
+.htoeau-transformation__badge--large {
+	width: 72px;
+	height: 72px;
+	margin-bottom: 24px;
+}
+
+.htoeau-transformation__badge-num {
+	font-family: var(--htoeau-font);
+	color: var(--htoeau-off-white);
+	line-height: 1;
+	margin: 0;
+}
+
+.htoeau-transformation__badge--large .htoeau-transformation__badge-num {
+	font-weight: 500;
+	font-size: 48px;
+	letter-spacing: -0.96px;
+}
+
+.htoeau-transformation__wide-heading {
+	font-family: var(--htoeau-font);
+	font-weight: 500;
+	font-size: 32px;
+	line-height: 1;
+	letter-spacing: -0.64px;
+	color: var(--htoeau-white);
+	margin: 0 0 16px;
+}
+
+.htoeau-transformation__wide-desc {
+	font-family: 'Roboto', sans-serif;
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 1.2;
+	letter-spacing: -0.32px;
+	color: var(--htoeau-white);
+	margin: 0;
+	max-width: 580px;
+}
+
+/* Narrow panels (steps 2–3) */
+.htoeau-transformation__panel--narrow {
+	min-height: 560px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+	box-sizing: border-box;
+	padding: 108px 0 24px;
+	width: 88px;
+}
+
+.htoeau-transformation__panel-narrow-inner {
+	position: relative;
+	z-index: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+	flex-grow: 1;
+}
+
+.htoeau-transformation__vertical-caption {
+	font-family: var(--htoeau-font);
+	font-weight: 500;
+	font-size: 24px;
+	line-height: 1;
+	letter-spacing: -0.48px;
+	color: var(--htoeau-white);
+	margin: 0;
+	text-align: center;
+	writing-mode: vertical-rl;
+	text-orientation: mixed;
+	transform: rotate(180deg);
+	white-space: nowrap;
+	flex-grow: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.htoeau-transformation__badge--small {
+	width: 56px;
+	height: 56px;
+	flex-shrink: 0;
+	margin-top: 24px;
+}
+
+.htoeau-transformation__badge--small .htoeau-transformation__badge-num {
+	font-weight: 600;
+	font-size: 32px;
+	letter-spacing: -0.64px;
+}
+
+@media (max-width: 991px) {
+	.htoeau-transformation__header {
+		margin-bottom: 48px;
+	}
+
+	.htoeau-transformation__title {
+		font-size: 40px;
+		letter-spacing: -0.8px;
+	}
+
+	.htoeau-transformation__steps {
+		grid-template-columns: 1fr;
+		gap: 24px;
+		max-width: 600px;
+		margin: 0 auto;
+		min-height: auto;
+	}
+
+	.htoeau-transformation__panel--wide {
+		min-height: 480px;
+		padding: 32px 16px;
+	}
+
+	.htoeau-transformation__panel-wide-inner {
+		max-width: 100%;
+	}
+
+	.htoeau-transformation__wide-heading {
+		font-size: 28px;
+		letter-spacing: -0.56px;
+	}
+
+	.htoeau-transformation__wide-desc {
+		font-size: 15px;
+	}
+
+	.htoeau-transformation__panel--narrow {
+		width: 100%;
+		max-width: 100%;
+		min-height: 120px;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		padding: 16px 24px;
+	}
+
+	.htoeau-transformation__panel-narrow-inner {
+		flex-direction: row;
+		justify-content: space-between;
+		gap: 24px;
+		flex-grow: 1;
+		width: 100%;
+		min-height: auto;
+	}
+
+	.htoeau-transformation__vertical-caption {
+		writing-mode: horizontal-tb;
+		transform: none;
+		white-space: normal;
+		text-align: left;
+		flex-grow: 1;
+		font-size: 20px;
+		letter-spacing: -0.4px;
+	}
+
+	.htoeau-transformation__badge--small {
+		margin-top: 0;
+		margin-left: 24px;
+	}
+
+	.htoeau-transformation__badge--large .htoeau-transformation__badge-num,
+	.htoeau-transformation__badge--small .htoeau-transformation__badge-num {
+		font-size: 28px;
+		letter-spacing: -0.56px;
+	}
+}
+
+
+/* ==========================================================================
+   Science Features — Figma 86:211 (desktop); mobile stack 86:820 (under 86:622)
+   ========================================================================== */
+
+.htoeau-science {
+	background: var(--htoeau-navy);
+	box-sizing: border-box;
+	width: 100%;
+}
+
+.htoeau-science__inner {
+	max-width: 1096px;
+	margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 74px;
+}
+
+.htoeau-science__header {
+	max-width: 828px;
+	text-align: center;
+}
+
+.htoeau-science__title {
+	font-family: var(--htoeau-font);
+	font-weight: 300;
+	font-size: 46px;
+	line-height: 1;
+	letter-spacing: -0.92px;
+	color: var(--htoeau-white);
+	margin: 0;
+}
+
+.htoeau-science__grid {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 19px;
+}
+
+.htoeau-science__row--two {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 20px;
+}
+
+.htoeau-science__card {
+	background: var(--htoeau-navy-deep);
+	border-radius: var(--htoeau-radius-card);
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	gap: 41px;
+	padding: 56px 46px;
+}
+
+.htoeau-science__card--tall {
+	min-height: 588px;
+}
+
+.htoeau-science__card--tall .htoeau-science__card-cta {
+	margin-top: auto;
+}
+
+.htoeau-science__card-main {
+	display: flex;
+	flex-direction: column;
+	gap: 32px;
+}
+
+.htoeau-science__card-lead {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+}
+
+.htoeau-science__wide-left .htoeau-science__card-lead {
+	gap: 31px;
+}
+
+.htoeau-science__eyebrow {
+	font-family: var(--htoeau-font);
+	font-weight: 700;
+	font-size: 14px;
+	line-height: 1.3;
+	letter-spacing: -0.14px;
+	margin: 0;
+}
+
+.htoeau-science__eyebrow--caps {
+	text-transform: uppercase;
+}
+
+.htoeau-science__eyebrow--sentence {
+	text-transform: none;
+}
+
+.htoeau-science__eyebrow--cyan {
+	color: var(--htoeau-accent-h2);
+}
+
+.htoeau-science__eyebrow--gold {
+	color: var(--htoeau-accent-ddw);
+}
+
+.htoeau-science__eyebrow--mint {
+	color: var(--htoeau-accent-comb);
+}
+
+.htoeau-science__card-title {
+	font-family: var(--htoeau-font);
+	font-weight: 400;
+	font-size: 32px;
+	line-height: 1.2;
+	letter-spacing: -0.32px;
+	color: var(--htoeau-white);
+	margin: 0;
+	white-space: pre-line;
+}
+
+.htoeau-science__card-intro,
+.htoeau-science__card-footer {
+	font-family: var(--htoeau-font);
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 1.3;
+	letter-spacing: -0.14px;
+	color: var(--htoeau-white);
+	margin: 0;
+}
+
+.htoeau-science__bullets {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	max-width: 334px;
+}
+
+.htoeau-science__bullet {
+	display: flex;
+	align-items: flex-start;
+	gap: 15px;
+}
+
+.htoeau-science__bullet-text {
+	font-family: var(--htoeau-font);
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 1.4;
+	color: var(--htoeau-white);
+}
+
+/* Science widget only — bullet check discs; hero/trust/sample/etc. keep helpers.php fill */
+.htoeau-science .htoeau-check-icon svg circle {
+	fill: rgba(0, 44, 65, 0.9);
+}
+
+.htoeau-science__card--wide {
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 47px;
+	padding: 56px 93px;
+}
+
+.htoeau-science__wide-left {
+	flex: 0 0 auto;
+	width: 100%;
+	max-width: 446px;
+	display: flex;
+	flex-direction: column;
+	gap: 31px;
+}
+
+.htoeau-science__wide-right {
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
+.htoeau-science__wide-right .htoeau-science__bullets {
+	max-width: none;
+	gap: 24px;
+}
+
+.htoeau-science .htoeau-btn.htoeau-science__btn {
+	width: 100%;
+	padding-left: 96px;
+	padding-right: 96px;
+}
+
+.htoeau-science .htoeau-btn.htoeau-science__btn--narrow {
+	width: auto;
+	max-width: none;
+	align-self: flex-start;
+	white-space: nowrap;
+}
+
+@media (max-width: 1200px) {
+	.htoeau-science__inner {
+		gap: 56px;
+	}
+
+	.htoeau-science__title {
+		font-size: 40px;
+		letter-spacing: -0.8px;
+	}
+
+	/*
+	 * Beat Elementor post-*.css desktop padding (e.g. 95px 172px) from tablet down to mobile.
+	 * ≤767px overrides later in “Mobile Responsive — 86:622”; ≤1024 uses tablet rule below.
+	 */
+	body.elementor-page .elementor-element.elementor-widget-htoeau_science_features .htoeau-science {
+		padding-block: clamp(56px, 7vw, 95px) !important;
+		padding-inline: clamp(24px, 5vw, 72px) !important;
+	}
+}
+
+/* 1024–1200: keep 2-column top row; scale padding & type so cards don’t feel crushed */
+@media (min-width: 1024px) and (max-width: 1200px) {
+	.htoeau-science__inner {
+		gap: clamp(40px, 4.5vw, 56px);
+	}
+
+	.htoeau-science__title {
+		font-size: clamp(36px, 3.1vw, 40px);
+		letter-spacing: -0.78px;
+	}
+
+	.htoeau-science__grid {
+		gap: clamp(14px, 2vw, 19px);
+	}
+
+	.htoeau-science__row--two {
+		gap: clamp(12px, 2vw, 20px);
+	}
+
+	.htoeau-science__card {
+		padding: clamp(40px, 4.2vw, 56px) clamp(22px, 3.2vw, 46px);
+	}
+
+	.htoeau-science__card-title {
+		font-size: clamp(26px, 2.1vw, 32px);
+		letter-spacing: -0.28px;
+	}
+
+	.htoeau-science__card--wide {
+		flex-wrap: wrap;
+		align-items: flex-start;
+		justify-content: flex-start;
+		padding: clamp(40px, 4.2vw, 56px) clamp(28px, 5vw, 72px);
+		gap: clamp(24px, 3.5vw, 47px);
+	}
+
+	.htoeau-science__wide-left {
+		flex: 1 1 min(380px, 46%);
+		max-width: min(446px, 48%);
+		min-width: 0;
+	}
+
+	.htoeau-science__wide-right {
+		flex: 1 1 min(260px, 46%);
+		min-width: 0;
+	}
+
+	.htoeau-science .htoeau-btn.htoeau-science__btn {
+		padding-left: clamp(28px, 6vw, 96px);
+		padding-right: clamp(28px, 6vw, 96px);
+	}
+}
+
+/* Stack top row + wide card only below tablet landscape (keep 2 cols at 1024+) */
+@media (max-width: 1023px) {
+	.htoeau-science__inner {
+		gap: clamp(36px, 5vw, 56px);
+	}
+
+	.htoeau-science__row--two {
+		grid-template-columns: 1fr;
+	}
+
+	.htoeau-science__card--tall {
+		min-height: 0;
+	}
+
+	.htoeau-science__card--tall .htoeau-science__card-cta {
+		margin-top: 0;
+	}
+
+	.htoeau-science__card--wide {
+		flex-direction: column;
+		align-items: stretch;
+		flex-wrap: nowrap;
+		gap: 40px;
+		padding: 48px 40px;
+	}
+
+	.htoeau-science__wide-left {
+		max-width: none;
+		flex: 1 1 auto;
+	}
+
+	.htoeau-science__wide-right {
+		flex: 1 1 auto;
+	}
+}
+
+/* Science mobile: see Figma 86:820 + consolidated rules in “Mobile Responsive — 86:622” below */
+
+
+/* ==========================================================================
+   Research Showcase — Figma 86:314 (desktop); mobile 86:916 (under 86:622)
+   (Typography: heading 46 light; point titles 20 bold @ 30% navy; body 14 regular full navy.
+   Columns 293px; column gap ~23px; splash layer ~626×636; side cols mt ~53px;
+   left: gap 100px between points; right: column 726px justify-between.)
+   ========================================================================== */
+
+.htoeau-research {
+	background: #f5f5f5;
+	box-sizing: border-box;
+	width: 100%;
+}
+
+.htoeau-research__inner {
+	max-width: var(--htoeau-container);
+	margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	/* Figma: gap 43px between heading and main grid */
+	gap: 43px;
+	width: 100%;
+}
+
+.htoeau-research__title {
+	font-family: var(--htoeau-font);
+	font-weight: 300;
+	font-size: 46px;
+	line-height: 1;
+	letter-spacing: -0.92px;
+	color: #002c41;
+	text-align: center;
+	margin: 0;
+	width: 100%;
+}
+
+.htoeau-research__layout {
+	display: grid;
+	/* 293 + ~23 + center + ~23 + 293 ≈ Figma frame */
+	grid-template-columns: minmax(0, 293px) minmax(0, 1fr) minmax(0, 293px);
+	column-gap: 23px;
+	row-gap: 0;
+	align-items: start;
+	width: 100%;
+}
+
+/* Figma: text blocks are centered *within* each 293px column (not flush to outer edges). */
+.htoeau-research__col {
+	width: 100%;
+	max-width: 293px;
+	box-sizing: border-box;
+	/* Align first line of copy with can band — mt ~52.85px on 86:320 / 86:342 */
+	margin-top: 53px;
+}
+
+.htoeau-research__col--left {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 100px;
+	justify-content: flex-start;
+}
+
+/* Figma 86:320: h-[726px] justify-between — three blocks spaced in fixed column height */
+.htoeau-research__col--right {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+	min-height: 726px;
+	gap: 0;
+}
+
+.htoeau-research__point {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 18px;
+	width: 100%;
+	max-width: 293px;
+	text-align: center;
+}
+
+.htoeau-research__point-icon {
+	line-height: 0;
+	flex-shrink: 0;
+}
+
+.htoeau-research__point-title {
+	font-family: var(--htoeau-font);
+	font-weight: 700;
+	font-size: 20px;
+	line-height: 1.3;
+	letter-spacing: -0.2px;
+	color: rgba(0, 44, 65, 0.3);
+	margin: 0;
+	white-space: pre-line;
+}
+
+.htoeau-research__point-text {
+	font-family: var(--htoeau-font);
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 1.3;
+	letter-spacing: -0.14px;
+	color: #002c41;
+	margin: 0;
+}
+
+/* Center collage — back layer 86:317 ≈ 626.375px wide */
+.htoeau-research__visual {
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+	justify-self: center;
+	min-height: 0;
+	width: 100%;
+	max-width: 627px;
+}
+
+.htoeau-research__visual-img {
+	display: block;
+	width: 100%;
+	max-width: 626px;
+	height: auto;
+	margin: 0 auto;
+	object-fit: contain;
+}
+
+.htoeau-research__cta-wrap {
+	display: flex;
+	justify-content: center;
+	width: 100%;
+}
+
+.htoeau-research .htoeau-btn.htoeau-research__cta {
+	width: 345px;
+	min-width: 345px;
+	height: 47px;
+	padding: 13px 96px;
+	font-weight: 700;
+	font-size: 16px;
+	line-height: 1.4;
+	letter-spacing: -0.32px;
+	white-space: nowrap;
+}
+
+/*
+ * Tablet / small laptop: keep 3-column structure (left | visual | right), fluid tracks + clamp.
+ * Stacked layout only at ≤767px (see below) — do not change rules inside the 767 mobile bundle further down.
+ */
+@media (max-width: 1200px) and (min-width: 768px) {
+	.htoeau-research__inner {
+		gap: clamp(32px, 3.5vw, 43px);
+	}
+
+	.htoeau-research__title {
+		font-size: clamp(36px, 3.2vw, 40px);
+		letter-spacing: -0.8px;
+	}
+
+	.htoeau-research__layout {
+		grid-template-columns:
+			minmax(0, 1fr)
+			minmax(clamp(200px, 32vw, 380px), 1.2fr)
+			minmax(0, 1fr);
+		column-gap: clamp(10px, 1.8vw, 23px);
+		align-items: start;
+	}
+
+	.htoeau-research__col {
+		margin-top: clamp(20px, 4vw, 53px);
+		max-width: none;
+	}
+
+	.htoeau-research__col--left {
+		gap: clamp(36px, 7vw, 100px);
+	}
+
+	.htoeau-research__col--right {
+		min-height: clamp(420px, 58vh, 726px);
+		justify-content: space-between;
+	}
+
+	.htoeau-research__point {
+		max-width: 100%;
+	}
+
+	.htoeau-research__point-title {
+		font-size: clamp(18px, 1.35vw, 20px);
+	}
+
+	.htoeau-research__visual {
+		max-width: min(627px, 100%);
+	}
+
+	.htoeau-research__visual-img {
+		max-width: min(626px, 100%);
+	}
+
+	.htoeau-research .htoeau-btn.htoeau-research__cta {
+		width: min(345px, 100%);
+		min-width: 0;
+	}
+}
+
+@media (max-width: 767px) {
+	/* Research: single column below phone/tablet breakpoint (Figma mobile is separate). */
+	.htoeau-research__layout {
+		grid-template-columns: 1fr;
+		row-gap: 40px;
+		column-gap: 0;
+	}
+
+	.htoeau-research__col {
+		margin-top: 0;
+		max-width: none;
+	}
+
+	.htoeau-research__visual {
+		order: 1;
+		max-width: none;
+	}
+
+	.htoeau-research__col--left {
+		order: 2;
+		gap: 48px;
+	}
+
+	.htoeau-research__col--right {
+		order: 3;
+		min-height: 0;
+		justify-content: flex-start;
+		gap: 48px;
+	}
+
+	.htoeau-research__point {
+		max-width: 42rem;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.htoeau-research__title {
+		font-size: 32px;
+		letter-spacing: -0.64px;
+	}
+
+	.htoeau-research__col--left,
+	.htoeau-research__col--right {
+		gap: 40px;
+	}
+
+	.htoeau-research__point-title {
+		font-size: 18px;
+		letter-spacing: -0.18px;
+	}
+
+	.htoeau-research__visual-img {
+		max-width: min(626px, 100%);
+	}
+
+	.htoeau-research__cta-wrap {
+		margin-top: 0;
+	}
+
+	.htoeau-research .htoeau-btn.htoeau-research__cta {
+		width: 100%;
+		min-width: 0;
+		max-width: 345px;
+	}
+}
+
+/* About Physics — Figma 86:366 desktop; mobile 86:969 (under 86:622) */
+.htoeau-about-physics {
+	position: relative;
+	overflow: hidden;
+	min-height: 720px;
+	padding: 120px 104px;
+	display: flex;
+	justify-content: flex-end;
+	align-items: stretch;
+	box-sizing: border-box;
+}
+
+.htoeau-about-physics__bg {
+	position: absolute;
+	width: 112%;
+	height: 147% !important;
+	left: -11.6%;
+	top: -7%;
+	max-width: none;
+	object-fit: cover;
+	pointer-events: none;
+}
+
+.htoeau-about-physics__overlay {
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	pointer-events: none;
+	/* Stops shift with viewport so copy column stays over solid blue, not the photo */
+	background: linear-gradient(
+		90deg,
+		rgba(0, 143, 163, 0) min(32%, max(22%, 18vw)),
+		rgba(1, 107, 159, 0.88) min(52%, max(44%, 38vw)),
+		#016b9f min(70%, max(58%, 52vw))
+	);
+}
+
+.htoeau-about-physics__inner {
+	position: relative;
+	z-index: 2;
+	width: 100%;
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(260px, min(608px, 46vw));
+	column-gap: clamp(20px, 4vw, 48px);
+	align-items: start;
+	justify-items: stretch;
+	box-sizing: border-box;
+}
+
+.htoeau-about-physics__stack {
+	grid-column: 2;
+	width: 100%;
+	max-width: 608px;
+	justify-self: end;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 32px;
+	min-width: 0;
+}
+
+.htoeau-about-physics__lead {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+	width: 100%;
+}
+
+.htoeau-about-physics__title {
+	font-family: var(--htoeau-font);
+	font-weight: 300;
+	font-size: 46px;
+	line-height: 1;
+	letter-spacing: -0.92px;
+	color: #ffffff;
+	margin: 0;
+	white-space: pre-line;
+}
+
+.htoeau-about-physics__intro-p {
+	font-family: var(--htoeau-font);
+	font-weight: 400;
+	font-size: 18px;
+	line-height: 1.3;
+	letter-spacing: -0.18px;
+	color: #ffffff;
+	margin: 0;
+}
+
+.htoeau-about-physics__block {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	width: 100%;
+}
+
+.htoeau-about-physics__block-title {
+	font-family: var(--htoeau-font);
+	font-weight: 700;
+	font-size: 16px;
+	line-height: 1.3;
+	letter-spacing: -0.16px;
+	color: #ffffff;
+	margin: 0;
+}
+
+.htoeau-about-physics__block-text {
+	font-family: var(--htoeau-font);
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 1.3;
+	letter-spacing: -0.16px;
+	color: #ffffff;
+	margin: 0;
+}
+
+.htoeau-about-physics .htoeau-btn.htoeau-about-physics__cta {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+	width: 345px;
+	max-width: 100%;
+	min-height: 47px;
+	padding: 13px 96px;
+	border: none;
+	border-radius: 1000px;
+	background: #f8f8f8;
+	background-image: none;
+	color: #1d1d1d;
+	font-family: var(--htoeau-font);
+	font-weight: 700;
+	font-size: 16px;
+	line-height: 1.4;
+	letter-spacing: -0.32px;
+	white-space: nowrap;
+}
+
+.htoeau-about-physics .htoeau-btn.htoeau-about-physics__cta:hover {
+	opacity: 0.92;
+}
+/* Professor study — Figma 86:379 desktop; mobile 86:982 (under 86:622) */
+.htoeau-professor-study {
+	position: relative;
+	overflow: hidden;
+	box-sizing: border-box;
+	min-height: 714px;
+	padding: 104px 104px;
+	background: linear-gradient(90deg, var(--htoeau-dark-teal) 0%, #b4c5c7 52%, #83939b 78%, #d4d4d4 100%);
+	color: var(--htoeau-white);
+}
+
+.htoeau-professor-study__visual {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	overflow: hidden;
+}
+
+.htoeau-professor-study__img {
+	position: absolute;
+	object-fit: cover;
+	max-width: none;
+}
+
+/* Figma back layer (AboutUsADesktop1) */
+.htoeau-professor-study__img--back {
+	right: 0;
+	left: auto;
+	top: 50%;
+	transform: translateY(-50%);
+	height: auto;
+	width: auto;
+	min-width: 55%;
+	max-height: 800px;
+	z-index: 1;
+}
+
+/* Front portrait sits above back layer, same anchoring on the right */
+.htoeau-professor-study__img--front {
+	right: 0;
+	left: auto;
+	top: 50%;
+	transform: translateY(-50%);
+	height: auto;
+	width: auto;
+	min-width: 55%;
+	max-height: 800px;
+	z-index: 3;
+}
+
+.htoeau-professor-study__visual-grad {
+	position: absolute;
+	inset: 0;
+	z-index: 2;
+	/* Solid teal further left so copy stays off the portrait */
+	background: linear-gradient(
+		to left,
+		rgba(5, 91, 101, 0) 0%,
+		rgba(5, 91, 101, 0.35) 38%,
+		var(--htoeau-dark-teal) 52%,
+		var(--htoeau-dark-teal) 100%
+	);
+}
+
+.htoeau-professor-study__inner {
+	position: relative;
+	z-index: 4;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 32px;
+	/* Keep all copy in the left column; never span over the photo */
+	max-width: min(608px, 48vw);
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.htoeau-professor-study__lead {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 24px;
+	width: 100%;
+	max-width: 100%;
+}
+
+.htoeau-professor-study__title {
+	margin: 0;
+	font-family: var(--htoeau-font);
+	font-weight: 300;
+	font-size: 46px;
+	line-height: 1;
+	letter-spacing: -0.92px;
+	color: var(--htoeau-white);
+}
+
+.htoeau-professor-study__intro {
+	margin: 0;
+	font-family: var(--htoeau-font);
+	font-weight: 400;
+	font-size: 18px;
+	line-height: 1.3;
+	letter-spacing: -0.18px;
+	color: var(--htoeau-white);
+}
+
+.htoeau-professor-study__desc {
+	margin: 0;
+	font-family: var(--htoeau-font);
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 1.3;
+	letter-spacing: -0.16px;
+	color: var(--htoeau-white);
+}
+
+.htoeau-professor-study__list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 12px;
+}
+
+.htoeau-professor-study__list-item {
+	display: flex;
+	align-items: center;
+	gap: 15px;
+	margin: 0;
+}
+
+.htoeau-professor-study__molecule {
+	display: inline-flex;
+	flex-shrink: 0;
+	line-height: 0;
+}
+
+.htoeau-professor-study__list-item span {
+	font-family: var(--htoeau-font);
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 1.4;
+	color: var(--htoeau-white);
+	white-space: nowrap;
+}
+
+.htoeau-professor-study__footnote {
+	margin: 0;
+	width: 100%;
+	max-width: 100%;
+	font-family: var(--htoeau-font);
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 1.3;
+	letter-spacing: -0.14px;
+	color: var(--htoeau-white);
+}
+
+.htoeau-professor-study__cta-wrap {
+	display: flex;
+	justify-content: flex-start;
+}
+
+.htoeau-professor-study .htoeau-btn.htoeau-professor-study__cta {
+	width: 345px;
+	max-width: 100%;
+	min-height: 47px;
+	padding: 13px 96px;
+	box-sizing: border-box;
+	background: var(--htoeau-gradient);
+	background-image: var(--htoeau-gradient);
+	color: var(--htoeau-white);
+	border: none;
+	border-radius: var(--htoeau-radius-btn);
+	font-family: var(--htoeau-font);
+	font-weight: 700;
+	font-size: 16px;
+	line-height: 1.4;
+	letter-spacing: -0.32px;
+	white-space: nowrap;
+}
+/* 86:400 — Trust strip (gradient + infinite marquee)
+ * Figma: py-100 = 100px top + bottom. Fallback below is 50px each; override via widget Style → Padding. */
+.htoeau-trust-strip {
+	box-sizing: border-box;
+	width: 100%;
+	padding: 50px 0;
+	background: linear-gradient(192.324deg, var(--htoeau-teal) 15.131%, var(--htoeau-blue) 82.863%);
+	color: var(--htoeau-white);
+}
+
+.htoeau-trust-strip--marquee {
+	width: 100vw;
+	max-width: none;
+	min-width: 0;
+	margin-left: calc(50% - 50vw);
+	margin-right: calc(50% - 50vw);
+	position: relative;
+	box-sizing: border-box;
+}
+
+.htoeau-trust-strip__viewport {
+	overflow: hidden;
+	width: 100%;
+	mask-image: linear-gradient(
+		to right,
+		transparent,
+		#000 24px,
+		#000 calc(100% - 24px),
+		transparent
+	);
+	-webkit-mask-image: linear-gradient(
+		to right,
+		transparent,
+		#000 24px,
+		#000 calc(100% - 24px),
+		transparent
+	);
+}
+
+.htoeau-trust-strip__track {
+	display: flex;
+	width: max-content;
+	will-change: transform;
+	animation: htoeau-trust-strip-marquee 50s linear infinite;
+}
+
+.htoeau-trust-strip__group {
+	display: flex;
+	flex-wrap: nowrap;
+	align-items: center;
+	gap: 74px;
+	padding-right: 74px;
+	box-sizing: border-box;
+}
+
+.htoeau-trust-strip__item {
+	display: flex;
+	align-items: center;
+	gap: 15px;
+	flex-shrink: 0;
+}
+
+.htoeau-trust-strip__text {
+	font-family: var(--htoeau-font);
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 1.4;
+	color: var(--htoeau-white);
+	white-space: nowrap;
+}
+
+@keyframes htoeau-trust-strip-marquee {
+	from {
+		transform: translateX(0);
+	}
+
+	to {
+		transform: translateX(-50%);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.htoeau-trust-strip__track {
+		animation: none;
+		justify-content: center;
+		flex-wrap: wrap;
+		width: 100%;
+		max-width: 100%;
+	}
+
+	.htoeau-trust-strip__viewport {
+		mask-image: none;
+		-webkit-mask-image: none;
+	}
+
+	.htoeau-trust-strip__group[aria-hidden="true"] {
+		display: none;
+	}
+
+	.htoeau-trust-strip__group {
+		flex-wrap: wrap;
+		justify-content: center;
+		padding-right: 0;
+		gap: 24px 48px;
+	}
+
+	.htoeau-trust-strip__text {
+		white-space: normal;
+		text-align: center;
+	}
+}
+/* Community — Figma 86:432 desktop; mobile 86:1035 (under 86:622) */
+.htoeau-community {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 58px;
+	width: 100%;
+	max-width: 100%;
+	box-sizing: border-box;
+	padding: 120px 172px;
+	background: var(--htoeau-white);
+	color: var(--htoeau-navy);
+}
+
+.htoeau-community__head {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 34px;
+	text-align: center;
+	max-width: 100%;
+}
+
+.htoeau-community__rating {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+}
+
+.htoeau-community__rating-text {
+	margin: 0;
+	font-family: var(--htoeau-font);
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 1.2;
+	letter-spacing: -0.28px;
+	color: var(--htoeau-navy);
+}
+
+.htoeau-community__rating-text strong {
+	font-weight: 700;
+}
+
+.htoeau-professor-study .htoeau-btn.htoeau-professor-study__cta:hover,
+.htoeau-professor-study .htoeau-btn.htoeau-professor-study__cta:active,
+.htoeau-professor-study .htoeau-btn.htoeau-professor-study__cta:focus {
+	color: var(--htoeau-white);
+	background: var(--htoeau-gradient);
+	border: none;
+}
+
+.htoeau-community__title {
+	margin: 0;
+	font-family: var(--htoeau-font);
+	font-weight: 300;
+	font-size: 46px;
+	line-height: 1;
+	letter-spacing: -0.92px;
+	color: var(--htoeau-navy);
+}
+
+.htoeau-community__intro {
+	margin: 0;
+	max-width: 56rem;
+	font-family: var(--htoeau-font);
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 1.3;
+	letter-spacing: -0.16px;
+	color: var(--htoeau-navy);
+}
+
+.htoeau-community__carousel {
+	position: relative;
+	width: 100%;
+	align-self: stretch;
+}
+
+.htoeau-community__viewport-wrap {
+	position: relative;
+	width: 100%;
+}
+
+/* Swiper (Elementor bundle) — fixed slide width + 20px gap matches Figma */
+.htoeau-community__swiper.swiper {
+	width: 100%;
+	margin: 0;
+	padding: 0 0 8px;
+	overflow: hidden;
+	box-sizing: border-box;
+}
+
+.htoeau-community__swiper .swiper-wrapper {
+	align-items: flex-start;
+}
+
+.htoeau-community__swiper .swiper-slide {
+	width: 315px;
+	height: auto;
+	box-sizing: border-box;
+}
+
+.htoeau-community__prev {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	clip-path: inset(50%);
+	white-space: nowrap;
+	border: 0;
+	pointer-events: none;
+}
+
+.htoeau-community__card {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 36px;
+	width: 100%;
+	max-width: 315px;
+	box-sizing: border-box;
+}
+
+.htoeau-community__media {
+	width: 100%;
+	height: 490px;
+	border-radius: var(--htoeau-radius-card);
+	background: #d9d9d9;
+	overflow: hidden;
+	flex-shrink: 0;
+}
+
+.htoeau-community__media img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.htoeau-community__body {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 25px;
+	width: 100%;
+}
+
+.htoeau-community__quote {
+	margin: 0;
+	font-family: var(--htoeau-font);
+	font-weight: 300;
+	font-size: 28px;
+	line-height: 1.3;
+	letter-spacing: -0.28px;
+	color: var(--htoeau-navy);
+	opacity: 0.3;
+	text-align: left;
+}
+
+.htoeau-community__text {
+	margin: 0;
+	max-width: 297px;
+	font-family: var(--htoeau-font);
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 1.3;
+	letter-spacing: -0.14px;
+	color: var(--htoeau-navy);
+}
+
+.htoeau-community__meta {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 0;
+	font-family: var(--htoeau-font);
+	color: var(--htoeau-navy);
+}
+
+.htoeau-community__author {
+	display: block;
+	font-size: 12px;
+	line-height: 1.4;
+	font-weight: 400;
+}
+
+.htoeau-community__role {
+	display: block;
+	margin-top: 0;
+	font-size: 10px;
+	line-height: 1.4;
+	font-weight: 600;
+}
+
+.htoeau-community__fade {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	width: min(200px, 28vw);
+	pointer-events: none;
+	background: linear-gradient(
+		to left,
+		#ffffff 0%,
+		rgba(255, 255, 255, 0.92) 35%,
+		rgba(255, 255, 255, 0) 100%
+	);
+	z-index: 1;
+}
+
+.htoeau-community__next {
+	position: absolute;
+	right: clamp(12px, 4vw, 48px);
+	top: 245px;
+	z-index: 2;
+	width: 68px;
+	height: 68px;
+	padding: 0;
+	border: none;
+	border-radius: 50%;
+	background: #ffffff;
+	box-shadow: 0 4px 24px rgba(0, 44, 65, 0.12);
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--htoeau-blue);
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.htoeau-community__next:hover {
+	transform: scale(1.04);
+	box-shadow: 0 6px 28px rgba(0, 44, 65, 0.16);
+}
+
+.htoeau-community__next:focus-visible {
+	outline: 2px solid var(--htoeau-teal);
+	outline-offset: 3px;
+}
+
+/* Hello / Elementor kit: accent on buttons — force white circle + brand blue chevron */
+.htoeau-community button.htoeau-community__next,
+.htoeau-community button.htoeau-community__next:hover,
+.htoeau-community button.htoeau-community__next:focus,
+.htoeau-community button.htoeau-community__next:focus-visible,
+.htoeau-community button.htoeau-community__next:active,
+.htoeau-community button.htoeau-community__next:visited {
+	background: #ffffff !important;
+	background-color: #ffffff !important;
+	background-image: none !important;
+	color: var(--htoeau-blue) !important;
+	border: none !important;
+	filter: none !important;
+	-webkit-tap-highlight-color: transparent;
+	box-shadow: 0 4px 24px rgba(0, 44, 65, 0.12) !important;
+}
+
+.htoeau-community button.htoeau-community__next:hover {
+	box-shadow: 0 6px 28px rgba(0, 44, 65, 0.16) !important;
+}
+
+.htoeau-community button.htoeau-community__next:focus-visible {
+	outline: 2px solid var(--htoeau-teal) !important;
+	outline-offset: 3px !important;
+}
+
+.htoeau-community button.htoeau-community__next svg path {
+	stroke: currentColor !important;
+}
+
+.htoeau-community button.htoeau-community__next::before,
+.htoeau-community button.htoeau-community__next::after {
+	content: none !important;
+	display: none !important;
+	background: none !important;
+	box-shadow: none !important;
+}
+
+.htoeau-community__next-inner {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	line-height: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.htoeau-community__next:hover {
+		transform: none;
+	}
+}
+/* Sample kit CTA — Figma 86:500 desktop; mobile padding via widget override + 86:622 block */
+.htoeau-sample-kit {
+	background: var(--htoeau-navy);
+	padding: 44px 172px;
+	box-sizing: border-box;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.htoeau-sample-kit__inner {
+	display: grid;
+	grid-template-columns: minmax(0, min(556px, 100%)) min(502px, 100%);
+	gap: 43px;
+	align-items: center;
+	justify-content: center;
+	width: fit-content;
+	max-width: 100%;
+	margin-inline: auto;
+	box-sizing: border-box;
+}
+
+/* No product/frame media: avoid empty 502px grid track (looked like a broken half-width layout). */
+.htoeau-sample-kit__inner--text-only {
+	grid-template-columns: minmax(0, min(556px, 100%));
+	width: 100%;
+	max-width: 100%;
+	justify-content: center;
+}
+
+.htoeau-sample-kit__inner--text-only .htoeau-sample-kit__content {
+	max-width: min(556px, 100%);
+}
+
+.htoeau-sample-kit__content {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 34px;
+	min-width: 0;
+	width: 100%;
+}
+
+.htoeau-sample-kit__title {
+	font-family: var(--htoeau-font);
+	font-weight: 300;
+	font-size: clamp(32px, 4.2vw, 46px);
+	line-height: 1;
+	color: var(--htoeau-white);
+	letter-spacing: -0.92px;
+	margin: 0;
+	max-width: 393px;
+	text-wrap: balance;
+}
+
+.htoeau-sample-kit__copy {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 1.3em;
+	width: 100%;
+	max-width: 556px;
+	box-sizing: border-box;
+}
+
+.htoeau-sample-kit__copy-p {
+	font-family: var(--htoeau-font);
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 1.3;
+	color: var(--htoeau-white);
+	letter-spacing: -0.16px;
+	margin: 0;
+	max-width: 100%;
+}
+
+.htoeau-sample-kit__copy-p--rich {
+	white-space: pre-line;
+}
+
+.htoeau-sample-kit .htoeau-btn.htoeau-sample-kit__cta {
+	-webkit-tap-highlight-color: transparent;
+	/* Figma 86:505 */
+	width: 299px;
+	max-width: 100%;
+	min-height: 47px;
+	padding: 13px 96px;
+	box-sizing: border-box;
+	white-space: nowrap;
+	font-family: var(--htoeau-font);
+	font-weight: 700;
+	font-size: 16px;
+	line-height: 1.4;
+	letter-spacing: -0.32px;
+}
+
+/* Hello / Elementor: keep brand gradient + white label on all link states */
+.htoeau-sample-kit a.htoeau-btn.htoeau-sample-kit__cta.htoeau-btn--primary,
+.htoeau-sample-kit a.htoeau-btn.htoeau-sample-kit__cta.htoeau-btn--primary:visited,
+.htoeau-sample-kit a.htoeau-btn.htoeau-sample-kit__cta.htoeau-btn--primary:hover,
+.htoeau-sample-kit a.htoeau-btn.htoeau-sample-kit__cta.htoeau-btn--primary:active,
+.htoeau-sample-kit a.htoeau-btn.htoeau-sample-kit__cta.htoeau-btn--primary:focus {
+	color: var(--htoeau-white) !important;
+	background: linear-gradient(90deg, var(--htoeau-teal) 0%, var(--htoeau-blue) 100%) !important;
+	border: none !important;
+	text-decoration: none !important;
+	box-shadow: none !important;
+}
+
+.htoeau-sample-kit a.htoeau-btn.htoeau-sample-kit__cta.htoeau-btn--primary:hover {
+	opacity: 0.92 !important;
+	transform: translateY(-1px);
+}
+
+.htoeau-sample-kit a.htoeau-btn.htoeau-sample-kit__cta.htoeau-btn--primary:active {
+	transform: translateY(0);
+	opacity: 1 !important;
+}
+
+.htoeau-sample-kit a.htoeau-btn.htoeau-sample-kit__cta.htoeau-btn--primary:focus-visible {
+	outline: 2px solid var(--htoeau-cyan) !important;
+	outline-offset: 3px;
+	opacity: 1 !important;
+	box-shadow: none !important;
+}
+
+/* Mouse / programmatic :focus only — drop theme accent ring; keyboard keeps :focus-visible above */
+.htoeau-sample-kit a.htoeau-btn.htoeau-sample-kit__cta.htoeau-btn--primary:focus:not(:focus-visible) {
+	outline: none !important;
+	box-shadow: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.htoeau-sample-kit a.htoeau-btn.htoeau-sample-kit__cta.htoeau-btn--primary:hover,
+	.htoeau-sample-kit a.htoeau-btn.htoeau-sample-kit__cta.htoeau-btn--primary:active {
+		transform: none;
+	}
+}
+
+.htoeau-sample-kit__features {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 34px;
+	row-gap: 20px;
+	align-items: flex-start;
+}
+
+.htoeau-sample-kit__feature {
+	display: flex;
+	align-items: center;
+	gap: 15px;
+	margin: 0;
+	min-height: 30px;
+}
+
+.htoeau-sample-kit__feature span {
+	font-family: var(--htoeau-font);
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 1.4;
+	color: var(--htoeau-white);
+	white-space: nowrap;
+}
+
+.htoeau-sample-kit__visual {
+	position: relative;
+	width: 502px;
+	max-width: 100%;
+	aspect-ratio: 1 / 1;
+	margin: 0 auto;
+	isolation: isolate;
+}
+
+.htoeau-sample-kit__frame {
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center;
+	display: block;
+	pointer-events: none;
+}
+
+.htoeau-sample-kit__product {
+	position: absolute;
+	left: 2.5px;
+	top: 4px;
+	z-index: 1;
+	width: calc(100% * (485 / 502));
+	max-width: 485px;
+	height: calc(100% * (493 / 502));
+	max-height: 493px;
+	object-fit: cover;
+	object-position: center;
+	display: block;
+	pointer-events: none;
+}
+
+.htoeau-sample-kit .htoeau-check-icon {
+	flex-shrink: 0;
+}
+
+.htoeau-sample-kit__visual--solo {
+	aspect-ratio: auto;
+	width: 100%;
+	max-width: 502px;
+}
+
+.htoeau-sample-kit__product--solo {
+	position: relative;
+	inset: auto;
+	left: auto;
+	top: auto;
+	width: 100%;
+	height: auto;
+	max-width: none;
+	max-height: none;
+}
+
+@media (max-width: 640px) {
+	.htoeau-sample-kit__features {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 16px;
+	}
+}
+
+/* 1:2232 — FAQ (Figma: section gap 58px, head gap 34px, list max 816px / gap 16px, rows #f5f5f5 / 8px / 32px padding; open: summary gap 32px start; closed: gap 24px center; Q+A column gap 16px; chevron 14×24) */
+.htoeau-faq {
+	padding: 120px 172px;
+	display: flex;
+	flex-direction: column;
+	gap: 58px;
+	align-items: center;
+	box-sizing: border-box;
+	width: 100%;
+	background: var(--htoeau-white);
+}
+
+.htoeau-faq__head {
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	gap: 34px;
+	align-items: center;
+	max-width: min(58rem, 100%);
+	width: 100%;
+}
+
+.htoeau-faq__title {
+	font: 300 46px/1 var(--htoeau-font);
+	letter-spacing: -0.92px;
+	color: var(--htoeau-navy);
+	margin: 0;
+}
+
+.htoeau-faq__sub {
+	font: 400 16px/1.3 var(--htoeau-font);
+	letter-spacing: -0.16px;
+	color: var(--htoeau-navy);
+	margin: 0;
+	max-width: 100%;
+}
+
+.htoeau-faq__list {
+	width: 100%;
+	max-width: min(816px, 100%);
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.htoeau-faq__item {
+	background: var(--htoeau-light-gray);
+	border-radius: var(--htoeau-radius-faq);
+	padding: 32px;
+	box-sizing: border-box;
+	margin: 0;
+}
+
+.htoeau-faq__summary {
+	list-style: none;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 24px;
+	cursor: pointer;
+	color: var(--htoeau-navy);
+}
+
+.htoeau-faq__item[open] > .htoeau-faq__summary {
+	align-items: flex-start;
+	gap: 32px;
+}
+
+.htoeau-faq__summary::-webkit-details-marker,
+.htoeau-faq__summary::marker {
+	display: none;
+	content: '';
+}
+
+.htoeau-faq__summary:focus {
+	outline: none;
+}
+
+.htoeau-faq__summary:focus-visible {
+	outline: 2px solid var(--htoeau-teal);
+	outline-offset: 3px;
+	border-radius: 2px;
+}
+
+.htoeau-faq__summary-main {
+	flex: 1;
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 16px;
+	text-align: left;
+}
+
+.htoeau-faq__q {
+	font: 600 20px/1 var(--htoeau-font);
+	letter-spacing: -0.4px;
+	color: var(--htoeau-navy);
+	margin: 0;
+}
+
+.htoeau-faq__answer {
+	font: 400 16px/1.2 var(--htoeau-font);
+	letter-spacing: -0.32px;
+	color: var(--htoeau-navy);
+	width: 100%;
+}
+
+.htoeau-faq__item:not([open]) .htoeau-faq__answer {
+	display: none;
+}
+
+.htoeau-faq__answer p {
+	margin: 0;
+}
+
+.htoeau-faq__answer p + p {
+	margin-top: 0.75em;
+}
+
+.htoeau-faq__chev {
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 14px;
+	height: 24px;
+	color: var(--htoeau-navy);
+	line-height: 0;
+	transition: transform 0.2s ease;
+}
+
+.htoeau-faq__chev-svg {
+	display: block;
+}
+
+.htoeau-faq__item[open] .htoeau-faq__chev {
+	transform: rotate(180deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.htoeau-faq__chev {
+		transition: none;
+	}
+}
+
+/* FAQ: default sub was capped at 42rem — too narrow; keep one line on tablet with fluid size */
+@media (min-width: 768px) and (max-width: 1023px) {
+	.htoeau-faq__sub {
+		font-size: clamp(14px, 1.55vw, 16px);
+	}
+}
+
+/* --------------------------------------------------------------------------
+   Hydrogen Apart — Figma 1:2046 (What Sets HtoEAU® Hydrogen Water Apart)
+   Navy band, glass cards, one composite scene (splash + can) behind content.
+   -------------------------------------------------------------------------- */
+.htoeau-hydrogen-apart {
+	position: relative;
+	box-sizing: border-box;
+	width: 100%;
+	overflow: hidden;
+	background: var(--htoeau-navy);
+	color: var(--htoeau-white);
+	font-family: var(--htoeau-font);
+	isolation: isolate;
+}
+
+.htoeau-hydrogen-apart__layers {
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	pointer-events: none;
+	overflow: hidden;
+}
+
+/*
+ * Single scene image — Figma 1:2046 uses two layers (2047 texture + 2048 can); one upload
+ * should be a flattened composite. Cover + center; object-position matches hero (can ~upper-mid).
+ */
+.htoeau-hydrogen-apart__scene {
+	position: absolute;
+	left: 50%;
+	top: -6%;
+	width: min(158%, min(2200px, 92vw));
+	height: min(96%, min(980px, 88vh));
+	min-height: clamp(380px, 42vw, 720px);
+	max-width: none;
+	transform: translateX(-50%);
+	object-fit: cover;
+	object-position: 48% 38%;
+	opacity: 0.88;
+	pointer-events: none;
+}
+
+@media (min-width: 1700px) {
+	.htoeau-hydrogen-apart__scene {
+		top: calc(-6% - 30px);
+		width: min(168%, min(2600px, 95vw));
+		height: min(100%, min(1040px, 90vh));
+		min-height: clamp(480px, 38vw, 780px);
+	}
+}
+
+.htoeau-hydrogen-apart__inner {
+	position: relative;
+	z-index: 2;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: clamp(48px, 5.5vw, 74px);
+	width: 100%;
+	max-width: var(--htoeau-container);
+	margin: 0 auto;
+	box-sizing: border-box;
+}
+
+.htoeau-hydrogen-apart__heading {
+	position: relative;
+	z-index: 1;
+	margin: 0;
+	max-width: 100%;
+	font-family: var(--htoeau-font);
+	font-weight: 300;
+	font-size: clamp(36px, calc(1rem + 2.2vw), 46px);
+	line-height: 1;
+	letter-spacing: -0.92px;
+	text-align: center;
+	color: var(--htoeau-white);
+}
+
+.htoeau-hydrogen-apart__grid {
+	position: relative;
+	z-index: 1;
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: 12px;
+	width: 100%;
+	align-items: stretch;
+}
+
+.htoeau-hydrogen-apart__card {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 16px;
+	min-width: 0;
+	padding: 40px;
+	border-radius: var(--htoeau-radius-card);
+	border: 1px solid rgba(255, 255, 255, 0.12);
+	background: rgba(255, 255, 255, 0.15);
+	backdrop-filter: blur(24px);
+	-webkit-backdrop-filter: blur(24px);
+	box-sizing: border-box;
+}
+
+.htoeau-hydrogen-apart__card-title {
+	margin: 0;
+	width: 100%;
+	font-family: var(--htoeau-font);
+	font-weight: 500;
+	font-size: 24px;
+	line-height: 1;
+	letter-spacing: -0.24px;
+	color: var(--htoeau-white);
+}
+
+.htoeau-hydrogen-apart__card-text {
+	margin: 0;
+	width: 100%;
+	font-family: var(--htoeau-font);
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 1.3;
+	letter-spacing: -0.14px;
+	color: var(--htoeau-white);
+}
+
+/* --------------------------------------------------------------------------
+   Engineered to Perform — Figma 1:2066 (desktop); 1:1493 (mobile, ≤767px)
+   White frame: left image + gradient; heading + spec column (right) on desktop;
+   mobile: centered stacked features, 1:1493 spacing/photo/gradient.
+   -------------------------------------------------------------------------- */
+.htoeau-engineered {
+	position: relative;
+	box-sizing: border-box;
+	width: 100%;
+	overflow: hidden;
+	background: var(--htoeau-white);
+	color: var(--htoeau-navy);
+	font-family: var(--htoeau-font);
+	isolation: isolate;
+}
+
+.htoeau-engineered__layers {
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	pointer-events: none;
+	overflow: hidden;
+}
+
+.htoeau-engineered__bg {
+	position: absolute;
+	inset: 0;
+	background: var(--htoeau-white);
+}
+
+.htoeau-engineered__photo-wrap {
+	position: absolute;
+	inset: 0;
+	overflow: hidden;
+}
+
+/* Figma: left -0.76%, top 13.86%, w 47.47%, h 113.93% */
+.htoeau-engineered__photo {
+	position: absolute;
+	left: -0.76%;
+	top: 13.86%;
+	width: 47.47%;
+	height: 113.93%;
+	object-fit: cover;
+	max-width: none;
+}
+
+/* Figma: gradient-to-t, transparent 33.888% → white 79.236% */
+.htoeau-engineered__fade {
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	background: linear-gradient(
+		to top,
+		rgba(255, 255, 255, 0) 33.888%,
+		#ffffff 79.236%
+	);
+	pointer-events: none;
+}
+
+.htoeau-engineered__inner {
+	position: relative;
+	z-index: 2;
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, min(525px, 46vw));
+	align-items: start;
+	column-gap: clamp(20px, 4vw, 48px);
+	row-gap: 56px;
+	width: 100%;
+	max-width: var(--htoeau-container);
+	margin: 0 auto;
+	box-sizing: border-box;
+}
+
+.htoeau-engineered__heading {
+	grid-column: 1 / -1;
+	justify-self: center;
+	margin: 0;
+	width: 100%;
+	font-family: var(--htoeau-font);
+	font-weight: 300;
+	font-size: 46px;
+	line-height: 1;
+	letter-spacing: -0.92px;
+	text-align: center;
+	color: var(--htoeau-navy);
+}
+
+.htoeau-engineered__column {
+	grid-column: 2;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	gap: 32px;
+	width: 100%;
+	max-width: 100%;
+	min-width: 0;
+	box-sizing: border-box;
+}
+
+.htoeau-engineered__row {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 18px;
+	width: 100%;
+}
+
+.htoeau-engineered__icon {
+	flex-shrink: 0;
+	width: 56px;
+	height: 56px;
+	line-height: 0;
+}
+
+.htoeau-engineered__icon img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}
+
+.htoeau-engineered__body {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 18px;
+	flex: 1;
+	min-width: 0;
+	line-height: 1.3;
+}
+
+/* Feature titles — desktop Figma 1:2066 (Light 28px); mobile 1:1493 overrides below */
+.htoeau-engineered__label {
+	margin: 0;
+	font-family: var(--htoeau-font);
+	font-weight: 300;
+	font-size: 28px;
+	line-height: 1.3;
+	letter-spacing: -0.28px;
+	color: rgba(0, 44, 65, 0.3);
+}
+
+/* Figma: Figtree Regular 14px, tracking -0.14px */
+.htoeau-engineered__desc {
+	margin: 0;
+	font-family: var(--htoeau-font);
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 1.3;
+	letter-spacing: -0.14px;
+	color: var(--htoeau-navy);
+}
+
+/* --------------------------------------------------------------------------
+   Hydration Systems — Figma 1:2260
+   Off-white section; two white cards (image | rating + title + excerpt + CTA).
+   -------------------------------------------------------------------------- */
+.htoeau-hydration-systems {
+	box-sizing: border-box;
+	width: 100%;
+	overflow: hidden;
+	background: var(--htoeau-off-white);
+	color: var(--htoeau-navy);
+	font-family: var(--htoeau-font);
+}
+
+.htoeau-hydration-systems__inner {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 57px;
+	width: 100%;
+	max-width: 1321px;
+	margin: 0 auto;
+	box-sizing: border-box;
+}
+
+.htoeau-hydration-systems__heading {
+	margin: 0;
+	width: 100%;
+	font-family: var(--htoeau-font);
+	font-weight: 300;
+	font-size: 46px;
+	line-height: 1;
+	letter-spacing: -0.92px;
+	text-align: center;
+	color: var(--htoeau-navy);
+}
+
+.htoeau-hydration-systems__grid {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: stretch;
+	gap: 20px;
+	width: 100%;
+}
+
+.htoeau-hydration-systems__card {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	flex: 1 1 650px;
+	min-width: min(100%, 320px);
+	max-width: 650px;
+	min-height: 286px;
+	padding: 32px;
+	gap: 24px;
+	border-radius: var(--htoeau-radius-card);
+	background: var(--htoeau-white);
+	box-sizing: border-box;
+	box-shadow: 0 1px 3px rgba(0, 44, 65, 0.06);
+}
+
+.htoeau-hydration-systems__media {
+	flex: 1 1 0;
+	min-width: 0;
+	height: 191px;
+	border-radius: var(--htoeau-radius-img);
+	overflow: hidden;
+	position: relative;
+	background: var(--htoeau-white);
+}
+
+.htoeau-hydration-systems__img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	object-position: center;
+}
+
+.htoeau-hydration-systems__body {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	flex: 0 0 416px;
+	width: 100%;
+	max-width: 416px;
+	gap: 23px;
+	box-sizing: border-box;
+}
+
+.htoeau-hydration-systems__rating {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 18px;
+	margin: 0;
+	line-height: 0;
+}
+
+.htoeau-hydration-systems__rating .htoeau-stars {
+	flex-shrink: 0;
+}
+
+.htoeau-hydration-systems__rating-text {
+	margin: 0;
+	padding: 0;
+	font-family: var(--htoeau-font);
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 1.2;
+	letter-spacing: -0.28px;
+	color: var(--htoeau-navy);
+}
+
+.htoeau-hydration-systems__rating-text strong {
+	font-weight: 700;
+}
+
+.htoeau-hydration-systems__title {
+	margin: 0;
+	width: 100%;
+	font-family: var(--htoeau-font);
+	font-weight: 400;
+	font-size: 24px;
+	line-height: 1.3;
+	letter-spacing: -0.48px;
+	color: var(--htoeau-navy);
+}
+
+.htoeau-hydration-systems__excerpt {
+	margin: 0;
+	width: 100%;
+	font-family: var(--htoeau-font);
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 1.3;
+	letter-spacing: -0.14px;
+	color: var(--htoeau-navy);
+}
+
+.htoeau-hydration-systems .htoeau-btn.htoeau-hydration-systems__cta {
+	width: 100%;
+	max-width: 345px;
+	min-height: 47px;
+	padding: 13px 96px;
+	box-sizing: border-box;
+	font-family: var(--htoeau-font);
+	font-weight: 700;
+	font-size: 16px;
+	line-height: 1.4;
+	letter-spacing: -0.32px;
+	text-align: center;
+	white-space: nowrap;
+	-webkit-tap-highlight-color: transparent;
+}
+
+/* --------------------------------------------------------------------------
+   Hydrogenate Hero — Figma 1:2289 (Hero B / Desktop)
+   Single product image, max ~652×730; grid: visual | copy + CTA.
+   -------------------------------------------------------------------------- */
+.htoeau-hydrogenate {
+	background: var(--htoeau-gradient);
+	/* Bottom padding lives on __content so the gradient runs flush under the cans */
+	padding: 96px 104px 0;
+	box-sizing: border-box;
+	width: 100%;
+	overflow: hidden;
+}
+
+.htoeau-hydrogenate__inner {
+	display: grid;
+	grid-template-columns: minmax(0, 652px) minmax(0, 1fr);
+	grid-template-areas: 'visual content';
+	align-items: end;
+	gap: 120px;
+	max-width: var(--htoeau-container);
+	margin-inline: auto;
+	box-sizing: border-box;
+}
+
+.htoeau-hydrogenate__content {
+	grid-area: content;
+	justify-self: end;
+	align-self: center;
+	width: 100%;
+	max-width: 497px;
+	padding-bottom: 96px;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 34px;
+	box-sizing: border-box;
+}
+
+.htoeau-hydrogenate__title {
+	margin: 0;
+	font-family: var(--htoeau-font);
+	font-weight: 300;
+	font-size: 46px;
+	line-height: 1;
+	letter-spacing: -0.92px;
+	color: var(--htoeau-white);
+	max-width: 100%;
+}
+
+.htoeau-hydrogenate__lead {
+	margin: 0;
+	font-family: var(--htoeau-font);
+	font-weight: 400;
+	font-size: 18px;
+	line-height: 1;
+	letter-spacing: -0.36px;
+	color: var(--htoeau-white);
+	max-width: 100%;
+}
+
+.htoeau-hydrogenate__list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 8px;
+	width: 100%;
+}
+
+.htoeau-hydrogenate__item {
+	display: flex;
+	align-items: center;
+	gap: 15px;
+	margin: 0;
+}
+
+.htoeau-hydrogenate__item-icon {
+	flex-shrink: 0;
+	line-height: 0;
+	display: inline-flex;
+}
+
+.htoeau-hydrogenate__item-text {
+	font-family: var(--htoeau-font);
+	font-weight: 600;
+	font-size: 14px;
+	line-height: 1.4;
+	color: var(--htoeau-white);
+	white-space: nowrap;
+}
+
+.htoeau-hydrogenate__actions {
+	margin: 0;
+	width: 100%;
+}
+
+.htoeau-hydrogenate__cta.htoeau-btn {
+	/* Figma 1:2312 — full-width 497×47, pill, white outline */
+	width: 100%;
+	max-width: 100%;
+	min-height: 47px;
+	padding: 13px 96px;
+	box-sizing: border-box;
+	text-align: center;
+	white-space: nowrap;
+	-webkit-tap-highlight-color: transparent;
+}
+
+.htoeau-hydrogenate__cta.htoeau-btn:hover,
+.htoeau-hydrogenate__cta.htoeau-btn:focus-visible {
+	color: var(--htoeau-white);
+}
+
+/* Hello / Elementor: keep ghost CTA (no pink fill/outline on focus) */
+.htoeau-hydrogenate a.htoeau-hydrogenate__cta.htoeau-btn--outline,
+.htoeau-hydrogenate a.htoeau-hydrogenate__cta.htoeau-btn--outline:visited,
+.htoeau-hydrogenate a.htoeau-hydrogenate__cta.htoeau-btn--outline:hover,
+.htoeau-hydrogenate a.htoeau-hydrogenate__cta.htoeau-btn--outline:active,
+.htoeau-hydrogenate a.htoeau-hydrogenate__cta.htoeau-btn--outline:focus {
+	background: transparent !important;
+	color: var(--htoeau-white) !important;
+	border: 1px solid var(--htoeau-white) !important;
+	box-shadow: none !important;
+	text-decoration: none !important;
+}
+
+.htoeau-hydrogenate a.htoeau-hydrogenate__cta.htoeau-btn--outline:hover {
+	opacity: 0.92 !important;
+}
+
+.htoeau-hydrogenate a.htoeau-hydrogenate__cta.htoeau-btn--outline:focus-visible {
+	outline: 2px solid var(--htoeau-white) !important;
+	outline-offset: 3px;
+	opacity: 1 !important;
+}
+
+.htoeau-hydrogenate a.htoeau-hydrogenate__cta.htoeau-btn--outline:focus:not(:focus-visible) {
+	outline: none !important;
+	box-shadow: none !important;
+}
+
+.htoeau-hydrogenate__visual {
+	grid-area: visual;
+	align-self: end;
+	width: 100%;
+	max-width: 652px;
+	margin-bottom: 0;
+	justify-self: start;
+	box-sizing: border-box;
+	display: flex;
+	align-items: flex-end;
+	justify-content: flex-start;
+}
+
+.htoeau-hydrogenate__img {
+	display: block;
+	width: 100%;
+	height: auto;
+	max-height: min(85vh, 730px);
+	object-fit: contain;
+	object-position: left bottom;
+	pointer-events: none;
+}
+/* --------------------------------------------------------------------------
+   Spotlight testimonial slider — Figma 86:81
+   Centered quote on light gray, stars + avatar strip, chevron arrows.
+   Active avatar rotated -4.28deg, crossfade slides.
+   -------------------------------------------------------------------------- */
+.htoeau-spotlight {
+	background: var(--htoeau-light-gray);
+	box-sizing: border-box;
+	width: 100%;
+}
+
+.htoeau-spotlight__inner {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 32px;
+	max-width: 1320px;
+	margin-inline: auto;
+}
+
+.htoeau-spotlight__content {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	gap: 29px;
+	width: 100%;
+	max-width: 1096px;
+	margin-inline: auto;
+}
+
+.htoeau-spotlight__stars {
+	height: 12px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* --- Slide stack (only active visible) --- */
+.htoeau-spotlight__slides {
+	position: relative;
+	width: 100%;
+	overflow: hidden;
+	/*
+	 * Active slide is position:relative; inactive are absolute — only the visible
+	 * slide sets height. Lock min-height to max quote stack (4 lines + gap + author)
+	 * so the section does not jump when changing testimonials.
+	 */
+	min-height: calc(4 * 42px + 29px + 1.4 * 14px);
+}
+
+.htoeau-spotlight__slide {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 29px;
+	opacity: 0;
+	visibility: hidden;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.htoeau-spotlight__slide--active {
+	opacity: 1;
+	visibility: visible;
+	position: relative;
+}
+
+.htoeau-spotlight__slide--exit-left,
+.htoeau-spotlight__slide--exit-right {
+	opacity: 0;
+	visibility: hidden;
+}
+
+.htoeau-spotlight__quote {
+	font-family: var(--htoeau-font);
+	font-weight: 300;
+	font-size: 42px;
+	line-height: 1;
+	letter-spacing: -0.84px;
+	color: var(--htoeau-navy);
+	margin: 0;
+	max-width: 1096px;
+	/* Match slides min-height: four lines at line-height 1 */
+	min-height: 4em;
+	box-sizing: border-box;
+}
+
+.htoeau-spotlight__author {
+	font-family: var(--htoeau-font);
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 1.4;
+	color: var(--htoeau-navy);
+	margin: 0;
+}
+
+/* --- Avatar strip --- */
+.htoeau-spotlight__avatars {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 14px;
+}
+
+.htoeau-spotlight__avatar {
+	width: 45px;
+	height: 45px;
+	border-radius: 5px;
+	overflow: visible;
+	opacity: 0.5;
+	border: none;
+	background: none;
+	padding: 0;
+	cursor: pointer;
+	transition: opacity 0.3s ease, transform 0.3s ease, width 0.3s ease, height 0.3s ease;
+	flex-shrink: 0;
+}
+
+.htoeau-spotlight__avatar img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 5px;
+}
+
+.htoeau-spotlight__avatar-placeholder {
+	display: block;
+	width: 100%;
+	height: 100%;
+	border-radius: 5px;
+	background: #d9d9d9;
+}
+
+.htoeau-spotlight__avatar--active {
+	width: 52px;
+	height: 52px;
+	opacity: 1;
+	transform: rotate(-4.28deg);
+}
+
+/* --- Arrow buttons --- */
+.htoeau-spotlight__arrow {
+	width: 68px;
+	height: 68px;
+	min-width: 68px;
+	border-radius: 50%;
+	border: none;
+	background: var(--htoeau-white);
+	box-shadow: 0 2px 12px rgba(0, 44, 65, 0.08);
+	color: var(--htoeau-navy);
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	flex-shrink: 0;
+	transition: box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.htoeau-spotlight__arrow:hover {
+	box-shadow: 0 4px 18px rgba(0, 44, 65, 0.14);
+	color: var(--htoeau-navy);
+}
+
+.htoeau-spotlight__arrow:focus,
+.htoeau-spotlight__arrow:focus-visible {
+	outline: none;
+	color: var(--htoeau-navy);
+}
+
+.htoeau-spotlight__arrow:active {
+	background: #f0f0f0;
+	color: var(--htoeau-navy);
+}
+
+.htoeau-spotlight__arrow svg {
+	width: 24px;
+	height: 24px;
+}
+
+/*
+ * Elementor Site Settings → Buttons: `.elementor-kit-* button` overrides spotlight carousel arrows
+ * (primary fill, 10px radius, white label text). Restore Figma chrome: white disc + navy chevron.
+ */
+body[class*="elementor-kit-"] .htoeau-spotlight button.htoeau-spotlight__arrow {
+	background: var(--htoeau-white) !important;
+	background-color: var(--htoeau-white) !important;
+	color: var(--htoeau-navy) !important;
+	border-radius: 50% !important;
+	border: none !important;
+	font-family: var(--htoeau-font), Sans-serif !important;
+	font-weight: 400 !important;
+	box-shadow: 0 2px 12px rgba(0, 44, 65, 0.08) !important;
+}
+
+body[class*="elementor-kit-"] .htoeau-spotlight button.htoeau-spotlight__arrow:hover {
+	background: var(--htoeau-white) !important;
+	background-color: var(--htoeau-white) !important;
+	color: var(--htoeau-navy) !important;
+	box-shadow: 0 4px 18px rgba(0, 44, 65, 0.14) !important;
+}
+
+body[class*="elementor-kit-"] .htoeau-spotlight button.htoeau-spotlight__arrow:active {
+	background: #f0f0f0 !important;
+	background-color: #f0f0f0 !important;
+	color: var(--htoeau-navy) !important;
+}
+
+/* Newsletter footer — Figma 1:598 (desktop row); 86:586 legacy notes; mobile: 86:1196 */
+.htoeau-news-footer {
+	background: var(--htoeau-off-white);
+	padding: 72px 104px 56px;
+	display: flex;
+	flex-direction: column;
+	gap: 56px;
+	color: var(--htoeau-navy);
+	box-sizing: border-box;
+	width: 100%;
+}
+
+.htoeau-news-footer .n1,
+.htoeau-news-footer .n3 {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	gap: 24px;
+	width: 100%;
+}
+
+.htoeau-news-footer .n2 {
+	display: block;
+	width: 100%;
+}
+
+.htoeau-news-footer .n1 {
+	align-items: center;
+}
+
+.htoeau-news-footer__intro {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.htoeau-news-footer h3 {
+	font: 600 24px/1 var(--htoeau-font);
+	letter-spacing: -0.48px;
+	margin: 0;
+	color: var(--htoeau-navy);
+}
+
+.htoeau-news-footer .n1 p,
+.htoeau-news-footer .htoeau-news-footer__intro p {
+	font: 400 16px/1.2 var(--htoeau-font);
+	letter-spacing: -0.32px;
+	margin: 0;
+	color: var(--htoeau-navy);
+}
+
+.htoeau-news-footer__logo-row {
+	display: flex;
+	justify-content: flex-start;
+	width: 100%;
+}
+
+/* Figma 1:609 — space-between: brand (≤800px) | horizontal links */
+.htoeau-news-footer__mid {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: flex-start;
+	gap: 32px;
+	width: 100%;
+}
+
+.htoeau-news-footer__brand-col {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 32px;
+	min-width: 0;
+	flex: 1 1 auto;
+	max-width: 800px;
+}
+
+.htoeau-news-footer__company-wrap {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 20px;
+	min-width: 0;
+	width: 100%;
+}
+
+.htoeau-news-footer__links-col {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	justify-content: flex-start;
+	gap: 20px;
+	min-width: 0;
+	flex: 0 1 auto;
+}
+
+.htoeau-news-footer__column-heading {
+	font: 600 14px/1 var(--htoeau-font);
+	letter-spacing: -0.28px;
+	color: var(--htoeau-navy);
+	margin: 0;
+}
+
+.htoeau-news-footer .f {
+	display: flex;
+	align-items: stretch;
+	flex-shrink: 0;
+}
+
+.htoeau-news-footer input {
+	width: 484px;
+	max-width: 100%;
+	height: 61px;
+	padding: 24px;
+	border: 0;
+	border-radius: 64px 0 0 64px;
+	background: var(--htoeau-white);
+	font: 400 18px/1.2 var(--htoeau-font);
+	letter-spacing: -0.36px;
+	color: var(--htoeau-navy);
+	box-sizing: border-box;
+}
+
+.htoeau-news-footer input::placeholder {
+	color: rgba(0, 44, 65, 0.5);
+}
+
+.htoeau-news-footer button {
+	height: 61px;
+	padding: 20px 32px;
+	border: 0;
+	border-radius: 0 64px 64px 0;
+	background: var(--htoeau-navy);
+	color: var(--htoeau-white);
+	font: 700 16px/1.4 var(--htoeau-font);
+	letter-spacing: -0.32px;
+	cursor: pointer;
+	box-sizing: border-box;
+	flex-shrink: 0;
+}
+
+.htoeau-news-footer button:hover {
+	opacity: 0.92;
+}
+
+.htoeau-news-footer .line {
+	height: 2px;
+	background: var(--htoeau-cyan);
+	opacity: 0.5;
+	border-radius: 4px;
+	width: 100%;
+}
+
+.htoeau-news-footer__bottom {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	gap: 40px;
+	width: 100%;
+}
+
+.htoeau-news-footer__logo {
+	display: inline-block;
+	line-height: 0;
+	text-decoration: none;
+}
+
+.htoeau-news-footer__logo img {
+	display: block;
+	height: 32px;
+	width: auto;
+	max-width: 136px;
+	object-fit: contain;
+}
+
+.htoeau-news-footer__company {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	font: 400 14px/1.2 var(--htoeau-font);
+	letter-spacing: -0.28px;
+	color: var(--htoeau-navy);
+}
+
+.htoeau-news-footer__address {
+	margin: 0;
+	max-width: 306px;
+	white-space: normal;
+}
+
+.htoeau-news-footer__company p {
+	margin: 0;
+	font: inherit;
+	color: inherit;
+	letter-spacing: inherit;
+}
+
+.htoeau-news-footer__company a {
+	color: inherit;
+	text-decoration: none;
+	font: inherit;
+}
+
+.htoeau-news-footer__company a:hover {
+	text-decoration: underline;
+}
+
+/* Figma 1:617 — row, gap 32px, 16px / -0.32px tracking */
+.htoeau-news-footer__nav {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	flex-wrap: wrap;
+	justify-content: flex-end;
+	gap: 32px;
+}
+
+.htoeau-news-footer__nav a {
+	font: 400 16px/1.2 var(--htoeau-font);
+	letter-spacing: -0.32px;
+	color: var(--htoeau-navy);
+	text-decoration: none;
+	white-space: nowrap;
+}
+
+.htoeau-news-footer__nav a:hover {
+	text-decoration: underline;
+}
+
+.htoeau-news-footer__copyright {
+	font: 400 14px/1.2 var(--htoeau-font);
+	letter-spacing: -0.28px;
+	color: var(--htoeau-navy);
+}
+
+.htoeau-news-footer__legal {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-start;
+	gap: 24px;
+}
+
+.htoeau-news-footer__legal a {
+	font: 400 14px/1.2 var(--htoeau-font);
+	letter-spacing: -0.28px;
+	color: var(--htoeau-navy);
+	text-decoration: none;
+}
+
+.htoeau-news-footer__legal a:hover {
+	text-decoration: underline;
+}
+@media (max-width: 1024px) {
+	.htoeau-hydrogenate,
+	.htoeau-news-footer,
+	.htoeau-faq,
+	.htoeau-spotlight {
+		padding-left: 24px;
+		padding-right: 24px;
+	}
+
+	/* Hero, spotlight, product, transformation, trust — beat Elementor post-*.css (tablet) */
+	body.elementor-page .elementor-element.elementor-widget-htoeau_hero .htoeau-hero {
+		padding: 30px 40px 72px 40px !important;
+	}
+
+	body.elementor-page .elementor-element.elementor-widget-htoeau_spotlight_testimonial .htoeau-spotlight {
+		padding: 72px 40px !important;
+	}
+
+	body.elementor-page .elementor-element.elementor-widget-htoeau_product_showcase .htoeau-product-showcase {
+		padding: 64px 40px !important;
+	}
+
+	body.elementor-page .elementor-element.elementor-widget-htoeau_transformation_steps .htoeau-transformation {
+		padding: 72px 40px !important;
+	}
+
+	body.elementor-page .elementor-element.elementor-widget-htoeau_trust_strip .htoeau-trust-strip {
+		padding: 40px 24px !important;
+	}
+
+	body.elementor-page .elementor-element.elementor-widget-htoeau_hydrogen_apart .htoeau-hydrogen-apart {
+		padding: 72px 48px !important;
+	}
+
+	body.elementor-page .elementor-element.elementor-widget-htoeau_engineered_perform .htoeau-engineered {
+		padding: 72px 48px !important;
+	}
+
+	body.elementor-page .elementor-element.elementor-widget-htoeau_hydration_systems .htoeau-hydration-systems {
+		padding: 72px 48px !important;
+	}
+
+	body.elementor-page .elementor-element.elementor-widget-htoeau_science_features .htoeau-science {
+		padding: 72px 40px !important;
+	}
+
+	body.elementor-page .elementor-element.elementor-widget-htoeau_faq_accordion .htoeau-faq {
+		padding: 72px 40px !important;
+	}
+
+	body.elementor-page .elementor-element.elementor-widget-htoeau_sample_kit_cta .htoeau-sample-kit {
+		padding: 48px 40px !important;
+	}
+
+	body.elementor-page .elementor-element.elementor-widget-htoeau_about_physics .htoeau-about-physics {
+		padding: clamp(64px, 10vw, 120px) clamp(32px, 5vw, 104px) !important;
+	}
+
+	body.elementor-page .elementor-element.elementor-widget-htoeau_professor_study .htoeau-professor-study {
+		padding: clamp(64px, 8vw, 104px) clamp(32px, 5vw, 104px) !important;
+	}
+
+	.htoeau-professor-study__inner {
+		max-width: min(608px, 46vw);
+	}
+
+	.htoeau-professor-study__list-item span {
+		white-space: normal;
+	}
+
+	.htoeau-professor-study .htoeau-btn.htoeau-professor-study__cta {
+		max-width: 100%;
+	}
+
+	.htoeau-hydrogen-apart__inner {
+		gap: 48px;
+	}
+
+	.htoeau-hydrogen-apart__heading {
+		font-size: 36px;
+		letter-spacing: -0.72px;
+	}
+
+	.htoeau-hydrogen-apart__grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.htoeau-hydrogen-apart__scene {
+		top: -4%;
+		width: min(150%, 1900px);
+		height: min(90%, 880px);
+		min-height: clamp(340px, 48vw, 620px);
+		object-position: 50% 42%;
+		opacity: 0.86;
+	}
+
+	/* Engineered to Perform (Figma 1:2066) — tablet: keep spec column on right grid track */
+	.htoeau-engineered__inner {
+		row-gap: 40px;
+		column-gap: clamp(16px, 3vw, 40px);
+		grid-template-columns: minmax(0, 1fr) minmax(0, min(525px, 48vw));
+	}
+
+	.htoeau-engineered__heading {
+		font-size: 36px;
+		letter-spacing: -0.72px;
+	}
+
+	.htoeau-engineered__photo {
+		left: -4%;
+		top: 12%;
+		width: 55%;
+		height: 108%;
+	}
+
+	/* Hydration Systems (Figma 1:2260) — tablet */
+	.htoeau-hydration-systems__inner {
+		gap: 40px;
+	}
+
+	.htoeau-hydration-systems__heading {
+		font-size: 36px;
+		letter-spacing: -0.72px;
+	}
+
+	.htoeau-hydration-systems__grid {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.htoeau-hydration-systems__card {
+		flex: 1 1 auto;
+		max-width: none;
+		min-height: 0;
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.htoeau-hydration-systems__media {
+		height: 200px;
+		max-width: 280px;
+		margin-inline: auto;
+	}
+
+	.htoeau-hydration-systems__body {
+		flex: 1 1 auto;
+		max-width: none;
+	}
+
+	.htoeau-hydration-systems .htoeau-btn.htoeau-hydration-systems__cta {
+		max-width: none;
+	}
+
+	/* Community: beat Elementor section padding between tablet and mobile breakpoints */
+	body.elementor-page .elementor-element.elementor-widget-htoeau_community_testimonials .htoeau-community {
+		padding: 72px 48px !important;
+	}
+
+	.htoeau-community__swiper .swiper-slide {
+		width: min(315px, 82vw);
+	}
+
+	.htoeau-community__card {
+		max-width: min(315px, 82vw);
+	}
+
+	.htoeau-community__media {
+		height: min(490px, 70vw);
+	}
+
+	.htoeau-community__next {
+		top: min(200px, 35vw);
+		width: 56px;
+		height: 56px;
+		right: 8px;
+	}
+
+	.htoeau-community__fade {
+		width: min(120px, 22vw);
+	}
+
+	.htoeau-news-footer .n1 {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.htoeau-news-footer__mid {
+		flex-direction: column;
+		align-items: stretch;
+		gap: 40px;
+	}
+
+	.htoeau-news-footer__brand-col {
+		max-width: 100%;
+	}
+
+	.htoeau-news-footer__links-col {
+		align-items: flex-start;
+		width: 100%;
+	}
+
+	.htoeau-news-footer__nav {
+		justify-content: flex-start;
+	}
+
+	.htoeau-news-footer input {
+		width: 100%;
+	}
+}
+
+/* 640–1320: Hydrogenate + Sample kit — fluid 2-col (730px etc. were stacking because ≤767 mobile matched) */
+@media (min-width: 640px) and (max-width: 1320px) {
+	.htoeau-hydrogenate {
+		padding-left: clamp(28px, 5vw, 104px);
+		padding-right: clamp(28px, 5vw, 104px);
+	}
+
+	.htoeau-hydrogenate__inner {
+		gap: clamp(24px, 5vw, 120px);
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+	}
+
+	.htoeau-hydrogenate__visual {
+		max-width: min(652px, 100%);
+	}
+
+	.htoeau-hydrogenate__item-text {
+		white-space: normal;
+	}
+
+	.htoeau-sample-kit {
+		padding-left: clamp(28px, 4vw, 172px);
+		padding-right: clamp(28px, 4vw, 172px);
+	}
+
+	.htoeau-sample-kit__inner:not(.htoeau-sample-kit__inner--text-only) {
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+		gap: clamp(24px, 3vw, 43px);
+	}
+}
+
+/* About physics: 2-col text column from tablet width up */
+@media (min-width: 768px) and (max-width: 1320px) {
+	.htoeau-about-physics__inner {
+		grid-template-columns: minmax(0, 1fr) minmax(240px, min(608px, 50vw));
+		column-gap: clamp(16px, 3vw, 48px);
+	}
+}
+
+/* ==========================================================================
+   Mobile Responsive — Figma 86:622 (Home Page Mobile, 390px)
+   Source: https://www.figma.com/design/FcOeKFswrs0fJXLmrEvev6/Untitled?node-id=86-622
+   Covers all widgets at ≤767px.
+   ========================================================================== */
+
+@media (max-width: 767px) {
+
+	/* Elementor post-*.css — full padding on key sections (mobile) */
+	body.elementor-page .elementor-element.elementor-widget-htoeau_hero .htoeau-hero {
+		padding: 30px max(20px, env(safe-area-inset-right, 0px)) 50px max(20px, env(safe-area-inset-left, 0px)) !important;
+	}
+
+	body.elementor-page .elementor-element.elementor-widget-htoeau_spotlight_testimonial .htoeau-spotlight {
+		padding: 48px 20px !important;
+	}
+
+	body.elementor-page .elementor-element.elementor-widget-htoeau_product_showcase .htoeau-product-showcase {
+		padding: 50px 20px !important;
+	}
+
+	body.elementor-page .elementor-element.elementor-widget-htoeau_transformation_steps .htoeau-transformation {
+		padding: 50px 20px !important;
+	}
+
+	body.elementor-page .elementor-element.elementor-widget-htoeau_trust_strip .htoeau-trust-strip {
+		padding: 12px 20px !important;
+	}
+
+	body.elementor-page .elementor-element.elementor-widget-htoeau_hydrogen_apart .htoeau-hydrogen-apart {
+		padding: 48px 20px !important;
+	}
+
+	body.elementor-page .elementor-element.elementor-widget-htoeau_engineered_perform .htoeau-engineered {
+		padding: 50px 20px 390px !important;
+	}
+
+	body.elementor-page .elementor-element.elementor-widget-htoeau_hydration_systems .htoeau-hydration-systems {
+		padding: 50px 20px !important;
+	}
+
+	body.elementor-page .elementor-element.elementor-widget-htoeau_faq_accordion .htoeau-faq {
+		padding: 50px 20px !important;
+	}
+
+	/*
+	 * Engineered to Perform — Figma 1:1493 (mobile)
+	 * Frame: pt 50 / px 20 / pb 390; heading ↔ list gap 30; list rows gap 24;
+	 * each row: icon 44², inner gap 16; title 24 Regular #002c41 @ 30%; body 14 Regular full navy.
+	 * Photo is position:absolute — reserve flow space so copy never meets the splash (Figma % alone can collide).
+	 */
+	body:not(.elementor-page) .htoeau-engineered {
+		padding: 50px 20px 390px;
+		box-sizing: border-box;
+	}
+
+	.htoeau-engineered__inner {
+		grid-template-columns: 1fr;
+		column-gap: 0;
+		row-gap: 30px;
+		justify-items: center;
+		width: 100%;
+		/* Air between last feature line and hero crop (absolute photo ignores document flow) */
+		padding-bottom: clamp(48px, 14vw, 80px);
+	}
+
+	.htoeau-engineered__heading {
+		font-size: 32px;
+		font-weight: 300;
+		line-height: 1;
+		letter-spacing: -0.64px;
+	}
+
+	.htoeau-engineered__column {
+		grid-column: 1;
+		align-items: center;
+		gap: 24px;
+		width: 100%;
+		max-width: 100%;
+	}
+
+	.htoeau-engineered__row {
+		flex-direction: column;
+		align-items: center;
+		gap: 16px;
+		width: 100%;
+		max-width: 100%;
+	}
+
+	.htoeau-engineered__icon {
+		width: 44px;
+		height: 44px;
+	}
+
+	.htoeau-engineered__body {
+		align-items: center;
+		text-align: center;
+		gap: 16px;
+		width: 100%;
+		min-width: 0;
+	}
+
+	.htoeau-engineered__label {
+		font-size: 24px;
+		font-weight: 400;
+		line-height: 1.3;
+		letter-spacing: -0.24px;
+		text-align: center;
+		color: rgba(0, 44, 65, 0.3);
+	}
+
+	.htoeau-engineered__desc {
+		text-align: center;
+		line-height: 1.3;
+	}
+
+	.htoeau-engineered__fade {
+		background: linear-gradient(
+			to top,
+			rgba(255, 255, 255, 0) 10.638%,
+			#ffffff 38.154%,
+			#ffffff 100%
+		);
+	}
+
+	/* Centered crop; top nudged below Figma 57.75% so glass sits under the reserved gap */
+	.htoeau-engineered__photo {
+		left: 50%;
+		transform: translateX(-50%);
+		top: 64%;
+		width: 158.76%;
+		height: 62.29%;
+		object-position: center 72%;
+	}
+
+	.htoeau-hydration-systems__inner {
+		gap: 32px;
+	}
+
+	.htoeau-hydration-systems__heading {
+		font-size: 28px;
+		letter-spacing: -0.56px;
+	}
+
+	.htoeau-hydration-systems__card {
+		padding: 24px 20px;
+		gap: 20px;
+	}
+
+	.htoeau-hydration-systems__body {
+		gap: 18px;
+	}
+
+	.htoeau-hydration-systems__title {
+		font-size: 20px;
+		letter-spacing: -0.4px;
+	}
+
+	.htoeau-hydration-systems .htoeau-btn.htoeau-hydration-systems__cta {
+		padding-left: 32px;
+		padding-right: 32px;
+		white-space: normal;
+	}
+
+	/* --- Hydrogen Apart (Figma 1:2046) — single column cards on small screens --- */
+	.htoeau-hydrogen-apart__inner {
+		gap: 40px;
+	}
+
+	.htoeau-hydrogen-apart__heading {
+		font-size: 28px;
+		letter-spacing: -0.56px;
+	}
+
+	.htoeau-hydrogen-apart__grid {
+		grid-template-columns: 1fr;
+	}
+
+	.htoeau-hydrogen-apart__card {
+		padding: 28px 24px;
+	}
+
+	.htoeau-hydrogen-apart__card-title {
+		font-size: 20px;
+		letter-spacing: -0.2px;
+	}
+
+	.htoeau-hydrogen-apart__scene {
+		top: 2%;
+		width: min(185%, 1200px);
+		height: min(58%, 480px);
+		min-height: 260px;
+		object-position: 50% 52%;
+		opacity: 0.82;
+	}
+
+	/* --- Header (Figma 86:623–637); ≤1024 already sets py 16 / min-height 56 --- */
+	.htoeau-header__announce {
+		padding: 11px max(20px, env(safe-area-inset-right, 0px)) 11px max(20px, env(safe-area-inset-left, 0px));
+	}
+
+	.htoeau-header__inner {
+		padding: 16px max(20px, env(safe-area-inset-right, 0px)) 16px max(20px, env(safe-area-inset-left, 0px));
+	}
+
+	.htoeau-header__main {
+		min-height: 56px;
+	}
+
+	.htoeau-header__logo img {
+		height: 24px;
+	}
+
+	.htoeau-header__trust {
+		padding: 16px max(20px, env(safe-area-inset-right, 0px)) 16px max(20px, env(safe-area-inset-left, 0px));
+	}
+
+	.htoeau-header__trust-item {
+		font-size: 14px;
+	}
+
+	/* --- Spotlight testimonial --- */
+	.htoeau-spotlight {
+		padding: 48px 20px;
+	}
+
+	.htoeau-spotlight__inner {
+		gap: 16px;
+	}
+
+	.htoeau-spotlight__content {
+		gap: 24px;
+	}
+
+	.htoeau-spotlight__slide {
+		gap: 20px;
+	}
+
+	.htoeau-spotlight__slides {
+		/* Narrower column: allow up to 5 lines @ 24px + gap + author */
+		min-height: calc(5 * 24px + 20px + 1.4 * 14px);
+	}
+
+	.htoeau-spotlight__quote {
+		font-size: 24px;
+		letter-spacing: -0.48px;
+	}
+
+	.htoeau-spotlight__arrow {
+		width: 41px;
+		height: 41px;
+		min-width: 41px;
+	}
+
+	.htoeau-spotlight__arrow svg {
+		width: 18px;
+		height: 18px;
+	}
+
+	.htoeau-spotlight__avatars {
+		gap: 10px;
+	}
+
+	.htoeau-spotlight__avatar {
+		width: 36px;
+		height: 36px;
+	}
+
+	.htoeau-spotlight__avatar--active {
+		width: 44px;
+		height: 44px;
+	}
+
+	/* --- Product Showcase --- */
+	.htoeau-product-showcase {
+		padding: 50px 20px;
+	}
+
+	.htoeau-product-showcase__inner {
+		gap: 30px;
+	}
+
+	.htoeau-product-showcase__card {
+		padding: 24px 10px 20px;
+	}
+
+	.htoeau-product-showcase__card-body {
+		gap: 16px;
+		margin-top: 16px;
+		max-width: 100%;
+		align-items: center;
+	}
+
+	.htoeau-product-showcase__card-title {
+		font-size: 20px;
+		letter-spacing: -0.4px;
+		text-align: center;
+	}
+
+	.htoeau-product-showcase__card-desc {
+		text-align: center;
+	}
+
+	.htoeau-product-showcase__card-rating {
+		justify-content: center;
+	}
+
+	.htoeau-product-showcase__card-price {
+		text-align: center;
+	}
+
+	.htoeau-product-showcase .htoeau-btn.htoeau-product-showcase__card-btn {
+		width: 100%;
+		max-width: 100%;
+		margin-top: 16px;
+	}
+
+	/* --- Transformation Steps --- */
+	.htoeau-transformation {
+		padding: 50px 20px;
+	}
+
+	.htoeau-transformation__header {
+		gap: 20px;
+		margin-bottom: 30px;
+	}
+
+	.htoeau-transformation__title {
+		font-size: 32px;
+		letter-spacing: -0.64px;
+	}
+
+	.htoeau-transformation__steps {
+		gap: 20px;
+		max-width: 100%;
+	}
+
+	.htoeau-transformation__panel--wide {
+		min-height: auto;
+		padding: 40px 20px;
+	}
+
+	.htoeau-transformation__wide-heading {
+		font-size: 24px;
+		letter-spacing: -0.48px;
+	}
+
+	.htoeau-transformation__wide-desc {
+		font-size: 14px;
+		letter-spacing: -0.28px;
+	}
+
+	.htoeau-transformation__badge--large {
+		width: 52px;
+		height: 52px;
+		margin-bottom: 20px;
+	}
+
+	.htoeau-transformation__badge--large .htoeau-transformation__badge-num {
+		font-size: 34.667px;
+		letter-spacing: -0.69px;
+	}
+
+	.htoeau-transformation__panel--narrow {
+		min-height: auto;
+		padding: 40px 20px;
+	}
+
+	/* --- Science Features — Figma 86:820 (mobile stack under 86:622) --- */
+	/*
+	 * Elementor post-*.css outputs e.g. .elementor-42 .elementor-element-XXX .htoeau-science { padding: 95px 172px }
+	 * with higher specificity than bare .htoeau-science — must win on small screens.
+	 */
+	body.elementor-page .elementor-element.elementor-widget-htoeau_science_features .htoeau-science {
+		padding: 50px 20px !important;
+	}
+
+	.htoeau-science__inner {
+		gap: 30px;
+	}
+
+	.htoeau-science__title {
+		font-size: 32px;
+		line-height: 1;
+		letter-spacing: -0.64px;
+		max-width: 370px;
+		margin-inline: auto;
+	}
+
+	.htoeau-science__grid {
+		gap: 19px;
+		width: 100%;
+	}
+
+	.htoeau-science__card {
+		padding: 24px 20px;
+		gap: 24px;
+	}
+
+	.htoeau-science__card-main {
+		gap: 24px;
+	}
+
+	.htoeau-science__card-lead {
+		gap: 20px;
+	}
+
+	.htoeau-science__card-title {
+		font-size: 24px;
+		letter-spacing: -0.24px;
+		line-height: 1.2;
+	}
+
+	.htoeau-science__eyebrow {
+		font-size: 12px;
+		line-height: 1.3;
+		letter-spacing: -0.12px;
+	}
+
+	.htoeau-science__bullets {
+		max-width: none;
+	}
+
+	.htoeau-science__bullet {
+		gap: 12px;
+		align-items: center;
+	}
+
+	.htoeau-science__bullet .htoeau-check-icon {
+		width: 24px !important;
+		height: 24px !important;
+		flex-shrink: 0;
+	}
+
+	.htoeau-science__bullet .htoeau-check-icon svg {
+		width: 24px;
+		height: 24px;
+	}
+
+	.htoeau-science__card--wide {
+		padding: 24px 20px;
+		gap: 24px;
+	}
+
+	/* Figma 86:884: copy → bullets → CTA (markup has CTA inside .wide-left before .wide-right) */
+	.htoeau-science__card--wide .htoeau-science__wide-left {
+		display: contents;
+	}
+
+	.htoeau-science__card--wide .htoeau-science__card-lead {
+		order: 1;
+	}
+
+	.htoeau-science__card--wide .htoeau-science__wide-right {
+		order: 2;
+		width: 100%;
+	}
+
+	.htoeau-science__card--wide .htoeau-science__card-cta {
+		order: 3;
+		width: 100%;
+	}
+
+	.htoeau-science__wide-left {
+		gap: 24px;
+	}
+
+	.htoeau-science__wide-right .htoeau-science__bullets {
+		gap: 16px;
+	}
+
+	/* Full-width CTAs: desktop96px horizontal padding forces wrap + fixed btn height clipped text */
+	.htoeau-science .htoeau-btn.htoeau-science__btn,
+	.htoeau-science .htoeau-btn.htoeau-science__btn--narrow {
+		padding: 13px 24px;
+		white-space: normal;
+		text-align: center;
+	}
+
+	.htoeau-science .htoeau-btn.htoeau-science__btn--narrow {
+		max-width: none;
+		width: 100%;
+		align-self: stretch;
+	}
+
+	/* --- Research Showcase — Figma 86:916; beat Elementor post-*.css section padding --- */
+	body.elementor-page .elementor-element.elementor-widget-htoeau_research_showcase .htoeau-research {
+		padding: 50px 20px !important;
+	}
+
+	.htoeau-research__inner {
+		gap: 30px;
+	}
+
+	.htoeau-research__visual-img {
+		max-width: 254px;
+	}
+
+	.htoeau-research__point {
+		gap: 16px;
+	}
+
+	/* --- About Physics — beat Elementor post-*.css (e.g. 120px 104px) --- */
+	body.elementor-page .elementor-element.elementor-widget-htoeau_about_physics .htoeau-about-physics {
+		min-height: auto;
+		padding: 50px 20px 320px !important;
+	}
+
+	.htoeau-about-physics__inner {
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		column-gap: 0;
+	}
+
+	.htoeau-about-physics__stack {
+		grid-column: auto;
+		justify-self: stretch;
+		max-width: none;
+		width: 100%;
+	}
+
+	.htoeau-about-physics__overlay {
+		background: linear-gradient(to bottom, #016b9f 38.205%, rgba(0, 143, 163, 0) 69.693%);
+	}
+
+	.htoeau-about-physics__bg {
+		width: 175.75%;
+		height: auto !important;
+		left: -19.11%;
+		top: auto;
+		bottom: 0;
+	}
+
+	.htoeau-about-physics__title {
+		font-size: 32px;
+		letter-spacing: -0.64px;
+	}
+
+	.htoeau-about-physics__intro-p {
+		font-size: 16px;
+		letter-spacing: -0.16px;
+	}
+
+	.htoeau-about-physics .htoeau-btn.htoeau-about-physics__cta {
+		width: 345px;
+	}
+
+	/* --- Professor Study — beat Elementor post-*.css (e.g. 120px 104px) --- */
+	body.elementor-page .elementor-element.elementor-widget-htoeau_professor_study .htoeau-professor-study {
+		min-height: auto;
+		padding: 50px 20px 360px !important;
+	}
+
+	.htoeau-professor-study__visual-grad {
+		background: linear-gradient(to bottom, var(--htoeau-dark-teal) 38.747%, rgba(5, 91, 101, 0) 66.826%);
+	}
+
+	.htoeau-professor-study__img--back,
+	.htoeau-professor-study__img--front {
+		right: auto;
+		left: 0;
+		top: auto;
+		bottom: 0;
+		transform: none;
+		width: 100%;
+		min-width: 0;
+		max-height: none;
+	}
+
+	.htoeau-professor-study__inner {
+		gap: 24px;
+		max-width: none;
+		width: 100%;
+	}
+
+	.htoeau-professor-study__title {
+		font-size: 32px;
+		letter-spacing: -0.64px;
+	}
+
+	.htoeau-professor-study__intro {
+		font-size: 16px;
+		letter-spacing: -0.16px;
+	}
+
+	.htoeau-professor-study__desc {
+		font-size: 14px;
+		letter-spacing: -0.14px;
+	}
+
+	.htoeau-professor-study .htoeau-btn.htoeau-professor-study__cta {
+		width: 345px;
+	}
+
+	/* --- Trust Strip (marquee) --- */
+	.htoeau-trust-strip {
+		padding: 12px 20px;
+	}
+
+	/* --- Community — beat Elementor post-*.css (e.g. 120px 172px) --- */
+	body.elementor-page .elementor-element.elementor-widget-htoeau_community_testimonials .htoeau-community {
+		padding: 50px 20px !important;
+		gap: 30px;
+	}
+
+	.htoeau-community__head {
+		gap: 20px;
+	}
+
+	.htoeau-community__title {
+		font-size: 32px;
+		letter-spacing: -0.64px;
+	}
+
+	.htoeau-community__intro {
+		font-size: 16px;
+	}
+
+	.htoeau-community__swiper .swiper-slide {
+		width: 296px;
+	}
+
+	.htoeau-community__card {
+		max-width: 296px;
+		gap: 24px;
+	}
+
+	.htoeau-community__media {
+		height: 460px;
+	}
+
+	.htoeau-community__quote {
+		font-size: 24px;
+		letter-spacing: -0.24px;
+	}
+
+	.htoeau-community__body {
+		gap: 20px;
+	}
+
+	/* --- FAQ Accordion --- */
+	.htoeau-faq {
+		padding: 50px 20px;
+		gap: 30px;
+	}
+
+	.htoeau-faq__head {
+		gap: 20px;
+		max-width: 100%;
+	}
+
+	.htoeau-faq__list {
+		display: flex;
+		flex-direction: column;
+		max-width: 100%;
+	}
+
+	.htoeau-faq__title {
+		font-size: 32px;
+		letter-spacing: -0.64px;
+	}
+
+	.htoeau-faq__item {
+		padding: 20px;
+	}
+
+	.htoeau-faq__q {
+		font-size: 18px;
+		letter-spacing: -0.36px;
+	}
+
+	.htoeau-faq__answer {
+		font-size: 14px;
+		letter-spacing: -0.28px;
+	}
+
+	/* --- Newsletter Footer — Figma 86:1196 --- */
+	.htoeau-news-footer {
+		padding: 40px 20px 24px;
+		gap: 32px;
+	}
+
+	.htoeau-news-footer .n1 {
+		flex-direction: column;
+		align-items: stretch;
+		gap: 16px;
+	}
+
+	.htoeau-news-footer .n3 {
+		flex-direction: column-reverse;
+		align-items: flex-start;
+		gap: 20px;
+	}
+
+	.htoeau-news-footer h3 {
+		font-size: 20px;
+		letter-spacing: -0.4px;
+	}
+
+	.htoeau-news-footer .n1 p,
+	.htoeau-news-footer .htoeau-news-footer__intro p {
+		font-size: 14px;
+		letter-spacing: -0.28px;
+	}
+
+	.htoeau-news-footer .f {
+		width: 100%;
+		justify-content: flex-end;
+	}
+
+	.htoeau-news-footer input {
+		flex: 1;
+		min-width: 0;
+	}
+
+	/* Figma 86:1196 — stacked links, not horizontal row */
+	.htoeau-news-footer__nav {
+		flex-direction: column;
+		align-items: flex-start;
+		justify-content: flex-start;
+		gap: 20px;
+	}
+
+	.htoeau-news-footer__nav a {
+		font-size: 14px;
+		letter-spacing: -0.28px;
+		white-space: normal;
+	}
+
+	.htoeau-news-footer__bottom {
+		gap: 32px;
+	}
+
+	.htoeau-news-footer__legal {
+		flex-wrap: wrap;
+		gap: 16px;
+	}
+
+	.htoeau-news-footer__legal a {
+		font-size: 12px;
+		letter-spacing: -0.24px;
+		white-space: nowrap;
+	}
+
+	.htoeau-news-footer__copyright {
+		font-size: 12px;
+		letter-spacing: -0.24px;
+	}
+}
+
+/* Hydrogenate Hero — mobile stack + visual (no clip box on cans) */
+@media (max-width: 767px) {
+	.htoeau-hydrogenate {
+		padding: 50px 20px 0;
+	}
+
+	.htoeau-hydrogenate__inner {
+		grid-template-columns: 1fr;
+		grid-template-areas:
+			'content'
+			'visual';
+		gap: 20px;
+	}
+
+	.htoeau-hydrogenate__content {
+		padding-bottom: 20px;
+		gap: 24px;
+	}
+
+	.htoeau-hydrogenate__title {
+		font-size: 32px;
+		letter-spacing: -0.64px;
+	}
+
+	.htoeau-hydrogenate__lead {
+		font-size: 16px;
+	}
+
+	.htoeau-hydrogenate__cta.htoeau-btn {
+		width: 100%;
+	}
+
+	.htoeau-hydrogenate__visual {
+		max-width: 100%;
+	}
+
+	.htoeau-hydrogenate__img {
+		max-height: none;
+		object-position: center top;
+	}
+}
+
+/*
+ * Sample kit — stack only on narrow phones (≤639px).
+ */
+@media (max-width: 639px) {
+	body.elementor-page .elementor-element.elementor-widget-htoeau_sample_kit_cta .htoeau-sample-kit {
+		padding: 50px 20px !important;
+	}
+
+	.htoeau-sample-kit__inner {
+		grid-template-columns: 1fr;
+		gap: 32px;
+		width: 100%;
+	}
+
+	.htoeau-sample-kit__title {
+		font-size: 32px;
+		letter-spacing: -0.64px;
+		max-width: 100%;
+	}
+
+	.htoeau-sample-kit__feature span {
+		white-space: normal;
+	}
+
+	.htoeau-sample-kit .htoeau-btn.htoeau-sample-kit__cta {
+		width: 100%;
+		white-space: normal;
+		text-align: center;
+		padding-left: 24px;
+		padding-right: 24px;
+	}
+
+	.htoeau-sample-kit__content {
+		gap: 24px;
+	}
+
+	.htoeau-sample-kit__copy-p {
+		font-size: 16px;
+	}
+}
+
+
+/* ==========================================================================
+   Transformation B section — three expanding panels (PDP-style)
+   Reused by Elementor widget via .htoeau-transform markup.
+   ========================================================================== */
+
+.htoeau-transform {
+	background: var(--htoeau-off-white);
+	padding: 96px 104px;
+	font-family: var(--htoeau-font);
+	color: var(--htoeau-navy);
+}
+
+.htoeau-transform__inner {
+	max-width: 1232px;
+	margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 56px;
+}
+
+.htoeau-transform__header {
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	gap: 34px;
+	max-width: 100%;
+}
+
+.htoeau-transform__title {
+	margin: 0;
+	font-size: 46px;
+	font-weight: 300;
+	line-height: 1;
+	letter-spacing: -0.92px;
+}
+
+.htoeau-transform__subtitle {
+	margin: 0;
+	font-size: 16px;
+	line-height: 1.3;
+	letter-spacing: -0.16px;
+}
+
+.htoeau-transform__panels {
+	display: flex;
+	flex-direction: row;
+	align-items: stretch;
+	justify-content: space-between;
+	gap: 16px;
+	width: 100%;
+	min-height: 560px;
+}
+
+.htoeau-transform__panel {
+	position: relative;
+	border: none;
+	padding: 0;
+	cursor: pointer;
+	border-radius: var(--htoeau-radius-img);
+	overflow: hidden;
+	flex: 0 0 88px;
+	min-height: 560px;
+	transition: flex-grow 0.45s ease, flex-basis 0.45s ease;
+	text-align: center;
+	color: var(--htoeau-white);
+	background: transparent !important;
+	outline: none !important;
+	-webkit-tap-highlight-color: transparent;
+	/* Theme / Woo global `button { white-space: nowrap }` would block wrapping for panel copy */
+	white-space: normal !important;
+}
+
+.htoeau-transform__panel.is-active {
+	flex: 1 1 1024px;
+	max-width: 1024px;
+}
+
+.htoeau-transform__panel:hover,
+.htoeau-transform__panel:active,
+.htoeau-transform__panel:focus {
+	background: transparent !important;
+	color: var(--htoeau-white);
+}
+
+.htoeau-transform__panel:focus-visible {
+	outline: 2px solid var(--htoeau-cyan);
+	outline-offset: 3px;
+}
+
+.htoeau-transform__panel-bg {
+	position: absolute;
+	inset: 0;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.htoeau-transform__overlay {
+	position: absolute;
+	inset: 0;
+	background: rgba(1, 114, 160, 0.5);
+	pointer-events: none;
+}
+
+.htoeau-transform__panel.is-active .htoeau-transform__overlay {
+	background: transparent;
+}
+
+.htoeau-transform__panel-content {
+	position: relative;
+	z-index: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	min-height: 560px;
+	padding: 24px;
+	gap: 16px;
+}
+
+/* Expanded step — spacing between badge, title, and body. */
+.htoeau-transform__panel.is-active .htoeau-transform__panel-content {
+	gap: 24px;
+}
+
+.htoeau-transform__panel:not(.is-active) .htoeau-transform__panel-content {
+	justify-content: space-between;
+	padding-top: 48px;
+	padding-bottom: 32px;
+}
+
+.htoeau-transform__num-wrap {
+	position: relative;
+	width: 72px;
+	height: 72px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.15);
+	border: 1px solid rgba(248, 248, 248, 0.8);
+}
+
+.htoeau-transform__panel:not(.is-active) .htoeau-transform__num-wrap {
+	width: 56px;
+	height: 56px;
+	margin-bottom: 32px;
+}
+
+.htoeau-transform__num-ring {
+	position: absolute;
+	inset: 0;
+	width: 100% !important;
+	height: 100% !important;
+	object-fit: contain;
+}
+
+.htoeau-transform__num {
+	position: relative;
+	z-index: 1;
+	font-size: 48px;
+	font-weight: 500;
+	line-height: 1;
+	letter-spacing: -0.96px;
+	color: var(--htoeau-off-white);
+}
+
+.htoeau-transform__panel:not(.is-active) .htoeau-transform__num {
+	font-size: 32px;
+	font-weight: 600;
+	letter-spacing: -0.64px;
+}
+
+.htoeau-transform__panel-title {
+	font-weight: 500;
+	line-height: 1;
+	letter-spacing: -0.64px;
+}
+
+.htoeau-transform__panel.is-active .htoeau-transform__panel-title {
+	font-size: 32px;
+	white-space: normal;
+}
+
+.htoeau-transform__panel:not(.is-active) .htoeau-transform__panel-title {
+	font-size: 24px;
+	writing-mode: vertical-rl;
+	transform: rotate(180deg);
+	max-height: 280px;
+	text-align: center;
+	white-space: nowrap;
+	line-height: 1;
+}
+
+.htoeau-transform__panel-desc {
+	font-family: 'Roboto', sans-serif;
+	font-size: 16px;
+	line-height: 1.2;
+	letter-spacing: -0.32px;
+	max-width: 580px;
+	text-align: center;
+	white-space: normal !important;
+}
+
+.htoeau-transform__panel:not(.is-active) .htoeau-transform__panel-desc {
+	display: none;
+}
+
+@media screen and (max-width: 900px) {
+	.htoeau-transform {
+		padding: 64px 24px;
+	}
+
+	.htoeau-transform__title {
+		font-size: 32px;
+		letter-spacing: -0.64px;
+	}
+
+	.htoeau-transform__panels {
+		flex-direction: column;
+		min-height: 0;
+	}
+
+	.htoeau-transform__panel,
+	.htoeau-transform__panel.is-active {
+		flex: none;
+		width: 100%;
+		min-height: 320px;
+		max-width: 100%;
+	}
+
+	.htoeau-transform__panel-content {
+		min-height: 320px;
+	}
+
+	.htoeau-transform__panel:not(.is-active) .htoeau-transform__panel-title {
+		writing-mode: horizontal-tb;
+		transform: none;
+		max-height: none;
+		font-size: 20px;
+	}
+
+	.htoeau-transform__panel:not(.is-active) .htoeau-transform__panel-content {
+		justify-content: center;
+		padding: 24px;
+		gap: 12px;
+	}
+}
