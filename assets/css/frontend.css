@@ -4788,7 +4788,7 @@ body[class*="elementor-kit-"] .htoeau-spotlight button.htoeau-spotlight__arrow:a
 	}
 
 	body.elementor-page .elementor-element.elementor-widget-htoeau_engineered_perform .htoeau-engineered {
-		padding: 50px 20px 480px !important;
+		padding: 50px 20px 560px !important;
 	}
 
 	body.elementor-page .elementor-element.elementor-widget-htoeau_hydration_systems .htoeau-hydration-systems {
@@ -4806,7 +4806,7 @@ body[class*="elementor-kit-"] .htoeau-spotlight button.htoeau-spotlight__arrow:a
 	 * Photo is position:absolute — reserve flow space so copy never meets the splash (Figma % alone can collide).
 	 */
 	body:not(.elementor-page) .htoeau-engineered {
-		padding: 50px 20px 480px;
+		padding: 50px 20px 560px;
 		box-sizing: border-box;
 	}
 
@@ -4817,7 +4817,7 @@ body[class*="elementor-kit-"] .htoeau-spotlight button.htoeau-spotlight__arrow:a
 		justify-items: center;
 		width: 100%;
 		/* Air between last feature line and hero crop (absolute photo ignores document flow) */
-		padding-bottom: clamp(72px, 18vw, 120px);
+		padding-bottom: clamp(120px, 26vw, 180px);
 	}
 
 	.htoeau-engineered__heading {
@@ -4883,10 +4883,10 @@ body[class*="elementor-kit-"] .htoeau-spotlight button.htoeau-spotlight__arrow:a
 	.htoeau-engineered__photo {
 		left: 50%;
 		transform: translateX(-50%);
-		top: 72%;
+		top: 78%;
 		width: 158.76%;
-		height: 62.29%;
-		object-position: center 72%;
+		height: 56%;
+		object-position: center 78%;
 	}
 
 	.htoeau-hydration-systems__inner {
@@ -4978,53 +4978,69 @@ body[class*="elementor-kit-"] .htoeau-spotlight button.htoeau-spotlight__arrow:a
 	/* --- Spotlight testimonial --- */
 	.htoeau-spotlight {
 		padding: 48px 20px;
+		background: var(--htoeau-white);
 	}
 
 	.htoeau-spotlight__inner {
-		gap: 16px;
+		gap: 0;
+		justify-content: center;
 	}
 
 	.htoeau-spotlight__content {
-		gap: 24px;
+		gap: 29px;
+		position: relative;
+		max-width: 350px;
 	}
 
 	.htoeau-spotlight__slide {
-		gap: 20px;
+		gap: 24px;
 	}
 
 	.htoeau-spotlight__slides {
-		/* Narrower column: allow up to 5 lines @ 24px + gap + author */
-		min-height: calc(5 * 24px + 20px + 1.4 * 14px);
+		min-height: calc(214px + 24px + 1.4 * 14px);
 	}
 
 	.htoeau-spotlight__quote {
-		font-size: 24px;
-		letter-spacing: -0.48px;
+		font-size: 32px;
+		letter-spacing: -0.64px;
 	}
 
 	.htoeau-spotlight__arrow {
-		width: 41px;
-		height: 41px;
-		min-width: 41px;
+		width: 40.981px;
+		height: 40.981px;
+		min-width: 40.981px;
+		position: absolute;
+		bottom: 7.58px;
+		z-index: 2;
+	}
+
+	.htoeau-spotlight__arrow--prev {
+		left: 0;
+	}
+
+	.htoeau-spotlight__arrow--next {
+		right: 0;
 	}
 
 	.htoeau-spotlight__arrow svg {
-		width: 18px;
-		height: 18px;
+		width: 14.464px;
+		height: 14.464px;
 	}
 
 	.htoeau-spotlight__avatars {
-		gap: 10px;
+		gap: 12px;
+		width: 227.146px;
+		margin-inline: auto;
 	}
 
 	.htoeau-spotlight__avatar {
-		width: 36px;
-		height: 36px;
+		width: 45px;
+		height: 45px;
 	}
 
 	.htoeau-spotlight__avatar--active {
-		width: 44px;
-		height: 44px;
+		width: 56.146px;
+		height: 56.146px;
 	}
 
 	/* --- Product Showcase --- */
