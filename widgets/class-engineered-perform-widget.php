@@ -168,7 +168,12 @@ class Engineered_Perform_Widget extends Widget_Base {
 
 		$heading = isset( $s['heading'] ) ? (string) $s['heading'] : '';
 		$rows    = isset( $s['rows'] ) && is_array( $s['rows'] ) ? $s['rows'] : [];
+		$widget_id = $this->get_id();
 		?>
+		<style>
+		@media(max-width:1024px){.elementor-element-<?php echo esc_attr( $widget_id ); ?> .htoeau-engineered{padding:72px 48px!important}}
+		@media(max-width:767px){.elementor-element-<?php echo esc_attr( $widget_id ); ?> .htoeau-engineered{padding:50px 20px 338px!important}}
+		</style>
 		<section class="htoeau-engineered">
 			<div class="htoeau-engineered__layers" aria-hidden="true">
 				<div class="htoeau-engineered__bg"></div>
