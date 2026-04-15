@@ -4788,7 +4788,7 @@ body[class*="elementor-kit-"] .htoeau-spotlight button.htoeau-spotlight__arrow:a
 	}
 
 	body.elementor-page .elementor-element.elementor-widget-htoeau_engineered_perform .htoeau-engineered {
-		padding: 50px 20px 390px !important;
+		padding: 50px 20px 480px !important;
 	}
 
 	body.elementor-page .elementor-element.elementor-widget-htoeau_hydration_systems .htoeau-hydration-systems {
@@ -4806,7 +4806,7 @@ body[class*="elementor-kit-"] .htoeau-spotlight button.htoeau-spotlight__arrow:a
 	 * Photo is position:absolute — reserve flow space so copy never meets the splash (Figma % alone can collide).
 	 */
 	body:not(.elementor-page) .htoeau-engineered {
-		padding: 50px 20px 390px;
+		padding: 50px 20px 480px;
 		box-sizing: border-box;
 	}
 
@@ -4817,7 +4817,7 @@ body[class*="elementor-kit-"] .htoeau-spotlight button.htoeau-spotlight__arrow:a
 		justify-items: center;
 		width: 100%;
 		/* Air between last feature line and hero crop (absolute photo ignores document flow) */
-		padding-bottom: clamp(48px, 14vw, 80px);
+		padding-bottom: clamp(72px, 18vw, 120px);
 	}
 
 	.htoeau-engineered__heading {
@@ -4879,11 +4879,11 @@ body[class*="elementor-kit-"] .htoeau-spotlight button.htoeau-spotlight__arrow:a
 		);
 	}
 
-	/* Centered crop; top nudged below Figma 57.75% so glass sits under the reserved gap */
+	/* Keep the glass anchored lower so the last row never overlaps the image area. */
 	.htoeau-engineered__photo {
 		left: 50%;
 		transform: translateX(-50%);
-		top: 64%;
+		top: 72%;
 		width: 158.76%;
 		height: 62.29%;
 		object-position: center 72%;
@@ -5837,5 +5837,105 @@ body[class*="elementor-kit-"] .htoeau-spotlight button.htoeau-spotlight__arrow:a
 		justify-content: center;
 		padding: 24px;
 		gap: 12px;
+	}
+}
+
+/* Figma 1:1423 mobile stack (390px): exact spacing/typography for transformation cards. */
+@media screen and (max-width: 767px) {
+	.htoeau-transform {
+		padding: 50px 20px;
+	}
+
+	.htoeau-transform__inner {
+		gap: 30px;
+		max-width: 350px;
+	}
+
+	.htoeau-transform__header {
+		gap: 20px;
+		width: 100%;
+	}
+
+	.htoeau-transform__title {
+		font-size: 32px;
+		line-height: 1;
+		letter-spacing: -0.64px;
+	}
+
+	.htoeau-transform__subtitle {
+		font-size: 16px;
+		line-height: 1.3;
+		letter-spacing: -0.16px;
+	}
+
+	.htoeau-transform__panels {
+		flex-direction: column;
+		gap: 20px;
+		min-height: 0;
+	}
+
+	.htoeau-transform__panel,
+	.htoeau-transform__panel.is-active {
+		flex: none;
+		width: 100%;
+		max-width: 100%;
+		min-height: 257px;
+		border-radius: 4px;
+	}
+
+	.htoeau-transform__panel:first-child,
+	.htoeau-transform__panel.is-active:first-child {
+		min-height: 233px;
+	}
+
+	.htoeau-transform__overlay,
+	.htoeau-transform__panel.is-active .htoeau-transform__overlay {
+		background: rgba(1, 114, 160, 0.65);
+	}
+
+	.htoeau-transform__panel-content,
+	.htoeau-transform__panel.is-active .htoeau-transform__panel-content,
+	.htoeau-transform__panel:not(.is-active) .htoeau-transform__panel-content {
+		min-height: 100%;
+		padding: 40px 20px;
+		justify-content: center;
+		gap: 20px;
+	}
+
+	.htoeau-transform__num-wrap,
+	.htoeau-transform__panel:not(.is-active) .htoeau-transform__num-wrap {
+		width: 52px;
+		height: 52px;
+		margin-bottom: 0;
+	}
+
+	.htoeau-transform__num,
+	.htoeau-transform__panel:not(.is-active) .htoeau-transform__num {
+		font-size: 34.667px;
+		font-weight: 500;
+		letter-spacing: -0.693px;
+	}
+
+	.htoeau-transform__panel-title,
+	.htoeau-transform__panel.is-active .htoeau-transform__panel-title,
+	.htoeau-transform__panel:not(.is-active) .htoeau-transform__panel-title {
+		font-size: 24px;
+		font-weight: 500;
+		line-height: 1;
+		letter-spacing: -0.48px;
+		text-align: center;
+		writing-mode: horizontal-tb;
+		transform: none;
+		max-height: none;
+		white-space: normal;
+	}
+
+	.htoeau-transform__panel-desc,
+	.htoeau-transform__panel:not(.is-active) .htoeau-transform__panel-desc {
+		display: block;
+		font-size: 14px;
+		line-height: 1.2;
+		letter-spacing: -0.28px;
+		max-width: 100%;
 	}
 }

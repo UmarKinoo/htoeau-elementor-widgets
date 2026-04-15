@@ -192,6 +192,12 @@ class Transformation_Steps_Widget extends Widget_Base {
 					<?php endif; ?>
 				</header>
 				<div class="htoeau-transform__panels" data-transform-panels>
+					<?php
+					$mobile_desc_fallback = '';
+					if ( isset( $steps[0]['wide_description'] ) ) {
+						$mobile_desc_fallback = trim( (string) $steps[0]['wide_description'] );
+					}
+					?>
 					<?php foreach ( $steps as $i => $step ) : ?>
 						<?php
 						$index    = (int) $i;
@@ -207,7 +213,13 @@ class Transformation_Steps_Widget extends Widget_Base {
 							$desc  = (string) ( $step['wide_description'] ?? '' );
 						} else {
 							$title = (string) ( $step['narrow_caption'] ?? '' );
-							$desc  = '';
+							if ( '' === trim( $title ) ) {
+								$title = (string) ( $step['wide_title'] ?? '' );
+							}
+							$desc = (string) ( $step['wide_description'] ?? '' );
+							if ( '' === trim( $desc ) ) {
+								$desc = $mobile_desc_fallback;
+							}
 						}
 
 						$circle = $is_active ? 'step-circle-lg.svg' : 'step-circle-sm.svg';
