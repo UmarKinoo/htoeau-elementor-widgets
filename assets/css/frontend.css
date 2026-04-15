@@ -4543,7 +4543,7 @@ body[class*="elementor-kit-"] .htoeau-spotlight button.htoeau-spotlight__arrow:a
 		padding: 72px 48px !important;
 	}
 
-	body.elementor-page .elementor-element[class*="elementor-element-"].elementor-widget-htoeau_engineered_perform .htoeau-engineered {
+	body.elementor-page .elementor-element[class*="elementor-element-"] .htoeau-engineered {
 		padding: 72px 48px !important;
 	}
 
@@ -4768,7 +4768,7 @@ body[class*="elementor-kit-"] .htoeau-spotlight button.htoeau-spotlight__arrow:a
 		padding: 48px 20px !important;
 	}
 
-	body.elementor-page .elementor-element[class*="elementor-element-"].elementor-widget-htoeau_engineered_perform .htoeau-engineered {
+	body.elementor-page .elementor-element[class*="elementor-element-"] .htoeau-engineered {
 		padding: 50px 20px 338px !important;
 	}
 
