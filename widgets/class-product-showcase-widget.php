@@ -505,7 +505,7 @@ class Product_Showcase_Widget extends Widget_Base {
 			return null;
 		}
 
-		$img_id  = $product->get_image_id();
+		$img_id  = \HtoEAU_Widgets\get_product_card_image_attachment_id( $product );
 		$img_url = $img_id ? wp_get_attachment_image_url( $img_id, 'large' ) : '';
 		if ( ! $img_url && function_exists( 'wc_placeholder_img_src' ) ) {
 			$img_url = wc_placeholder_img_src( 'large' );

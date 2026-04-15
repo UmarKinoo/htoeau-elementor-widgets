@@ -24,6 +24,31 @@ function default_bundle_image_url( string $relative ): string {
 }
 
 /**
+ * Attachment ID for card/listing UIs: ACF `shop_catalog_image` when set and valid, else featured image.
+ *
+ * Same field as the child theme shop archive (`group_htoeau_product`). PDP gallery is unchanged.
+ *
+ * @param \WC_Product $product Product.
+ * @return int Attachment ID, or 0 if none.
+ */
+function get_product_card_image_attachment_id( \WC_Product $product ): int {
+	$catalog_id = 0;
+	if ( function_exists( 'get_field' ) ) {
+		$field = get_field( 'shop_catalog_image', $product->get_id() );
+		if ( is_numeric( $field ) ) {
+			$catalog_id = (int) $field;
+		} elseif ( is_array( $field ) && ! empty( $field['ID'] ) ) {
+			$catalog_id = (int) $field['ID'];
+		}
+	}
+	if ( $catalog_id > 0 && wp_attachment_is_image( $catalog_id ) ) {
+		return $catalog_id;
+	}
+	$fid = (int) $product->get_image_id();
+	return ( $fid > 0 && wp_attachment_is_image( $fid ) ) ? $fid : 0;
+}
+
+/**
  * Render a teal-circle checkmark (SVG) — default for hero, product, trust strip, etc.
  */
 function render_check_icon( string $size = '30' ): string {
