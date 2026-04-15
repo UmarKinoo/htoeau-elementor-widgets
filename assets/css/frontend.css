@@ -3152,6 +3152,10 @@ body[class*="elementor-kit-"] .htoeau-header .htoeau-header__burger {
 	letter-spacing: -0.32px;
 }
 
+.htoeau-sample-kit__cta-wrap {
+	width: 100%;
+}
+
 /* Hello / Elementor: keep brand gradient + white label on all link states */
 .htoeau-sample-kit a.htoeau-btn.htoeau-sample-kit__cta.htoeau-btn--primary,
 .htoeau-sample-kit a.htoeau-btn.htoeau-sample-kit__cta.htoeau-btn--primary:visited,
@@ -5577,7 +5581,9 @@ body[class*="elementor-kit-"] .htoeau-spotlight button.htoeau-spotlight__arrow:a
 	}
 
 	.htoeau-sample-kit .htoeau-btn.htoeau-sample-kit__cta {
-		width: 100%;
+		display: flex;
+		width: 100% !important;
+		max-width: none !important;
 		white-space: normal;
 		text-align: center;
 		padding-left: 24px;
