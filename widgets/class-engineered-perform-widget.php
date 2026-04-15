@@ -5,6 +5,7 @@ namespace HtoEAU_Widgets\Widgets;
 use Elementor\Controls_Manager;
 use Elementor\Repeater;
 use HtoEAU_Widgets\Widget_Base;
+use function HtoEAU_Widgets\render_check_icon_on_gradient;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -201,11 +202,20 @@ class Engineered_Perform_Widget extends Widget_Base {
 						}
 						?>
 					<article class="htoeau-engineered__row">
-						<?php if ( $icon_u ) : ?>
 						<div class="htoeau-engineered__icon">
-							<img src="<?php echo esc_url( $icon_u ); ?>" alt="" loading="lazy" decoding="async" />
+							<?php if ( $icon_u ) : ?>
+							<img
+								src="<?php echo esc_url( $icon_u ); ?>"
+								alt=""
+								loading="lazy"
+								decoding="async"
+								onerror="this.style.display='none';this.nextElementSibling.style.display='block';"
+							/>
+							<?php endif; ?>
+							<span class="htoeau-engineered__icon-fallback"<?php echo $icon_u ? ' style="display:none"' : ''; ?>>
+								<?php echo render_check_icon_on_gradient( '44' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+							</span>
 						</div>
-						<?php endif; ?>
 						<div class="htoeau-engineered__body">
 							<?php if ( '' !== trim( $t ) ) : ?>
 							<h3 class="htoeau-engineered__label"><?php echo esc_html( $t ); ?></h3>

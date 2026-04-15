@@ -603,10 +603,34 @@ class Hydration_Systems_Widget extends Widget_Base {
 			return null;
 		}
 
-		$img_id  = \HtoEAU_Widgets\get_product_card_image_attachment_id( $product );
-		$img_url = $img_id ? wp_get_attachment_image_url( $img_id, 'large' ) : '';
-		if ( ! $img_url && function_exists( 'wc_placeholder_img_src' ) ) {
-			$img_url = wc_placeholder_img_src( 'large' );
+		$img_id  = (int) $product->get_image_id();
+		$img_url = '';
+		if ( $img_id ) {
+			$img_url = (string) wp_get_attachment_image_url( $img_id, 'large' );
+			if ( '' === $img_url ) {
+				$img_url = (string) wp_get_attachment_image_url( $img_id, 'full' );
+			}
+			if ( '' === $img_url ) {
+				$img_url = (string) wp_get_attachment_url( $img_id );
+			}
+		}
+		if ( '' === $img_url ) {
+			$gallery_ids = $product->get_gallery_image_ids();
+			if ( ! empty( $gallery_ids ) ) {
+				$gallery_id = (int) $gallery_ids[0];
+				if ( $gallery_id > 0 ) {
+					$img_url = (string) wp_get_attachment_image_url( $gallery_id, 'large' );
+					if ( '' === $img_url ) {
+						$img_url = (string) wp_get_attachment_image_url( $gallery_id, 'full' );
+					}
+					if ( '' === $img_url ) {
+						$img_url = (string) wp_get_attachment_url( $gallery_id );
+					}
+				}
+			}
+		}
+		if ( '' === $img_url && function_exists( 'wc_placeholder_img_src' ) ) {
+			$img_url = (string) wc_placeholder_img_src( 'large' );
 		}
 
 		$desc_source = isset( $settings['wc_description'] ) ? (string) $settings['wc_description'] : 'short';
@@ -666,17 +690,15 @@ class Hydration_Systems_Widget extends Widget_Base {
 				<div class="htoeau-hydration-systems__grid">
 					<?php foreach ( $rows as $product ) : ?>
 					<article class="htoeau-hydration-systems__card">
-						<?php if ( ! empty( $product['image_url'] ) ) : ?>
 						<div class="htoeau-hydration-systems__media">
 							<img
 								class="htoeau-hydration-systems__img"
-								src="<?php echo esc_url( $product['image_url'] ); ?>"
+								src="<?php echo esc_url( (string) ( $product['image_url'] ?? '' ) ); ?>"
 								alt="<?php echo esc_attr( $product['title'] ?? '' ); ?>"
 								loading="lazy"
 								decoding="async"
 							/>
 						</div>
-						<?php endif; ?>
 
 						<div class="htoeau-hydration-systems__body">
 							<?php if ( 'yes' === ( $s['show_card_rating'] ?? 'yes' ) ) : ?>
