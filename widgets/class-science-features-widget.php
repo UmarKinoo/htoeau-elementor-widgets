@@ -352,6 +352,44 @@ class Science_Features_Widget extends Widget_Base {
 	protected function render(): void {
 		$s = $this->get_settings_for_display();
 
+		/*
+		 * Existing Elementor instances keep older default values after we update widget defaults in PHP.
+		 * To keep staging in sync, normalize known legacy defaults here.
+		 */
+		if ( isset( $s['card2_cta_text'] ) && trim( (string) $s['card2_cta_text'] ) === 'Shop Hydrogen Water' ) {
+			$s['card2_cta_text'] = 'Shop DDW';
+		}
+		if ( isset( $s['card3_cta_text'] ) && trim( (string) $s['card3_cta_text'] ) === 'Shop Hydrogen Water' ) {
+			$s['card3_cta_text'] = 'Shop Hydrogen Infused DDW';
+		}
+
+		// Capitalize eyebrow label for the combined/H2DDW card.
+		if ( isset( $s['card3_label'] ) ) {
+			$label = (string) $s['card3_label'];
+			$lc    = strtolower( trim( $label ) );
+			if ( '' !== $lc && false !== strpos( $lc, 'hydrogen infused' ) && false !== strpos( $lc, 'deuterium depleted' ) ) {
+				$s['card3_label'] = 'Hydrogen Infused & Deuterium Depleted';
+			}
+		}
+
+		// Ensure the requested “Together, we have created...” copy is present.
+		if ( isset( $s['card3_intro'] ) ) {
+			$intro = (string) $s['card3_intro'];
+			$legacy = 'Together, they create a next-generation water developed for performance-focused lifestyles.';
+			$target = 'Together, we have created a unique, next-generation water, developed for performance-focused lifestyles.';
+			if ( false !== strpos( $intro, $legacy ) ) {
+				$s['card3_intro'] = str_replace( $legacy, $target, $intro );
+			} elseif ( false !== strpos( $intro, 'performance-focused lifestyles' ) && false === strpos( $intro, 'we have created a unique' ) ) {
+				// Legacy variants may differ slightly; normalize the whole combined sentence.
+				$s['card3_intro'] = $intro;
+				$s['card3_intro'] = preg_replace(
+					'/Together,.*performance-focused lifestyles\\.?/i',
+					$target,
+					$s['card3_intro']
+				);
+			}
+		}
+
 		$heading = $s['heading'] ?? '';
 		$h_lines = array_filter( array_map( 'trim', preg_split( '/\r\n|\r|\n/', (string) $heading ) ) );
 
