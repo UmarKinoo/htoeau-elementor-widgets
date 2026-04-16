@@ -194,9 +194,6 @@ class Site_Header_Widget extends Widget_Base {
 
 		$home_url    = esc_url( home_url( '/' ) );
 		$account_url = function_exists( 'wc_get_page_permalink' ) ? esc_url( wc_get_page_permalink( 'myaccount' ) ) : esc_url( home_url( '/my-account/' ) );
-		$cart_url    = function_exists( 'wc_get_cart_url' ) ? esc_url( wc_get_cart_url() ) : esc_url( home_url( '/cart/' ) );
-		$cart_count  = function_exists( 'WC' ) && WC()->cart ? WC()->cart->get_cart_contents_count() : 0;
-
 		$uid = 'htoeau-header-' . $this->get_id();
 		?>
 		<header class="htoeau-header" data-htoeau-header>
@@ -223,8 +220,11 @@ class Site_Header_Widget extends Widget_Base {
 						<?php endif; ?>
 					</a>
 
-					<button class="htoeau-header__burger" aria-label="<?php esc_attr_e( 'Menu', 'htoeau-widgets' ); ?>" aria-expanded="false" aria-controls="<?php echo esc_attr( $uid ); ?>">
-						<span></span><span></span><span></span>
+					<button class="htoeau-header__burger" type="button" aria-label="<?php esc_attr_e( 'Menu', 'htoeau-widgets' ); ?>" aria-expanded="false" aria-controls="<?php echo esc_attr( $uid ); ?>">
+						<?php // Figma 1:1249 — teal notched bars (menu-01). ?>
+						<svg class="htoeau-header__burger-icon" width="26" height="20" viewBox="0 0 26 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+							<path fill="currentColor" d="M1 4.25L3.25 2.5h19.5L25 4.25l-2.25 1.75H3.25L1 4.25z M1 10L3.25 8.25h19.5L25 10l-2.25 1.75H3.25L1 10z M1 15.75L3.25 14h19.5L25 15.75l-2.25 1.75H3.25L1 15.75z"/>
+						</svg>
 					</button>
 
 					<?php
@@ -240,6 +240,13 @@ class Site_Header_Widget extends Widget_Base {
 					?>
 					<?php if ( $show_nav ) : ?>
 					<nav id="<?php echo esc_attr( $uid ); ?>" class="htoeau-header__nav" aria-label="<?php esc_attr_e( 'Primary', 'htoeau-widgets' ); ?>">
+						<button type="button" class="htoeau-header__nav-close" aria-label="<?php esc_attr_e( 'Close menu', 'htoeau-widgets' ); ?>">
+							<span class="htoeau-header__nav-close-inner" aria-hidden="true">
+								<svg class="htoeau-header__nav-close-icon" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M5.5 5.5l11 11M16.5 5.5l-11 11"/>
+								</svg>
+							</span>
+						</button>
 						<?php if ( $has_wp_menu ) : ?>
 							<?php
 							wp_nav_menu(
@@ -280,12 +287,10 @@ class Site_Header_Widget extends Widget_Base {
 						</button>
 						<?php endif; ?>
 						<?php if ( $show_cart ) : ?>
-						<a href="<?php echo $cart_url; ?>" class="htoeau-header__icon htoeau-header__cart" aria-label="<?php esc_attr_e( 'Cart', 'htoeau-widgets' ); ?>">
-							<svg width="16" height="20" viewBox="0 0 16 20" fill="none"><path d="M2 6h12l-1 12H3L2 6z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M5 6V4a3 3 0 116 0v2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
-							<?php if ( $cart_count > 0 ) : ?>
-							<span class="htoeau-header__cart-badge"><?php echo esc_html( $cart_count ); ?></span>
-							<?php endif; ?>
-						</a>
+							<?php
+							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- markup built in helper with escaping.
+							echo \HtoEAU_Widgets\render_site_header_cart_icon_link();
+							?>
 						<?php endif; ?>
 					</div>
 

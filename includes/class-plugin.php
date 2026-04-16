@@ -27,6 +27,10 @@ final class Plugin {
 			return;
 		}
 
+		if ( class_exists( \WooCommerce::class ) ) {
+			add_filter( 'woocommerce_add_to_cart_fragments', [ $this, 'add_header_cart_link_fragment' ] );
+		}
+
 		add_action( 'elementor/frontend/after_enqueue_styles', [ $this, 'enqueue_frontend_styles' ] );
 		add_action( 'elementor/editor/after_enqueue_styles', [ $this, 'enqueue_editor_styles' ] );
 		add_action( 'elementor/frontend/after_register_scripts', [ $this, 'register_frontend_scripts' ] );
@@ -116,10 +120,15 @@ final class Plugin {
 	}
 
 	public function register_frontend_scripts(): void {
+		$frontend_deps = [ 'jquery' ];
+		if ( class_exists( \WooCommerce::class ) ) {
+			$frontend_deps[] = 'wc-cart-fragments';
+		}
+
 		wp_register_script(
 			'htoeau-widgets-frontend',
 			HTOEAU_WIDGETS_URL . 'assets/js/frontend.js',
-			[],
+			$frontend_deps,
 			HTOEAU_WIDGETS_VERSION,
 			true
 		);
@@ -147,6 +156,9 @@ final class Plugin {
 	}
 
 	public function enqueue_frontend_scripts(): void {
+		if ( class_exists( \WooCommerce::class ) ) {
+			wp_enqueue_script( 'wc-cart-fragments' );
+		}
 		wp_enqueue_script( 'htoeau-widgets-frontend' );
 		wp_localize_script(
 			'htoeau-widgets-frontend',
@@ -185,6 +197,20 @@ final class Plugin {
 			],
 			HOUR_IN_SECONDS
 		);
+	}
+
+	/**
+	 * Keep Site Header cart icon + quantity badge in sync after add/remove cart AJAX (all templates).
+	 *
+	 * @param array<string, string> $fragments Selector => HTML.
+	 * @return array<string, string>
+	 */
+	public function add_header_cart_link_fragment( array $fragments ): array {
+		$html = \HtoEAU_Widgets\render_site_header_cart_icon_link();
+		if ( '' !== $html ) {
+			$fragments['a.htoeau-header__cart'] = $html;
+		}
+		return $fragments;
 	}
 
 	public function admin_notice_missing_elementor(): void {

@@ -188,6 +188,12 @@
 			var nav = navId ? document.getElementById(navId) : header.querySelector('.htoeau-header__nav');
 
 			if (burger && nav) {
+				function closeMobileNav() {
+					burger.setAttribute('aria-expanded', 'false');
+					nav.classList.remove('is-open');
+					document.body.style.overflow = '';
+				}
+
 				burger.addEventListener('click', function () {
 					var open = burger.getAttribute('aria-expanded') === 'true';
 					burger.setAttribute('aria-expanded', String(!open));
@@ -195,19 +201,23 @@
 					document.body.style.overflow = open ? '' : 'hidden';
 				});
 
+				var navClose = nav.querySelector('.htoeau-header__nav-close');
+				if (navClose) {
+					navClose.addEventListener('click', function () {
+						closeMobileNav();
+						burger.focus();
+					});
+				}
+
 				nav.addEventListener('click', function (e) {
 					if (e.target.tagName === 'A') {
-						burger.setAttribute('aria-expanded', 'false');
-						nav.classList.remove('is-open');
-						document.body.style.overflow = '';
+						closeMobileNav();
 					}
 				});
 
 				document.addEventListener('keydown', function (e) {
 					if (e.key === 'Escape' && nav.classList.contains('is-open')) {
-						burger.setAttribute('aria-expanded', 'false');
-						nav.classList.remove('is-open');
-						document.body.style.overflow = '';
+						closeMobileNav();
 						burger.focus();
 					}
 				});

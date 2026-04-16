@@ -210,3 +210,42 @@ function hero_rating_text_with_bold_count( string $rating_text ): string {
 
 	return $escaped;
 }
+
+/**
+ * Full cart icon link for HtoEAU Site Header (matches Site_Header_Widget markup).
+ *
+ * Used on first paint and in {@see woocommerce_add_to_cart_fragments} so the badge stays in sync after AJAX.
+ *
+ * @return string Safe HTML; empty if WooCommerce cart is unavailable.
+ */
+function render_site_header_cart_icon_link(): string {
+	if ( ! function_exists( 'wc_get_cart_url' ) || ! function_exists( 'WC' ) || ! WC()->cart ) {
+		return '';
+	}
+
+	$cart_url = esc_url( wc_get_cart_url() );
+	$cart_count = absint( WC()->cart->get_cart_contents_count() );
+
+	$label = $cart_count > 0
+		? sprintf(
+			/* translators: %d: number of items in the cart */
+			_n( 'Cart, %d item', 'Cart, %d items', $cart_count, 'htoeau-widgets' ),
+			$cart_count
+		)
+		: __( 'Cart', 'htoeau-widgets' );
+
+	$svg = '<svg width="16" height="20" viewBox="0 0 16 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 6h12l-1 12H3L2 6z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M5 6V4a3 3 0 116 0v2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>';
+
+	$badge = '';
+	if ( $cart_count > 0 ) {
+		$badge = '<span class="htoeau-header__cart-badge">' . esc_html( (string) $cart_count ) . '</span>';
+	}
+
+	return sprintf(
+		'<a href="%1$s" class="htoeau-header__icon htoeau-header__cart" aria-label="%2$s">%3$s%4$s</a>',
+		$cart_url,
+		esc_attr( $label ),
+		$svg,
+		$badge
+	);
+}

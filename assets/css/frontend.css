@@ -18,6 +18,8 @@
 	--htoeau-accent-h2:   #70edff;
 	--htoeau-accent-ddw:  #ffedb1;
 	--htoeau-accent-comb: #70f2c2;
+	/* Figma 1:1249 — mobile menu (menu-01) icon */
+	--htoeau-burger-teal: #66c2cd;
 
 	/* Gradient */
 	--htoeau-gradient:    linear-gradient(90deg, var(--htoeau-teal) 0%, var(--htoeau-blue) 100%);
@@ -362,35 +364,70 @@ body:has(.htoeau-header) .storefront-breadcrumb {
 	letter-spacing: -0.44px;
 }
 
-/* Hamburger — hidden on desktop */
+/* Hamburger — Figma 1:1249 (menu-01); hidden on desktop */
 .htoeau-header__burger {
 	display: none;
 	background: none;
 	border: none;
 	cursor: pointer;
 	padding: 8px;
-	flex-direction: column;
-	gap: 5px;
+	align-items: center;
+	justify-content: center;
+	color: var(--htoeau-burger-teal);
 	-webkit-tap-highlight-color: transparent;
+	line-height: 0;
 }
 
-.htoeau-header__burger span {
+.htoeau-header__burger-icon {
 	display: block;
-	width: 22px;
-	height: 2px;
-	background: var(--htoeau-navy);
-	border-radius: 1px;
-	transition: transform 0.25s ease, opacity 0.2s ease;
+	width: 26px;
+	height: 20px;
+	flex-shrink: 0;
 }
 
-.htoeau-header__burger[aria-expanded="true"] span:nth-child(1) {
-	transform: translateY(7px) rotate(45deg);
+/* Mobile drawer: explicit close (full-screen nav sits above bar; burger is not visible when open) */
+.htoeau-header__nav-close {
+	display: none;
 }
-.htoeau-header__burger[aria-expanded="true"] span:nth-child(2) {
-	opacity: 0;
-}
-.htoeau-header__burger[aria-expanded="true"] span:nth-child(3) {
-	transform: translateY(-7px) rotate(-45deg);
+
+@media (max-width: 1024px) {
+	.htoeau-header__nav-close {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: absolute;
+		top: max(12px, env(safe-area-inset-top, 0px));
+		right: max(16px, env(safe-area-inset-right, 0px));
+		z-index: 1;
+		width: 48px;
+		height: 48px;
+		margin: 0;
+		padding: 0;
+		border: 2px solid var(--htoeau-burger-teal);
+		border-radius: 50%;
+		background: var(--htoeau-white);
+		color: var(--htoeau-burger-teal);
+		cursor: pointer;
+		box-shadow: 0 2px 12px rgba(0, 44, 65, 0.12);
+		-webkit-tap-highlight-color: transparent;
+	}
+
+	.htoeau-header__nav-close:hover,
+	.htoeau-header__nav-close:focus-visible {
+		background: rgba(102, 194, 205, 0.12);
+		outline: none;
+	}
+
+	.htoeau-header__nav-close-inner {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		line-height: 0;
+	}
+
+	.htoeau-header__nav-close-icon {
+		display: block;
+	}
 }
 
 /* Nav — Figma 1:21: menu centered in the row between logo and icon group (gap 60px between links) */
@@ -557,7 +594,7 @@ body[class*="elementor-kit-"] .htoeau-header .htoeau-header__icons button.htoeau
 }
 
 body[class*="elementor-kit-"] .htoeau-header .htoeau-header__burger {
-	color: var(--htoeau-navy) !important;
+	color: var(--htoeau-burger-teal) !important;
 }
 
 .htoeau-header__icon svg {
