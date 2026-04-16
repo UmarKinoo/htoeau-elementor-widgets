@@ -121,6 +121,27 @@ class Community_Testimonials_Widget extends Widget_Base {
 
 		$this->end_controls_section();
 
+		$this->start_controls_section( 'section_social', [
+			'label' => 'Social Links',
+			'tab'   => Controls_Manager::TAB_CONTENT,
+		] );
+
+		$this->add_control( 'instagram_url', [
+			'label'       => 'Instagram URL',
+			'type'        => Controls_Manager::URL,
+			'default'     => [ 'url' => '' ],
+			'placeholder' => 'https://instagram.com/htoeau',
+		] );
+
+		$this->add_control( 'linkedin_url', [
+			'label'       => 'LinkedIn URL',
+			'type'        => Controls_Manager::URL,
+			'default'     => [ 'url' => '' ],
+			'placeholder' => 'https://linkedin.com/company/htoeau',
+		] );
+
+		$this->end_controls_section();
+
 		$this->start_controls_section( 'section_style', [
 			'label' => 'Section',
 			'tab'   => Controls_Manager::TAB_STYLE,
@@ -166,7 +187,7 @@ class Community_Testimonials_Widget extends Widget_Base {
 		return [
 			[
 				'quote'  => '“I drink before every workout”',
-				'text'   => '“I’ve reached a level of physical fitness where I can ascertain if any supplement I take can give me an extra edge. HtoEau is something I drink before every workout now, and no matter how tired I may feel before training I can now push through with seemingly an extra gear and end up having a great session. If you’re serious about fitness and recovery it’s a must have pre-workout!”',
+				'text'   => '“I’ve reached a level of physical fitness where I can ascertain if any supplement I take can give me an extra edge. HtoEAU is something I drink before every workout now, and no matter how tired I may feel before training I can now push through with seemingly an extra gear and end up having a great session. If you’re serious about fitness and recovery it’s a must have pre-workout!”',
 				'author' => 'Daniel Ventura',
 				'meta'   => 'WBFF Pro Fitness Model, Actor, Advanced Personal Trainer',
 			],
@@ -178,13 +199,13 @@ class Community_Testimonials_Widget extends Widget_Base {
 			],
 			[
 				'quote'  => '“The results speak for themselves!”',
-				'text'   => '“HtoEau® DDW water had a positive effect on my chronic fatigue, hydration and recovery from exercise. Hence, I would highly recommend this water to anyone suffering with a chronic illness. As I work in professional sport, I would also recommend this water to any competitive athlete.”',
+				'text'   => '“HtoEAU® DDW water had a positive effect on my chronic fatigue, hydration and recovery from exercise. Hence, I would highly recommend this water to anyone suffering with a chronic illness. As I work in professional sport, I would also recommend this water to any competitive athlete.”',
 				'author' => 'Heather Pearson MSc',
 				'meta'   => 'Sports Therapist & Strength Coach',
 			],
 			[
 				'quote'  => 'I couldn’t recommend it enough!',
-				'text'   => '"I’ve reached a level of physical fitness where I can ascertain if any supplement I take can give me an extra edge. HtoEau is something I drink before every workout now, and no matter how tired I may feel before training I can now push through with seemingly an extra gear and end up having a great session. If you’re serious about fitness and recovery it’s a must have pre-workout! I couldn’t recommend it enough!"',
+				'text'   => '"I’ve reached a level of physical fitness where I can ascertain if any supplement I take can give me an extra edge. HtoEAU is something I drink before every workout now, and no matter how tired I may feel before training I can now push through with seemingly an extra gear and end up having a great session. If you’re serious about fitness and recovery it’s a must have pre-workout! I couldn’t recommend it enough!"',
 				'author' => 'Daniel Ventura',
 				'meta'   => 'WBFF Pro Fitness Model, Actor, Advanced Personal Trainer',
 			],
@@ -324,6 +345,26 @@ class Community_Testimonials_Widget extends Widget_Base {
 					<?php $this->render_next_button(); ?>
 				</div>
 			</div>
+			<?php
+			$ig = ! empty( $s['instagram_url']['url'] ) ? (string) $s['instagram_url']['url'] : '';
+			$li = ! empty( $s['linkedin_url']['url'] ) ? (string) $s['linkedin_url']['url'] : '';
+			if ( '' !== $ig || '' !== $li ) :
+			?>
+			<div class="htoeau-community__social">
+				<?php if ( '' !== $ig ) : ?>
+				<a href="<?php echo esc_url( $ig ); ?>" class="htoeau-community__social-link" target="_blank" rel="noopener noreferrer" aria-label="Follow on Instagram">
+					<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor"/></svg>
+					<span>Follow on Instagram</span>
+				</a>
+				<?php endif; ?>
+				<?php if ( '' !== $li ) : ?>
+				<a href="<?php echo esc_url( $li ); ?>" class="htoeau-community__social-link" target="_blank" rel="noopener noreferrer" aria-label="Follow on LinkedIn">
+					<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><rect x="2" y="9" width="4" height="12" stroke="currentColor" stroke-width="2"/><circle cx="4" cy="4" r="2" stroke="currentColor" stroke-width="2"/></svg>
+					<span>Follow on LinkedIn</span>
+				</a>
+				<?php endif; ?>
+			</div>
+			<?php endif; ?>
 		</section>
 		<?php
 	}

@@ -225,17 +225,40 @@
 		});
 	}
 
+	function initBackToTop() {
+		var btn = document.createElement('button');
+		btn.className = 'htoeau-back-to-top';
+		btn.setAttribute('aria-label', 'Back to top');
+		btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 16V4M10 4L4 10M10 4L16 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+		document.body.appendChild(btn);
+		btn.addEventListener('click', function () {
+			window.scrollTo({ top: 0, behavior: 'smooth' });
+		});
+		var visible = false;
+		function toggle() {
+			var show = window.scrollY > 600;
+			if (show !== visible) {
+				visible = show;
+				btn.classList.toggle('htoeau-back-to-top--show', show);
+			}
+		}
+		window.addEventListener('scroll', toggle, { passive: true });
+		toggle();
+	}
+
 	if (document.readyState === 'loading') {
 		document.addEventListener('DOMContentLoaded', function () {
 			runFlushPass(document);
 			initTransformSections(document);
 			initHeaders(document);
 			installObserver();
+			initBackToTop();
 		});
 	} else {
 		runFlushPass(document);
 		initTransformSections(document);
 		initHeaders(document);
 		installObserver();
+		initBackToTop();
 	}
 })();

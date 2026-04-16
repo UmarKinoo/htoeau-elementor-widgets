@@ -102,7 +102,7 @@ class Hydrogen_Apart_Widget extends Widget_Base {
 			'default'     => [
 				[
 					'title'       => 'Consistent Hydrogen Levels',
-					'description' => 'Infused to a minimum therapeutic level of 5 mg/L dissolved hydrogen at the point of filling, ensuring reliable hydrogen concentration in every can.',
+					'description' => 'Infused to a minimum therapeutic level of 5 mg/L dissolved hydrogen gas, ensuring reliable hydrogen concentration in every can.',
 				],
 				[
 					'title'       => 'Engineered Hydrogen Stability',

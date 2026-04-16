@@ -286,7 +286,7 @@ class Product_Showcase_Widget extends Widget_Base {
 			'default'     => [
 				[
 					'title'       => 'HtoEAU® Hydrogen Water',
-					'description' => 'HtoEAU® is infused to a minimum of 5 mg/L dissolved hydrogen at the point of filling. This level is carefully selected to ensure stability, consistency, and product integrity.',
+					'description' => 'HtoEAU® is infused to a minimum of 5 mg/L dissolved hydrogen gas. This level is carefully selected to ensure stability, consistency, and product integrity.',
 					'price'       => '£2.07 per can',
 				],
 				[
@@ -322,11 +322,10 @@ class Product_Showcase_Widget extends Widget_Base {
 			'fields'      => $trust_rep->get_controls(),
 			'title_field' => '{{{ text }}}',
 			'default'     => [
-				[ 'text' => 'No sugar, no stimulants, no additives' ],
+				[ 'text' => 'Leading hydrogen infusion' ],
 				[ 'text' => 'For athletes, biohackers and high performers' ],
 				[ 'text' => 'Evaluated in controlled scientific research' ],
 				[ 'text' => 'Precision-engineered hydrogen infusion' ],
-				[ 'text' => 'No sugar, no stimulants, no additives' ],
 			],
 		] );
 
@@ -527,8 +526,24 @@ class Product_Showcase_Widget extends Widget_Base {
 		$price_text   = '';
 		if ( $product->is_type( 'variable' ) ) {
 			$price_prefix = __( 'From ', 'htoeau-widgets' );
-			$min          = $product->get_variation_price( 'min', true );
-			$price_text   = $min ? wp_strip_all_tags( wc_price( $min ) ) : '';
+			$lowest_per_can = null;
+			foreach ( $product->get_available_variations() as $v ) {
+				$cans = self::extract_can_count_from_variation_attrs( isset( $v['attributes'] ) && is_array( $v['attributes'] ) ? $v['attributes'] : [] );
+				if ( $cans < 1 || empty( $v['display_price'] ) ) {
+					continue;
+				}
+				$per = (float) $v['display_price'] / $cans;
+				if ( null === $lowest_per_can || $per < $lowest_per_can ) {
+					$lowest_per_can = $per;
+				}
+			}
+
+			if ( null !== $lowest_per_can ) {
+				$price_text = wp_strip_all_tags( wc_price( $lowest_per_can ) ) . ' ' . __( 'per can', 'htoeau-widgets' );
+			} else {
+				$min        = $product->get_variation_price( 'min', true );
+				$price_text = $min ? wp_strip_all_tags( wc_price( $min ) ) : '';
+			}
 		} else {
 			$price_text = wp_strip_all_tags( wc_price( $product->get_price() ) );
 		}
@@ -564,6 +579,23 @@ class Product_Showcase_Widget extends Widget_Base {
 			'rating_score'       => $rating_score,
 			'rating_suffix'      => $rating_suffix,
 		];
+	}
+
+	/**
+	 * Extract numeric can count from variation attributes.
+	 *
+	 * @param array<string,string> $variation_attrs Variation attributes (e.g. attribute_pa_can-count => 12-cans).
+	 */
+	private static function extract_can_count_from_variation_attrs( array $variation_attrs ): int {
+		foreach ( $variation_attrs as $k => $v ) {
+			if ( is_string( $k ) && false !== strpos( strtolower( $k ), 'can' ) && is_string( $v ) ) {
+				$n = (int) preg_replace( '/\D/', '', $v );
+				if ( $n > 0 ) {
+					return $n;
+				}
+			}
+		}
+		return 0;
 	}
 
 	/**

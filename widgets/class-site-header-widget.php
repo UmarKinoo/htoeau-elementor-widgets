@@ -163,9 +163,8 @@ class Site_Header_Widget extends Widget_Base {
 			'fields'      => $trust_rep->get_controls(),
 			'title_field' => '{{{ text }}}',
 			'default'     => [
-				[ 'text' => 'Minimum 5mg/l Infusion' ],
+				[ 'text' => 'Minimum 5mg/l Dissolved Hydrogen Gas' ],
 				[ 'text' => 'Only Water + Molecular Hydrogen' ],
-				[ 'text' => 'No Sugar' ],
 				[ 'text' => 'No Stimulants' ],
 				[ 'text' => 'No Additives' ],
 				[ 'text' => 'Free Shipping' ],

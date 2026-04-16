@@ -107,15 +107,15 @@ class Spotlight_Testimonial_Widget extends Widget_Base {
 			'title_field' => '{{{ author }}}',
 			'default'     => [
 				[
-					'quote'  => "\u{201C}HtoEau is something I drink before every workout now, and I can push through with seemingly an extra gear and end up having a great session.\u{201D}",
+					'quote'  => "\u{201C}HtoEAU is something I drink before every workout now, and I can push through with seemingly an extra gear and end up having a great session.\u{201D}",
 					'author' => 'Daniel Ventura',
 				],
 				[
-					'quote'  => "\u{201C}I started using HtoEau after a friend recommended it. The difference in my recovery time has been remarkable.\u{201D}",
+					'quote'  => "\u{201C}I started using HtoEAU after a friend recommended it. The difference in my recovery time has been remarkable.\u{201D}",
 					'author' => 'Sarah Mitchell',
 				],
 				[
-					'quote'  => "\u{201C}As a nutritionist I'm selective about what I recommend. HtoEau has solid science and my clients love the results.\u{201D}",
+					'quote'  => "\u{201C}As a nutritionist I'm selective about what I recommend. HtoEAU has solid science and my clients love the results.\u{201D}",
 					'author' => 'Dr. Elena Torres',
 				],
 			],

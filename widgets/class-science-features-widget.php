@@ -192,7 +192,7 @@ class Science_Features_Widget extends Widget_Base {
 		$this->add_control( 'card2_cta_text', [
 			'label'   => 'Button text',
 			'type'    => Controls_Manager::TEXT,
-			'default' => 'Shop Hydrogen Water',
+			'default' => 'Shop DDW',
 		] );
 
 		$this->add_control( 'card2_cta_link', [
@@ -210,7 +210,7 @@ class Science_Features_Widget extends Widget_Base {
 		$this->add_control( 'card3_label', [
 			'label'   => 'Eyebrow',
 			'type'    => Controls_Manager::TEXT,
-			'default' => 'hydrogen infused & deuterium depleted',
+			'default' => 'Hydrogen Infused & Deuterium Depleted',
 		] );
 
 		$this->add_control( 'card3_label_tone', [
@@ -234,14 +234,14 @@ class Science_Features_Widget extends Widget_Base {
 		$this->add_control( 'card3_intro', [
 			'label'   => 'Intro',
 			'type'    => Controls_Manager::TEXTAREA,
-			'default' => 'Molecular hydrogen infusion and deuterium-depleted water represent two complementary approaches to advanced hydration. Together, they create a next-generation water developed for performance-focused lifestyles.',
+			'default' => 'Molecular hydrogen infusion and deuterium-depleted water represent two complementary approaches to advanced hydration. Together, we have created a unique, next-generation water, developed for performance-focused lifestyles.',
 			'rows'    => 3,
 		] );
 
 		$this->add_control( 'card3_cta_text', [
 			'label'   => 'Button text',
 			'type'    => Controls_Manager::TEXT,
-			'default' => 'Hydrogen-infused DDW',
+			'default' => 'Shop Hydrogen Infused DDW',
 		] );
 
 		$this->add_control( 'card3_cta_link', [

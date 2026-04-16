@@ -51,7 +51,7 @@ class Trust_Strip_Widget extends Widget_Base {
 			'fields'      => $rep->get_controls(),
 			'title_field' => '{{{ text }}}',
 			'default'     => [
-				[ 'text' => 'No sugar, no stimulants, no additives' ],
+				[ 'text' => 'Leading hydrogen infusion' ],
 				[ 'text' => 'For athletes, biohackers and high performers' ],
 				[ 'text' => 'Evaluated in controlled scientific research' ],
 				[ 'text' => 'Precision-engineered hydrogen infusion' ],

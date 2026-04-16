@@ -97,7 +97,7 @@ class Engineered_Perform_Widget extends Widget_Base {
 			'default'     => [
 				[
 					'title'       => 'Hydrogen Concentration',
-					'description' => 'Minimum 5 mg/L dissolved hydrogen at filling.',
+					'description' => 'Minimum 5 mg/L dissolved hydrogen gas.',
 				],
 				[
 					'title'       => 'Water Base',
