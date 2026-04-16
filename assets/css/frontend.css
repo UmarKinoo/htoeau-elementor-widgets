@@ -4584,6 +4584,11 @@ body[class*="elementor-kit-"] .htoeau-spotlight button.htoeau-spotlight__arrow:a
 		padding: 72px 48px !important;
 	}
 
+/* Page-specific override requested: 4088 / widget 40ab245 */
+body.elementor-page .elementor-element.elementor-element-40ab245 .htoeau-science {
+	padding: 100px 172px !important;
+}
+
 	body.elementor-page .elementor-element[class*="elementor-element-"] .htoeau-engineered {
 		padding: 72px 48px !important;
 	}
@@ -5766,7 +5771,7 @@ body[class*="elementor-kit-"] .htoeau-spotlight button.htoeau-spotlight__arrow:a
 }
 
 .htoeau-transform__panel.is-active .htoeau-transform__overlay {
-	background: transparent;
+	background: rgba(1, 114, 160, 0.5);
 }
 
 .htoeau-transform__panel-content {
