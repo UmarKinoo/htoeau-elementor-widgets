@@ -495,6 +495,18 @@ class Product_Showcase_Widget extends Widget_Base {
 	}
 
 	/**
+	 * Price HTML aligned with child theme FX + locale (GBP/USD dot, EUR comma).
+	 *
+	 * @param float|string $amount Raw amount for wc_price / FX helper.
+	 */
+	private function format_product_price_html( $amount ): string {
+		if ( function_exists( 'htoeau_child_fx_wc_price' ) ) {
+			return htoeau_child_fx_wc_price( (float) $amount );
+		}
+		return wc_price( $amount );
+	}
+
+	/**
 	 * @param array<string,mixed> $settings
 	 * @return array<string,mixed>|null
 	 */
@@ -539,13 +551,13 @@ class Product_Showcase_Widget extends Widget_Base {
 			}
 
 			if ( null !== $lowest_per_can ) {
-				$price_text = wp_strip_all_tags( wc_price( $lowest_per_can ) ) . ' ' . __( 'per can', 'htoeau-widgets' );
+				$price_text = wp_strip_all_tags( $this->format_product_price_html( $lowest_per_can ) ) . ' ' . __( 'per can', 'htoeau-widgets' );
 			} else {
 				$min        = $product->get_variation_price( 'min', true );
-				$price_text = $min ? wp_strip_all_tags( wc_price( $min ) ) : '';
+				$price_text = $min ? wp_strip_all_tags( $this->format_product_price_html( $min ) ) : '';
 			}
 		} else {
-			$price_text = wp_strip_all_tags( wc_price( $product->get_price() ) );
+			$price_text = wp_strip_all_tags( $this->format_product_price_html( $product->get_price() ) );
 		}
 
 		$btn = isset( $settings['wc_button_text'] ) && '' !== trim( (string) $settings['wc_button_text'] )
