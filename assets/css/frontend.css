@@ -3958,6 +3958,97 @@ body[class*="elementor-kit-"] .htoeau-header .htoeau-header__burger {
 	-webkit-tap-highlight-color: transparent;
 }
 
+/* Hydration Systems — Figma 1:2264 (desktop): two 650px rows, image | copy, gap 20 */
+@media (min-width: 1025px) {
+	.htoeau-hydration-systems__grid {
+		flex-wrap: nowrap;
+		justify-content: center;
+		align-items: center;
+		gap: 20px;
+	}
+
+	.htoeau-hydration-systems__card {
+		flex: 1 1 calc(50% - 10px);
+		max-width: 650px;
+		min-width: min(280px, 100%);
+		min-height: 286px;
+		flex-direction: row;
+		align-items: center;
+		justify-content: flex-start;
+		gap: 24px;
+		padding: 32px;
+		box-shadow: none;
+	}
+
+	.htoeau-hydration-systems__media {
+		flex: 1 1 0;
+		align-self: stretch;
+		width: auto;
+		min-width: 0;
+		height: 191px;
+		min-height: 191px;
+		max-height: 191px;
+		margin: 0;
+		border-radius: 16px;
+		overflow: hidden;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.htoeau-hydration-systems__img {
+		width: auto;
+		max-width: 100%;
+		height: 100%;
+		max-height: 191px;
+		object-fit: contain;
+		object-position: center;
+	}
+
+	.htoeau-hydration-systems__body {
+		flex: 0 1 416px;
+		width: min(416px, 48%);
+		max-width: 416px;
+		min-width: 0;
+		align-items: flex-start;
+		align-self: center;
+		text-align: left;
+		gap: 23px;
+	}
+
+	.htoeau-hydration-systems__rating {
+		justify-content: flex-start;
+		width: 100%;
+	}
+
+	.htoeau-hydration-systems__rating-text {
+		font-size: 14px;
+		line-height: 1.2;
+		letter-spacing: -0.28px;
+		text-align: left;
+	}
+
+	.htoeau-hydration-systems__title {
+		font-size: 24px;
+		line-height: 1.3;
+		letter-spacing: -0.48px;
+		text-align: left;
+	}
+
+	.htoeau-hydration-systems__excerpt {
+		font-size: 14px;
+		line-height: 1.3;
+		letter-spacing: -0.14px;
+		text-align: left;
+	}
+
+	.htoeau-hydration-systems .htoeau-btn.htoeau-hydration-systems__cta {
+		width: 345px;
+		max-width: 100%;
+		align-self: flex-start;
+	}
+}
+
 /* --------------------------------------------------------------------------
    Hydrogenate Hero — Figma 1:2289 (Hero B / Desktop)
    Single product image, max ~652×730; grid: visual | copy + CTA.
