@@ -1,5 +1,5 @@
 /**
- * Site header trust strip — auto horizontal scroll + swipe (≤1024px, overflow only).
+ * Site header trust strip — continuous horizontal marquee + swipe (≤1024px).
  * Uses scrollLeft (not CSS transform) so touch/trackpad scrolling stays native.
  */
 (function () {
@@ -129,23 +129,45 @@
 		trustRoot._htoeauTrustRafId = requestAnimationFrame(frame);
 	}
 
+	function ensureLoopTracks(scroll, marquee, track) {
+		var clones = marquee.querySelectorAll('.htoeau-header__trust-track--clone');
+		for (var i = 0; i < clones.length; i++) {
+			clones[i].remove();
+		}
+
+		var segment = track.offsetWidth + GAP_PX;
+		if (segment < 8) {
+			return false;
+		}
+
+		/*
+		 * Keep adding segments until the marquee has enough width for a seamless
+		 * wrap even when the original content is narrow.
+		 */
+		var target = Math.max(scroll.clientWidth * 2, segment * 2);
+		var total = track.offsetWidth;
+		var safety = 0;
+		while (total < target && safety < 12) {
+			var c = track.cloneNode(true);
+			c.classList.add('htoeau-header__trust-track--clone');
+			c.setAttribute('aria-hidden', 'true');
+			marquee.appendChild(c);
+			total += track.offsetWidth + GAP_PX;
+			safety++;
+		}
+
+		return true;
+	}
+
 	function apply(trustRoot, scroll, marquee, track) {
 		if (!window.matchMedia(MQ).matches || prefersReducedMotion()) {
 			clearMarqueeState(trustRoot, scroll, marquee);
 			return;
 		}
 
-		var overflow = track.offsetWidth > scroll.clientWidth + 2;
-		if (!overflow) {
+		if (!ensureLoopTracks(scroll, marquee, track)) {
 			clearMarqueeState(trustRoot, scroll, marquee);
 			return;
-		}
-
-		if (!marquee.querySelector('.htoeau-header__trust-track--clone')) {
-			var c = track.cloneNode(true);
-			c.classList.add('htoeau-header__trust-track--clone');
-			c.setAttribute('aria-hidden', 'true');
-			marquee.appendChild(c);
 		}
 
 		scroll.classList.add('htoeau-header__trust-scroll--auto');
