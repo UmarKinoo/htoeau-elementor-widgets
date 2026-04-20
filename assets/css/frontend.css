@@ -1879,11 +1879,7 @@ body[class*="elementor-kit-"] .htoeau-header .htoeau-header__burger {
 }
 
 .htoeau-science__eyebrow--sentence {
-	text-transform: capitalize;
-}
-
-.htoeau-science__eyebrow.htoeau-science__eyebrow--sentence.htoeau-science__eyebrow--mint {
-	text-transform: uppercase;
+	text-transform: none;
 }
 
 .htoeau-science__eyebrow--cyan {
@@ -4320,7 +4316,7 @@ body[class*="elementor-kit-"] .htoeau-header .htoeau-header__burger {
 
 /* --- Avatar strip --- */
 .htoeau-spotlight__avatars {
-	display: none;
+	display: flex;
 	align-items: center;
 	justify-content: center;
 	gap: 14px;
