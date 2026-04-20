@@ -1882,6 +1882,10 @@ body[class*="elementor-kit-"] .htoeau-header .htoeau-header__burger {
 	text-transform: capitalize;
 }
 
+.htoeau-science__eyebrow.htoeau-science__eyebrow--sentence.htoeau-science__eyebrow--mint {
+	text-transform: uppercase;
+}
+
 .htoeau-science__eyebrow--cyan {
 	color: var(--htoeau-accent-h2);
 }
