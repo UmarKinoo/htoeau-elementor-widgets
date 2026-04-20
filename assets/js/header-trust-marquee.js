@@ -30,6 +30,7 @@
 		trustRoot._htoeauTrustUserPause = false;
 		trustRoot._htoeauTrustAutoTick = false;
 		trustRoot._htoeauTrustAutoOn = false;
+		trustRoot._htoeauTrustLastAutoScrollTs = 0;
 
 		if (trustRoot._htoeauTrustScrollEl && trustRoot._htoeauTrustOnScroll) {
 			trustRoot._htoeauTrustScrollEl.removeEventListener('scroll', trustRoot._htoeauTrustOnScroll);
@@ -117,6 +118,7 @@
 
 			var step = PX_PER_SEC * dt;
 			trustRoot._htoeauTrustAutoTick = true;
+			trustRoot._htoeauTrustLastAutoScrollTs = Date.now();
 			scroll.scrollLeft += step;
 			while (scroll.scrollLeft >= segment - 0.5) {
 				scroll.scrollLeft -= segment;
@@ -177,6 +179,16 @@
 			trustRoot._htoeauTrustScrollEl = scroll;
 			trustRoot._htoeauTrustOnScroll = function () {
 				if (trustRoot._htoeauTrustAutoTick) {
+					return;
+				}
+				/*
+				 * Some browsers dispatch scroll events slightly after scrollLeft mutation.
+				 * Ignore those events so auto-scroll does not pause itself.
+				 */
+				if (
+					trustRoot._htoeauTrustLastAutoScrollTs &&
+					Date.now() - trustRoot._htoeauTrustLastAutoScrollTs < 120
+				) {
 					return;
 				}
 				trustRoot._htoeauTrustUserPause = true;
