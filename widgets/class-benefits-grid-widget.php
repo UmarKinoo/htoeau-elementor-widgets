@@ -131,33 +131,33 @@ class Benefits_Grid_Widget extends Widget_Base {
 			'default'     => [
 				[
 					'icon_preset' => 'dumbbell',
-					'title'       => 'Speeds Up Muscle Recovery',
-					'description' => 'Reduces inflammation and soreness, cutting recovery time by up to <strong>20%</strong> after workouts.',
+					'title'       => 'Improved Performance',
+					'description' => 'Higher Vmax results mean better performance in running, cycling, triathlon and cross-training.',
 				],
 				[
 					'icon_preset' => 'chart-line',
-					'title'       => 'Enhances Performance',
-					'description' => 'Athletes experience a <strong>10%</strong> boost in endurance and efficiency, thanks to its stress-reducing capabilities.',
+					'title'       => 'Better General Health',
+					'description' => 'Users report an uptrend in their mental and physical wellbeing.',
 				],
 				[
 					'icon_preset' => 'leaf',
-					'title'       => 'Promotes Healthier Skin',
-					'description' => 'Recognized for boosting skin health, reducing wrinkles, and improving elasticity by <strong>30%</strong>.',
+					'title'       => 'Improved Threshold',
+					'description' => 'Anaerobic Threshold Velocity (vANT) score optimisation is associated with better endurance, faster pace, longer performance.',
 				],
 				[
 					'icon_preset' => 'brain',
-					'title'       => 'Improves Brain Function',
-					'description' => 'Offers a <strong>20%</strong> improvement in cognitive performance and focus, with potential protective effects against neurodegeneration.',
+					'title'       => 'Cellular Stress Support',
+					'description' => 'Hydrogen water may help support the body\'s natural defenses against oxidative stress and cellular damage.',
 				],
 				[
 					'icon_preset' => 'bolt',
-					'title'       => 'Elevates Daily Energy',
-					'description' => "It's known to increase energy levels by up to <strong>15%</strong> by enhancing mitochondrial function, helping your cells produce energy more efficiently for longer-lasting vitality.",
+					'title'       => 'Supports Longevity Pathways',
+					'description' => 'Research suggests hydrogen may support pathways involved in healthy aging, including Nrf2 signalling, mitochondrial function, and cellular decline.',
 				],
 				[
 					'icon_preset' => 'tint',
-					'title'       => 'Rich in Antioxidants',
-					'description' => 'Acts as a selective antioxidant, <strong>60%</strong> more effective at neutralizing free radicals, reducing cellular damage and disease risk.',
+					'title'       => 'Brain Function',
+					'description' => 'Hydrogen water has been studied for its potential to support brain function by supporting cognitive resilience under stress.',
 				],
 			],
 		] );
