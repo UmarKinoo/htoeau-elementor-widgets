@@ -1879,7 +1879,11 @@ body[class*="elementor-kit-"] .htoeau-header .htoeau-header__burger {
 }
 
 .htoeau-science__eyebrow--sentence {
-	text-transform: none;
+	text-transform: capitalize;
+}
+
+.htoeau-science__eyebrow.htoeau-science__eyebrow--sentence.htoeau-science__eyebrow--mint {
+	text-transform: uppercase;
 }
 
 .htoeau-science__eyebrow--cyan {
@@ -4316,7 +4320,7 @@ body[class*="elementor-kit-"] .htoeau-header .htoeau-header__burger {
 
 /* --- Avatar strip --- */
 .htoeau-spotlight__avatars {
-	display: flex;
+	display: none;
 	align-items: center;
 	justify-content: center;
 	gap: 14px;
@@ -6190,5 +6194,159 @@ body.elementor-page .elementor-element.elementor-element-40ab245 .htoeau-science
 		right: 20px;
 		width: 40px;
 		height: 40px;
+	}
+}
+
+
+/* ==========================================================================
+   Benefits Grid
+   ========================================================================== */
+
+.htoeau-benefits {
+	background: var(--htoeau-white, #fff);
+	font-family: var(--htoeau-font);
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.htoeau-benefits__inner {
+	max-width: var(--htoeau-container);
+	margin: 0 auto;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.htoeau-benefits__header {
+	text-align: center;
+	margin-bottom: clamp(32px, 5vw, 56px);
+	max-width: 720px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.htoeau-benefits__heading {
+	font-family: var(--htoeau-font);
+	font-size: clamp(22px, 3vw, 32px);
+	font-weight: 700;
+	color: var(--htoeau-navy);
+	line-height: 1.25;
+	margin: 0 0 12px;
+}
+
+.htoeau-benefits__subheading {
+	font-size: clamp(14px, 1.8vw, 17px);
+	color: #5a6a74;
+	line-height: 1.65;
+	margin: 0;
+}
+
+.htoeau-benefits__grid {
+	--htoeau-benefits-cols: 3;
+	display: grid;
+	grid-template-columns: repeat(var(--htoeau-benefits-cols), 1fr);
+	gap: clamp(36px, 5vw, 60px) clamp(20px, 3vw, 40px);
+	width: 100%;
+}
+
+.htoeau-benefits__item {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	min-width: 0;
+}
+
+.htoeau-benefits__icon {
+	width: 48px;
+	height: 48px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 14px;
+	color: var(--htoeau-navy);
+	flex-shrink: 0;
+}
+
+.htoeau-benefits__icon svg,
+.htoeau-benefits__icon img {
+	width: 36px;
+	height: 36px;
+	display: block;
+	flex-shrink: 0;
+}
+
+.htoeau-benefits__item-title {
+	font-family: var(--htoeau-font);
+	font-size: clamp(15px, 1.6vw, 18px);
+	font-weight: 700;
+	color: var(--htoeau-navy);
+	line-height: 1.3;
+	margin: 0 0 8px;
+}
+
+.htoeau-benefits__desc {
+	font-family: var(--htoeau-font);
+	font-size: clamp(13px, 1.2vw, 13.5px);
+	color: #5a6a74;
+	line-height: 1.7;
+	margin: 0;
+}
+
+.htoeau-benefits__desc strong,
+.htoeau-benefits__desc b {
+	font-weight: 700;
+	color: var(--htoeau-navy);
+}
+
+/* Large desktop — 3 cols */
+@media (min-width: 1025px) {
+	.htoeau-benefits__grid {
+		--htoeau-benefits-cols: 3;
+	}
+}
+
+/* Tablet landscape — 3 cols but tighter */
+@media (max-width: 1200px) and (min-width: 769px) {
+	.htoeau-benefits__grid {
+		gap: clamp(28px, 4vw, 48px) clamp(16px, 2.5vw, 32px);
+	}
+}
+
+/* Tablet portrait — 2 cols */
+@media (max-width: 768px) {
+	.htoeau-benefits__grid {
+		--htoeau-benefits-cols: 2;
+		gap: clamp(28px, 5vw, 48px) clamp(16px, 4vw, 32px);
+	}
+
+	.htoeau-benefits__heading {
+		font-size: clamp(20px, 4vw, 28px);
+	}
+
+	.htoeau-benefits__header {
+		margin-bottom: clamp(28px, 4vw, 40px);
+	}
+}
+
+/* Mobile — 1 col */
+@media (max-width: 480px) {
+	.htoeau-benefits__grid {
+		--htoeau-benefits-cols: 1;
+		gap: 36px;
+		max-width: 400px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.htoeau-benefits__heading {
+		font-size: clamp(18px, 5vw, 22px);
+	}
+
+	.htoeau-benefits__item-title {
+		font-size: 16px;
+	}
+
+	.htoeau-benefits__desc {
+		font-size: 13px;
 	}
 }

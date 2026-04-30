@@ -68,6 +68,7 @@ final class Plugin {
 		require_once HTOEAU_WIDGETS_PATH . 'widgets/class-hydrogen-apart-widget.php';
 		require_once HTOEAU_WIDGETS_PATH . 'widgets/class-hydrogenate-hero-widget.php';
 		require_once HTOEAU_WIDGETS_PATH . 'widgets/class-newsletter-footer-widget.php';
+		require_once HTOEAU_WIDGETS_PATH . 'widgets/class-benefits-grid-widget.php';
 
 		$widgets_manager->register( new \HtoEAU_Widgets\Widgets\Site_Header_Widget() );
 		$widgets_manager->register( new \HtoEAU_Widgets\Widgets\Hero_Widget() );
@@ -87,6 +88,7 @@ final class Plugin {
 		$widgets_manager->register( new \HtoEAU_Widgets\Widgets\Hydrogen_Apart_Widget() );
 		$widgets_manager->register( new \HtoEAU_Widgets\Widgets\Hydrogenate_Hero_Widget() );
 		$widgets_manager->register( new \HtoEAU_Widgets\Widgets\Newsletter_Footer_Widget() );
+		$widgets_manager->register( new \HtoEAU_Widgets\Widgets\Benefits_Grid_Widget() );
 	}
 
 	public function enqueue_frontend_styles(): void {
