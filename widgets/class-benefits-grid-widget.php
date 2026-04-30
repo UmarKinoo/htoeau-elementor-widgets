@@ -202,16 +202,19 @@ class Benefits_Grid_Widget extends Widget_Base {
 			],
 		] );
 
-		$this->add_control( 'columns', [
-			'label'   => 'Columns (desktop)',
-			'type'    => Controls_Manager::SELECT,
-			'options' => [
+		$this->add_responsive_control( 'columns', [
+			'label'          => 'Columns',
+			'type'           => Controls_Manager::SELECT,
+			'options'        => [
+				'1' => '1',
 				'2' => '2',
 				'3' => '3',
 			],
-			'default'   => '3',
-			'selectors' => [
-				'{{WRAPPER}} .htoeau-benefits__grid' => '--htoeau-benefits-cols: {{VALUE}};',
+			'default'        => '3',
+			'tablet_default' => '2',
+			'mobile_default' => '1',
+			'selectors'      => [
+				'{{WRAPPER}} .htoeau-benefits__grid' => 'grid-template-columns: repeat({{VALUE}}, 1fr);',
 			],
 		] );
 
