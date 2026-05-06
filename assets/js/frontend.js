@@ -9,6 +9,8 @@
 	'use strict';
 
 	var WIDGET_SELECTOR = '[class*="elementor-widget-htoeau_"]';
+	var FAQ_PAGE_PATH_REGEX = /\/faq\/?$/i;
+	var FAQ_WIDGET_SELECTOR = '.elementor-widget-htoeau_faq_accordion';
 
 	function setZeroVar(el, name) {
 		if (!el) {
@@ -95,6 +97,37 @@
 		widgets.forEach(forceFlushOnWidget);
 	}
 
+	function isFaqPage() {
+		return FAQ_PAGE_PATH_REGEX.test(window.location.pathname || '');
+	}
+
+	function applyFaqWidgetSpacing(root) {
+		if (!isFaqPage()) {
+			return;
+		}
+
+		var scope = root || document;
+		var widgets = scope.querySelectorAll(FAQ_WIDGET_SELECTOR);
+		if (!widgets.length) {
+			return;
+		}
+
+		widgets.forEach(function (widget) {
+			widget.style.setProperty('margin-top', '0px', 'important');
+		});
+
+		widgets.forEach(function (widget) {
+			var prev = widget.previousElementSibling;
+			while (prev) {
+				if (prev.matches && prev.matches(FAQ_WIDGET_SELECTOR)) {
+					widget.style.setProperty('margin-top', '50px', 'important');
+					return;
+				}
+				prev = prev.previousElementSibling;
+			}
+		});
+	}
+
 	function initTransformSections(root) {
 		var scope = root || document;
 		var sections = scope.querySelectorAll('[data-htoeau-transform]');
@@ -164,11 +197,13 @@
 					if (node.matches && node.matches(WIDGET_SELECTOR)) {
 						forceFlushOnWidget(node);
 						initTransformSections(node);
+						applyFaqWidgetSpacing(node.parentElement || document);
 						return;
 					}
 					if (node.querySelector) {
 						runFlushPass(node);
 						initTransformSections(node);
+						applyFaqWidgetSpacing(node);
 					}
 				});
 			}
@@ -283,6 +318,7 @@
 			runFlushPass(document);
 			initTransformSections(document);
 			initHeaders(document);
+			applyFaqWidgetSpacing(document);
 			installObserver();
 			initBackToTop();
 		});
@@ -290,6 +326,7 @@
 		runFlushPass(document);
 		initTransformSections(document);
 		initHeaders(document);
+		applyFaqWidgetSpacing(document);
 		installObserver();
 		initBackToTop();
 	}
