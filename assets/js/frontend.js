@@ -11,6 +11,7 @@
 	var WIDGET_SELECTOR = '[class*="elementor-widget-htoeau_"]';
 	var FAQ_PAGE_PATH_REGEX = /\/faq\/?$/i;
 	var FAQ_WIDGET_SELECTOR = '.elementor-widget-htoeau_faq_accordion';
+	var FAQ_INNER_SELECTOR = '.htoeau-faq';
 
 	function setZeroVar(el, name) {
 		if (!el) {
@@ -113,14 +114,20 @@
 		}
 
 		widgets.forEach(function (widget) {
-			widget.style.setProperty('padding-top', '0px', 'important');
+			var faq = widget.querySelector(FAQ_INNER_SELECTOR);
+			if (faq) {
+				faq.style.setProperty('padding-top', '0px', 'important');
+			}
 		});
 
 		widgets.forEach(function (widget) {
 			var prev = widget.previousElementSibling;
 			while (prev) {
 				if (prev.matches && prev.matches(FAQ_WIDGET_SELECTOR)) {
-					widget.style.setProperty('padding-top', '50px', 'important');
+					var faq = widget.querySelector(FAQ_INNER_SELECTOR);
+					if (faq) {
+						faq.style.setProperty('padding-top', '50px', 'important');
+					}
 					return;
 				}
 				prev = prev.previousElementSibling;
