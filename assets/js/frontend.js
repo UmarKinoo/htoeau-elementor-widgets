@@ -113,14 +113,14 @@
 		}
 
 		widgets.forEach(function (widget) {
-			widget.style.setProperty('margin-top', '0px', 'important');
+			widget.style.setProperty('padding-top', '0px', 'important');
 		});
 
 		widgets.forEach(function (widget) {
 			var prev = widget.previousElementSibling;
 			while (prev) {
 				if (prev.matches && prev.matches(FAQ_WIDGET_SELECTOR)) {
-					widget.style.setProperty('margin-top', '50px', 'important');
+					widget.style.setProperty('padding-top', '50px', 'important');
 					return;
 				}
 				prev = prev.previousElementSibling;
