@@ -149,6 +149,30 @@ class Newsletter_Footer_Widget extends Widget_Base {
 				'default' => 'VAT: NL862936330B01',
 			]
 		);
+		$this->add_control(
+			'instagram_url',
+			[
+				'type'        => Controls_Manager::URL,
+				'label'       => __( 'Instagram', 'htoeau-widgets' ),
+				'default'     => [
+					'url'         => 'https://www.instagram.com/htoeau_official?utm_source=qr',
+					'is_external' => true,
+				],
+				'placeholder' => 'https://instagram.com/…',
+			]
+		);
+		$this->add_control(
+			'facebook_url',
+			[
+				'type'        => Controls_Manager::URL,
+				'label'       => __( 'Facebook', 'htoeau-widgets' ),
+				'default'     => [
+					'url'         => 'https://www.facebook.com/share/1BBYeraWaP/?mibextid=wwXIfr',
+					'is_external' => true,
+				],
+				'placeholder' => 'https://facebook.com/…',
+			]
+		);
 		$this->end_controls_section();
 
 		$nav_rep = new Repeater();
@@ -352,6 +376,28 @@ class Newsletter_Footer_Widget extends Widget_Base {
 								<?php endif; ?>
 								<?php if ( ! empty( $s['vat'] ) ) : ?>
 									<p class="htoeau-news-footer__reg"><?php echo esc_html( $s['vat'] ); ?></p>
+								<?php endif; ?>
+								<?php
+								$ig = isset( $s['instagram_url'] ) && is_array( $s['instagram_url'] ) ? $s['instagram_url'] : [];
+								$fb = isset( $s['facebook_url'] ) && is_array( $s['facebook_url'] ) ? $s['facebook_url'] : [];
+								$ig_url = apply_filters(
+									'htoeau_footer_instagram_url',
+									! empty( $ig['url'] ) ? (string) $ig['url'] : 'https://www.instagram.com/htoeau_official?utm_source=qr'
+								);
+								$fb_url = apply_filters(
+									'htoeau_footer_facebook_url',
+									! empty( $fb['url'] ) ? (string) $fb['url'] : 'https://www.facebook.com/share/1BBYeraWaP/?mibextid=wwXIfr'
+								);
+								if ( $ig_url || $fb_url ) :
+									?>
+									<div class="htoeau-news-footer__social" aria-label="<?php echo esc_attr__( 'Social media', 'htoeau-widgets' ); ?>">
+										<?php if ( $ig_url ) : ?>
+											<a class="htoeau-news-footer__social-link" href="<?php echo esc_url( $ig_url ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html__( 'Instagram', 'htoeau-widgets' ); ?></a>
+										<?php endif; ?>
+										<?php if ( $fb_url ) : ?>
+											<a class="htoeau-news-footer__social-link" href="<?php echo esc_url( $fb_url ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html__( 'Facebook', 'htoeau-widgets' ); ?></a>
+										<?php endif; ?>
+									</div>
 								<?php endif; ?>
 							</div>
 						</div>

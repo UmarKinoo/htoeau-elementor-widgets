@@ -4637,6 +4637,23 @@ body[class*="elementor-kit-"] .htoeau-spotlight button.htoeau-spotlight__arrow:a
 	text-decoration: underline;
 }
 
+.htoeau-news-footer__social {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 16px;
+	margin-top: 12px;
+}
+
+.htoeau-news-footer__social-link {
+	font: 600 14px/1.2 var(--htoeau-font);
+	color: var(--htoeau-teal);
+	text-decoration: none;
+}
+
+.htoeau-news-footer__social-link:hover {
+	text-decoration: underline;
+}
+
 /* Figma 1:617 — row, gap 32px, 16px / -0.32px tracking */
 .htoeau-news-footer__nav {
 	display: flex;
