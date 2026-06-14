@@ -155,10 +155,22 @@ class Newsletter_Footer_Widget extends Widget_Base {
 				'type'        => Controls_Manager::URL,
 				'label'       => __( 'Instagram', 'htoeau-widgets' ),
 				'default'     => [
-					'url'         => 'https://www.instagram.com/htoeau_official?utm_source=qr',
+					'url'         => 'https://www.instagram.com/htoeau_official/',
 					'is_external' => true,
 				],
 				'placeholder' => 'https://instagram.com/…',
+			]
+		);
+		$this->add_control(
+			'linkedin_url',
+			[
+				'type'        => Controls_Manager::URL,
+				'label'       => __( 'LinkedIn', 'htoeau-widgets' ),
+				'default'     => [
+					'url'         => 'https://www.linkedin.com/company/the-hydrogen-innovation-company',
+					'is_external' => true,
+				],
+				'placeholder' => 'https://linkedin.com/company/…',
 			]
 		);
 		$this->add_control(
@@ -379,20 +391,28 @@ class Newsletter_Footer_Widget extends Widget_Base {
 								<?php endif; ?>
 								<?php
 								$ig = isset( $s['instagram_url'] ) && is_array( $s['instagram_url'] ) ? $s['instagram_url'] : [];
+								$li = isset( $s['linkedin_url'] ) && is_array( $s['linkedin_url'] ) ? $s['linkedin_url'] : [];
 								$fb = isset( $s['facebook_url'] ) && is_array( $s['facebook_url'] ) ? $s['facebook_url'] : [];
 								$ig_url = apply_filters(
 									'htoeau_footer_instagram_url',
-									! empty( $ig['url'] ) ? (string) $ig['url'] : 'https://www.instagram.com/htoeau_official?utm_source=qr'
+									! empty( $ig['url'] ) ? (string) $ig['url'] : 'https://www.instagram.com/htoeau_official/'
+								);
+								$li_url = apply_filters(
+									'htoeau_footer_linkedin_url',
+									! empty( $li['url'] ) ? (string) $li['url'] : 'https://www.linkedin.com/company/the-hydrogen-innovation-company'
 								);
 								$fb_url = apply_filters(
 									'htoeau_footer_facebook_url',
 									! empty( $fb['url'] ) ? (string) $fb['url'] : 'https://www.facebook.com/share/1BBYeraWaP/?mibextid=wwXIfr'
 								);
-								if ( $ig_url || $fb_url ) :
+								if ( $ig_url || $li_url || $fb_url ) :
 									?>
 									<div class="htoeau-news-footer__social" aria-label="<?php echo esc_attr__( 'Social media', 'htoeau-widgets' ); ?>">
 										<?php if ( $ig_url ) : ?>
 											<a class="htoeau-news-footer__social-link" href="<?php echo esc_url( $ig_url ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html__( 'Instagram', 'htoeau-widgets' ); ?></a>
+										<?php endif; ?>
+										<?php if ( $li_url ) : ?>
+											<a class="htoeau-news-footer__social-link" href="<?php echo esc_url( $li_url ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html__( 'LinkedIn', 'htoeau-widgets' ); ?></a>
 										<?php endif; ?>
 										<?php if ( $fb_url ) : ?>
 											<a class="htoeau-news-footer__social-link" href="<?php echo esc_url( $fb_url ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html__( 'Facebook', 'htoeau-widgets' ); ?></a>
