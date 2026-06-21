@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'HTOEAU_WIDGETS_VERSION', '1.7.03' );
+define( 'HTOEAU_WIDGETS_VERSION', '1.7.05' );
 define( 'HTOEAU_WIDGETS_FILE', __FILE__ );
 define( 'HTOEAU_WIDGETS_PATH', plugin_dir_path( __FILE__ ) );
 define( 'HTOEAU_WIDGETS_URL', plugin_dir_url( __FILE__ ) );

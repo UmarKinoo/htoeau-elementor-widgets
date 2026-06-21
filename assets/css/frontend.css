@@ -42,6 +42,7 @@
 	 * In a 1320px row: 543 + 45 + media = 1320 → media column max 732px (image scales to fit). */
 	--htoeau-hero-image-figma-w: 818px;
 	--htoeau-hero-image-figma-h: 635px;
+	--htoeau-hero-image-max-h:   700px;
 	--htoeau-hero-media-max:     732px;
 }
 
@@ -886,7 +887,7 @@ body[class*="elementor-kit-"] .htoeau-header .htoeau-header__burger {
 	overflow-y: visible;
 	width: 100%;
 	box-sizing: border-box;
-	max-height: 685px;
+	max-height: none;
 	display: flex;
 	align-items: center;
 }
@@ -1018,6 +1019,7 @@ body[class*="elementor-kit-"] .htoeau-header .htoeau-header__burger {
 	display: block;
 	width: 100%;
 	max-width: var(--htoeau-hero-image-figma-w);
+	max-height: var(--htoeau-hero-image-max-h);
 	height: auto;
 	object-fit: contain;
 	object-position: right center;
@@ -1059,7 +1061,7 @@ body[class*="elementor-kit-"] .htoeau-header .htoeau-header__burger {
 
 	.htoeau-hero__image {
 		max-width: min(var(--htoeau-hero-image-figma-w), 100%);
-		max-height: 520px;
+		max-height: var(--htoeau-hero-image-max-h);
 	}
 }
 
@@ -1198,8 +1200,11 @@ body[class*="elementor-kit-"] .htoeau-header .htoeau-header__burger {
 	.htoeau-hero--bleed-image-right .htoeau-hero__image {
 		width: 100%;
 		max-width: var(--htoeau-hero-image-figma-w);
+		max-height: 700px;
 		margin-left: auto;
 		display: block;
+		object-fit: contain;
+		object-position: center;
 	}
 }
 
